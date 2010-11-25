@@ -1,4 +1,4 @@
-set :application, "pro_n"
+set :application, "powerposm"
 set :deploy_to, "/usr/local/webservice/htdocs/#{application}"
 #set :use_sudo, true
 set :use_sudo, false
@@ -17,7 +17,7 @@ set :scm, :git
 set :scm_verbose, true
 set :branch, "develop"
 
-set :repository, "git@github.com:AlexChien/Nividia.git"
+set :repository, "git@github.com:AlexChien/Material.git"
 set :deploy_via, :remote_cache
 
 
