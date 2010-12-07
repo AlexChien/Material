@@ -61,10 +61,14 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `users` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `login` VARCHAR(45) NOT NULL ,
+  `name` VARCHAR(45) NOT NULL ,
   `email` VARCHAR(45) NOT NULL ,
-  `password` VARCHAR(45) NOT NULL ,
-  `fullname` VARCHAR(45) NOT NULL ,
-  `region_id` INT NOT NULL ,
+  `crypted_password` VARCHAR(45) NULL ,
+  `salt` VARCHAR(45) NULL ,
+  `remember_token` VARCHAR(45) NULL ,
+  `remember_token_expires_at` DATETIME NULL ,
+  `region_id` INT NULL ,
   `mobile` VARCHAR(45) NULL ,
   `phone` VARCHAR(45) NULL ,
   `created_at` DATETIME NULL ,
@@ -72,7 +76,7 @@ CREATE  TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`) ,
   INDEX `fk_users_regions1` (`region_id` ASC) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
-  UNIQUE INDEX `password_UNIQUE` (`password` ASC) ,
+  UNIQUE INDEX `login_UNIQUE` (`login` ASC) ,
   CONSTRAINT `fk_users_regions1`
     FOREIGN KEY (`region_id` )
     REFERENCES `regions` (`id` )
@@ -581,11 +585,12 @@ COMMIT;
 -- Data for table `roles`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('1', 'Marketing Manager', NULL, NULL);
-INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('2', 'Project Manager', NULL, NULL);
-INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('3', 'Warehouse Admin', NULL, NULL);
-INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('4', 'Regional Manager', NULL, NULL);
-INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('5', 'Regional Coordinator', NULL, NULL);
+INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('1', 'Administrator', NULL, NULL);
+INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('2', 'Marketing Manager', NULL, NULL);
+INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('3', 'Project Manager', NULL, NULL);
+INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('4', 'Warehouse Admin', NULL, NULL);
+INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('5', 'Regional Manager', NULL, NULL);
+INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('6', 'Regional Coordinator', NULL, NULL);
 
 COMMIT;
 
