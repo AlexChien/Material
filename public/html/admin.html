@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/stylesheets/powerposm/admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/javascripts/powerposm/jquery-1.4.4.min.js" charset="UTF-8"></script>
+<title>在线电子仓储管理系统</title>
+</head>
+<body>
+<div id="box">
+<div style="background-image: url('http://www.eqiya.com/order_sys/resources/img/head_storage.gif');" id="header">
+
+<table width="1003" cellspacing="0" cellpadding="0" border="0">
+      <tbody><tr>
+        <td height="100">&nbsp;</td>
+      </tr>
+      <tr>
+        <td valign="top" height="30" align="left"><table width="1003" height="30" cellspacing="0" cellpadding="0" border="0">
+          <tbody><tr>
+            <td width="30">&nbsp;</td>
+            <td width="120" class="f_c01">用户名称：仓储管理</td>
+            <td width="30">&nbsp;</td>
+            <td width="290" class="f_c01">所属企业：测试部</td>
+            <td width="285" class="f_c01">
+            	<div id="webjx"></div>
+            </td>
+            <td width="238" valign="top" align="left" class="f_c01"><table width="238" height="30" cellspacing="0" cellpadding="0" border="0">
+              <tbody><tr>
+                <td width="32">&nbsp;</td>
+                <td width="61" class="f_c01"><a target="_blank" href="http://www.eqiya.com/login.html">管理中心</a></td>
+                <td width="24">&nbsp;</td>
+                <td width="121" class="f_c01"><a target="_blank" href="http://www.eqiya.com">物行天下</a> | <span class="quit"><a onclick="javascript:logout();" href="#">退出系统</a></span></td>
+              </tr>
+            </tbody></table></td>
+            <td width="10">&nbsp;</td>
+          </tr>
+        </tbody></table></td>
+      </tr>
+</tbody></table>
+
+
+
+
+
+
+
+
+			</div>
+			<!--#header end-->
+ <div id="content">
+    <div style="background-color: rgb(237, 244, 254); height: 600px;" id="menu">
+	  	  <div class="menu_list menu_h" id="firstpane">
+
+<p>
+	<a href="#">
+		<img width="200" height="30" border="0" src="http://www.eqiya.com/order_sys/resources/img/left_btn_index.gif" alt="0" id="left_btn01">
+	</a>
+</p>
+
+		<p class="menu_head">
+			<a href="#">
+				<img width="200" height="30" border="0" src="http://www.eqiya.com/order_sys/resources/img/left_btn10.gif" alt="0" onfocus="blur()" id="left_btn01">
+		   </a>
+	    </p>
+			 <div class="menu_body">
+			  <ul>
+
+			  		  <li><a href="#"><img width="200" height="30" border="0" src="http://www.eqiya.com/order_sys/resources/img/left_sub10002.gif" alt="0" class="menu" onfocus="blur()" id="left_sub10002"></a></li>
+
+			  		  <li><a href="#"><img width="200" height="30" border="0" src="http://www.eqiya.com/order_sys/resources/img/left_sub10003.gif" alt="0" class="menu" onfocus="blur()" id="left_sub10003"></a></li>
+
+			  		  <li><a href="#"><img width="200" height="30" border="0" src="http://www.eqiya.com/order_sys/resources/img/left_sub10004.gif" alt="0" class="menu" onfocus="blur()" id="left_sub10004"></a></li>
+
+			  		  <li><a href="#"><img width="200" height="30" border="0" src="http://www.eqiya.com/order_sys/resources/img/left_sub10014.gif" alt="0" class="menu" onfocus="blur()" id="left_sub10014"></a></li>
+
+			  </ul>
+			</div>
+
+<script>
+	$("div.menu_body:eq(0)").slideToggle();
+</script>
+	 	 </div>
+	</div>
+	<div id="main">
+
+
+
+
+<div id="s_path">
+	<p>
+		<a href="#">仓储管理</a>&nbsp;&gt;&gt;&nbsp;
+		<a href="#">入库管理</a>
+	</p>
+</div>
+<div align="center">
+</div>
+<form method="post" action="/order_sys/showStorageInputManage.action" onsubmit="return true;" name="orderinfoform" id="orderinfoform">
+
+<input type="hidden" id="currentPage" value="1" name="currentPage">
+
+<input type="hidden" id="pageCount" value="10" name="pageCount">
+
+<div class="query">
+	 <table width="700" height="40" cellspacing="5" cellpadding="0" border="0">
+		<tbody><tr>
+		 	<td>运单编号</td><td><input type="text" class="txt01" id="orderNo" value="" name="orderNo">
+</td>
+		 	<td>指定仓库</td><td><select style="width: 200px ! important;" id="storageId" name="storageId">
+
+
+</select>
+</td>
+		 	<td><input type="hidden" id="address" value="" name="address">
+</td><td></td>
+		</tr>
+	 </tbody></table>
+</div>
+</form>
+
+
+
+
+<div class="tab">
+<div class="tab_btn">
+	<ul>
+	  <li><input type="button" onclick="javascript:storageinputquery('1','10');" class="qy_btn" tabindex="2" value="查询" name="qy_btn">
+	  </li>
+   </ul>
+</div>
+</div>
+
+<div class="tab">
+	<table width="788" cellspacing="1" cellpadding="0" border="0" class="tab01">
+			<tbody><tr>
+				<td id="tab_tit" colspan="4">
+					运单信息
+				</td>
+			</tr>
+		</tbody></table>
+		<blockquote>
+			<br>
+		</blockquote>
+		<table width="788" cellspacing="1" cellpadding="0" border="0" class="tab01">
+			<tbody><tr>
+			<td width="150">
+				<font style="font-weight: bold;">运单编号</font>
+			</td>
+			<td width="241" class="td_left">
+				<input type="text" readonly="readonly" style="width: 220px ! important;" value="">
+			</td>
+			<td width="150">
+				<font style="font-weight: bold;">运单名称</font>
+			</td>
+			<td width="242" class="td_left">
+				<input type="text" readonly="readonly" style="width: 220px ! important;" value="">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<font style="font-weight: bold;">始发地</font>
+			</td>
+			<td class="td_left">
+				<input type="text" readonly="readonly" style="width: 220px ! important;" value="">
+			</td>
+
+			<td>
+				<font style="font-weight: bold;">目的地</font>
+			</td>
+			<td class="td_left">
+				<input type="text" readonly="readonly" style="width: 220px ! important;" value="">
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				<font style="font-weight: bold;">发件人</font>
+			</td>
+			<td class="td_left">
+				<input type="text" readonly="readonly" style="width: 220px ! important;" value="">
+			</td>
+
+			<td>
+				<font style="font-weight: bold;">收件人</font>
+			</td>
+			<td class="td_left">
+				<input type="text" readonly="readonly" style="width: 220px ! important;" value="">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<font style="font-weight: bold;">货物数量(件)</font>
+			</td>
+			<td class="td_left">
+				<input type="text" readonly="readonly" style="width: 220px ! important;" value="">
+			</td>
+
+			<td>
+				<font style="font-weight: bold;">提货方式</font>
+			</td>
+			<td class="td_left">
+				<input type="text" readonly="readonly" style="width: 220px ! important;" value="">
+			</td>
+		</tr>
+	</tbody></table>
+
+</div>
+<br>
+<div class="tab">
+<form name="enterStorageInput" id="enterStorageInput">
+<input type="hidden" id="storageId" value="" name="storageId">
+
+<input type="hidden" id="orderNo" value="" name="orderNo">
+
+
+ <table width="788" cellspacing="1" cellpadding="0" border="0">
+            <tbody><tr>
+              <td id="tab_tit" colspan="9">待入库货物信息</td>
+            </tr>
+            <tr>
+              <td width="50" class="f_tab"></td>
+              <td width="131" class="f_tab">运单编号</td>
+              <td width="167" class="f_tab">货物名称</td>
+              <td width="167" class="f_tab">货物型号</td>
+  		       <td width="131" class="f_tab">预留仓位</td>
+              <td width="131" class="f_tab">操作</td>
+            </tr>
+
+<!-- 分页代码 -->
+
+
+
+
+
+	<tr>
+	  <td id="tab_tit" colspan="7"></td>
+    </tr>
+
+
+</tbody></table>
+<div style="position: absolute; z-index: 10; left: 760px; top: 600px; display: none;" id="wait">
+		<img src="http://www.eqiya.com/order_sys/resources/img/waiting.gif">
+</div>
+<div class="tab_btn">
+	<ul>
+	  <li><input type="button" onclick="javascript:saveEnterGoodsInfo();" class="qy_btn" tabindex="2" value="入库" name="qy_btn">
+	  </li>
+   </ul>
+</div>
+</form>
+</div>
+
+</div>
+</div>
+<div id="footer">
+ 	<p>版权所有 <span style="font-size: 12px; font-family: Geneva,Arial,Helvetica,sans-serif;">&copy;</span> 上海硕域网络信息有限公司</p>
+</div>
+</div>
+
+</body>
+</html>
