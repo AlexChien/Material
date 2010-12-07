@@ -268,9 +268,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `order_line_items_raw`
+-- Table `order_line_items_raws`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `order_line_items_raw` (
+CREATE  TABLE IF NOT EXISTS `order_line_items_raws` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `order_id` INT NOT NULL ,
   `material_id` INT NOT NULL ,
@@ -310,9 +310,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `orders_line_item_adjusted`
+-- Table `orders_line_item_adjusteds`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `orders_line_item_adjusted` (
+CREATE  TABLE IF NOT EXISTS `orders_line_item_adjusteds` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `order_id` INT NOT NULL ,
   `material_id` INT NOT NULL ,
