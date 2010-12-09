@@ -14,7 +14,9 @@
 		<%= flash_message %>
 	</div>
 
-	<%= yield %>
+	<div id="content">
+		<%= yield %>
+	</div>
 
 	<%= render :partial => 'shared/footer' %>
 </div>

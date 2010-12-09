@@ -1,35 +1,33 @@
-<div id="content">
-    <% form_tag session_path do -%>
-    	<div id="login-form">
-    		<table>
-			<tbody>
+<% form_tag session_path do -%>
+<div id="login-form">
+	<table>
+		<tbody>
 			<tr>
-			    <td><h2>用户登陆</h2></td>
+				<td><h2>用户登陆</h2></td>
 			</tr>
 
 			<tr>
-			    <td><%= label_tag '用户名：' %></td>
-			    <td><%= text_field_tag 'login', @login %></td>
-			</tr>
-
-    		<tr>
-			    <td><%= label_tag '密码：' %></td>
-			    <td><%= password_field_tag 'password', nil %></td>
+				<td><%= label_tag '用户名：' %></td>
+				<td><%= text_field_tag 'login', @login %></td>
 			</tr>
 
 			<tr>
-			    <td><%= label_tag '记住我：' %></td>
-			    <td><%= check_box_tag 'remember_me', '1', @remember_me %></td>
+				<td><%= label_tag '密码：' %></td>
+				<td><%= password_field_tag 'password', nil %></td>
 			</tr>
 
 			<tr>
-			    <td></td>
-			    <td align="right">
-			        <%= submit_tag '登陆',:class=>"button_btn" %>
-			    </td>
+				<td><%= label_tag '记住我：' %></td>
+				<td><%= check_box_tag 'remember_me', '1', @remember_me %></td>
 			</tr>
-			</tbody>
-			</table>
-    	</div>
-    <% end %>
+
+			<tr>
+				<td></td>
+				<td align="right">
+					<%= submit_tag '登陆',:class=>"button_btn" %>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
+<% end %>
