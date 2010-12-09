@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
   def role_names(join="&")
     arr = []
     self.roles.each do |li|
-      arr << "#{li.name}"
+      arr << "#{li.full_name}"
     end
     arr.join(join)
   end

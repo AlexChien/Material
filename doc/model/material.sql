@@ -49,10 +49,14 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `roles` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
+  `full_name` VARCHAR(45) NULL ,
+  `authorizable_id` INT NULL ,
+  `authorizable_type` VARCHAR(45) NULL ,
   `created_at` DATETIME NULL ,
   `updated_at` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
 ENGINE = InnoDB;
 
 
@@ -585,12 +589,12 @@ COMMIT;
 -- Data for table `roles`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('1', 'Administrator', NULL, NULL);
-INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('2', 'Marketing Manager', NULL, NULL);
-INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('3', 'Project Manager', NULL, NULL);
-INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('4', 'Warehouse Admin', NULL, NULL);
-INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('5', 'Regional Manager', NULL, NULL);
-INSERT INTO roles (`id`, `name`, `created_at`, `updated_at`) VALUES ('6', 'Regional Coordinator', NULL, NULL);
+INSERT INTO roles (`id`, `name`, `full_name`, `authorizable_id`, `authorizable_type`, `created_at`, `updated_at`) VALUES ('1', 'ADMIN', 'Administrator', NULL, NULL, NULL, NULL);
+INSERT INTO roles (`id`, `name`, `full_name`, `authorizable_id`, `authorizable_type`, `created_at`, `updated_at`) VALUES ('2', 'MM', 'Marketing Manager', NULL, NULL, NULL, NULL);
+INSERT INTO roles (`id`, `name`, `full_name`, `authorizable_id`, `authorizable_type`, `created_at`, `updated_at`) VALUES ('3', 'PM', 'Project Manager', NULL, NULL, NULL, NULL);
+INSERT INTO roles (`id`, `name`, `full_name`, `authorizable_id`, `authorizable_type`, `created_at`, `updated_at`) VALUES ('4', 'WA', 'Warehouse Admin', NULL, NULL, NULL, NULL);
+INSERT INTO roles (`id`, `name`, `full_name`, `authorizable_id`, `authorizable_type`, `created_at`, `updated_at`) VALUES ('5', 'RM', 'Regional Manager', NULL, NULL, NULL, NULL);
+INSERT INTO roles (`id`, `name`, `full_name`, `authorizable_id`, `authorizable_type`, `created_at`, `updated_at`) VALUES ('6', 'RC', 'Regional Coordinator', NULL, NULL, NULL, NULL);
 
 COMMIT;
 
