@@ -258,8 +258,8 @@ a:hover {
 }
 
 #login-form table {
-    background-color: #c9dffe;
-    border: 2px solid #72afee;
+    background-color: #C8E8F3;
+    border: 2px solid #429ED1;
     margin-left: auto;
     margin-right: auto;
     margin-top: 5em;
@@ -276,3 +276,12 @@ a:hover {
     height: 20px;
     border: 1px solid #429ed1;
 }
+
+#flash {
+    font-weight: bold;
+    text-align: center;
+}
+
+#flash{font-weight:bold;text-align:center;}
+#notice {border:2px solid #429ED1;background-color:#C8E8F3;padding:1em;color:green;}
+#error {border:2px solid #429ED1;background-color:#C8E8F3;padding:1em;color:red;}
