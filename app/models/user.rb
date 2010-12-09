@@ -18,7 +18,8 @@ class User < ActiveRecord::Base
   validates_uniqueness_of   :email
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
 
-  
+
+  has_and_belongs_to_many :roles
 
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
@@ -29,7 +30,7 @@ class User < ActiveRecord::Base
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
-  # uff.  this is really an authorization, not authentication routine.  
+  # uff.  this is really an authorization, not authentication routine.
   # We really need a Dispatch Chain here or something.
   # This will also let us return a human error message.
   #
@@ -47,8 +48,16 @@ class User < ActiveRecord::Base
     write_attribute :email, (value ? value.downcase : nil)
   end
 
+  def role_names(join="&")
+    arr = []
+    self.roles.each do |li|
+      arr << "#{li.name}"
+    end
+    arr.join(join)
+  end
+
   protected
-    
+
 
 
 end
