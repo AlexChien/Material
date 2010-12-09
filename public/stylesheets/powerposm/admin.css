@@ -38,6 +38,7 @@ a:hover {
 #content {
 	width:1003px;
 	min-height:400px;
+	_height:400px;
 }
 #menu {
 /*	background-color: #EDF4FE;
@@ -55,7 +56,7 @@ a:hover {
 	text-align: center;
 }
 #footer a{
-	color: grey;
+	color: #999999;
 }
 .leftnav_header{
 	background-image: url("/images/powerposm/leftnav_header_btn.gif");
