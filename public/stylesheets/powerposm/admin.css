@@ -285,3 +285,4 @@ a:hover {
 #flash{font-weight:bold;text-align:center;}
 #notice {border:2px solid #429ED1;background-color:#C8E8F3;padding:1em;color:green;}
 #error {border:2px solid #429ED1;background-color:#C8E8F3;padding:1em;color:red;}
+a.selected {color:green;}
