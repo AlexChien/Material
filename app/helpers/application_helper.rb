@@ -22,7 +22,7 @@ module ApplicationHelper
         :navleft_header_logo => "/images/icons/application_home.png",
         :navleft => [
             { :name => "我的首页", :path => "/dashboard", :id => "dashboard", :logo => "/images/icons/user_suit.png"},
-            { :name => "修改密码", :path => "/users/change_password", :id => "users_change_password", :logo => "/images/icons/key.png"}
+            { :name => "修改密码", :path => "/users/change_password_form", :id => "users_change_password", :logo => "/images/icons/key.png"}
           ]
       },
       {

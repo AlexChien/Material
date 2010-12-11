@@ -119,15 +119,33 @@ a:hover {
 .tab_btn li {
 	display:inline;
 }
-/*********表格公共样式开始************/
+
+/*tab*/
+.tab01 input {
+	width:200px;
+	height:18px;
+	padding-top:5px;
+	background-color:#fffacd;
+	border: 1px solid #429ed1;
+}
+
+.tab01 select {
+	width  :100px;
+	height  :20px;
+	background-color:#fffacd;
+	border: 1px solid #429ed1;
+}
 .tab {
 	margin-bottom:10px;
+}
+.tab em{
+	color:red;
+	padding-right:5px;
 }
 .tab table {
 	background-color:#429ed1;
 }
 #tab_table{
-
 	background-color:#429ed1;
 	table-layout: fixed;
 	word-wrap:break-word;
@@ -138,124 +156,32 @@ a:hover {
 	height:35px;
 }
 #tab_td{
-
 	background-color:#fff;
 	text-align:center;
 	height:35px;
 }
 .tab .td_left {
 	padding-left:5px;
-	background-color:#fff;
 	text-align:left;
-	height:35px;
 }
-.tab .input_address{
-
-	width:378px !important;
-	width /**/:380px;
-	height:18px !important;
-	height /**/:25px;
-	padding-top:5px;
-	background-color:#fffacd;
-	border: 1px solid #429ed1;
-}
-.input_queryVchile{
-
-	width:50px !important;
-	width /**/:52px;
-	height:18px !important;
-	height /**/:25px;
-	padding-top:5px;
-	border: 1px solid #429ed1;
-}
-.tab .storage_address{
-
-	width:268px !important;
-	width /**/:270px;
-	height:18px !important;
-	height /**/:25px;
-	padding-top:5px;
-	background-color:#fffacd;
-	border: 1px solid #429ed1;
-}
-.tab .input_goods{
-
-	width:68px !important;
-	width /**/:70px;
-	height:18px !important;
-	height /**/:25px;
-	padding-top:5px;
-	background-color:#fffacd;
-	border: 1px solid #429ed1;
-}
-#input_goods{
-
-	width:68px !important;
-	width /**/:70px;
-	height:18px !important;
-	height /**/:25px;
-	padding-top:5px;
-	background-color:#fffacd;
-	border: 1px solid #429ed1;
-}
-.tab .input_finance{
-
-	width:68px !important;
-	width /**/:70px;
-	height:8px !important;
-	height /**/:15px;
-	padding-top:5px;
-	background-color:#fffacd;
-	border: 1px solid #429ed1;
-}
-
-.tab .input_money{
-
-	width:68px !important;
-	width /**/:70px;
-	height:18px !important;
-	height /**/:20px;
-	padding-top:5px;
-	background-color:#fffacd;
-	border: 1px solid #429ed1;
-}
-.tab .input_info{
-
-	width:98px !important;
-	width /**/:100px;
-	height:18px !important;
-	height /**/:20px;
-	padding-top:5px;
-	background-color:#fffacd;
-	border: 1px solid #429ed1;
-}
-#input_money{
-
-	width:58px !important;
-	width /**/:60px;
-	height:18px !important;
-	height /**/:25px;
-	padding-top:5px;
-	background-color:#fffacd;
-	border: 1px solid #429ed1;
-}
-
 #tab_tit {
 	background-color:#c8e8f3;
 	font-size: 14px;
 	font-weight: bold;
-}/*此为表格上标题样式*/
+}
 #tab_tit02 {
 	background-color:#c8e8f3;
 	font-size: 12px;
 	font-weight: normal;
-}/*此为表格下标题样式*/
+}
 .tab .f_tab {
 	font-size: 12px;
 	font-weight: bold;
 	text-align:center;
 	background-color: #d3d3d3;
 }
+/*tab*/
+
 
 #login-form table {
     background-color: #C8E8F3;
@@ -280,6 +206,7 @@ a:hover {
 #flash {
     font-weight: bold;
     text-align: center;
+	padding-bottom: 5px;
 }
 
 #flash{font-weight:bold;text-align:center;}
