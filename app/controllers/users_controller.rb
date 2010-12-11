@@ -35,28 +35,11 @@ class UsersController < ApplicationController
 
   def change_password
     @user = current_user
-    if User.authenticate(@user.login, params[:old_password])
-      if ((params[:user][:password] == params[:user][:password_confirmation]) && !params[:user][:password_confirmation].blank?)
-        @user.password_confirmation = params[:user][:password_confirmation]
-        @user.password = params[:user][:password]
-        begin
-          if @user.save
-            flash[:notice] = '密码已修改.'
-            redirect_to('/dashboard')
-          else
-            flash[:error] = '密码修改出错，请重试.'
-            redirect_to('/users/change_password_form')
-          end
-        rescue  => e
-          render :text => e
-        end
-      else
-        flash[:error] = '确认密码输入错误.'
-        redirect_to('/users/change_password_form')
-      end
+    if @user.update_attributes(params[:user])
+      flash[:notice] = "密码修改成功"
+      redirect_to "/dashboard"
     else
-      flash[:error] = '当前密码输入错误.'
-      redirect_to('/users/change_password_form')
+      render :action => "change_password_form"
     end
   end
 

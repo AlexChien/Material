@@ -21,13 +21,18 @@ class User < ActiveRecord::Base
   validates_uniqueness_of   :email
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
 
+  validates_presence_of :password
+  validates_presence_of :password_confirmation
+  validates_length_of :password, :within => 6..40
+  validate :check_password
 
   has_and_belongs_to_many :roles
 
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :name, :password, :password_confirmation
+  attr_accessor :old_password
+  attr_accessible :login, :email, :name, :password, :password_confirmation, :old_password
 
 
 
@@ -59,8 +64,10 @@ class User < ActiveRecord::Base
     arr.join(join)
   end
 
-  protected
-
-
+protected
+  
+  def check_password
+    errors.add(:old_password, "输入错误") unless User.authenticate(self.login, self.old_password)
+  end
 
 end

@@ -213,3 +213,35 @@ a:hover {
 #notice {border:2px solid #429ED1;background-color:#C8E8F3;padding:1em;color:green;}
 #error {border:2px solid #429ED1;background-color:#C8E8F3;padding:1em;color:red;}
 a.selected {color:green;}
+
+.errorExplanation {background-color:#FFCCCC;border:1px solid #FF6666;margin:2px 0;}
+.errorExplanation h2 {
+padding: 2px 5px;
+color: #333;
+font-size: 11px;
+margin: 0;
+letter-spacing: 0;
+font-family: Verdana;
+background-color: #f66;
+}
+
+.errorExplanation ul {
+margin: 0;
+padding: 0 2px 4px 25px;
+list-style: disc;
+}
+
+.errorExplanation p {
+font-size: 11px;
+padding: 2px 5px;
+font-family: Verdana;
+margin: 0;
+}
+
+.errorExplanation ul li {
+font: bold 11px verdana;
+letter-spacing: -1px;
+margin: 0;
+padding: 0;
+background-color: transparent;
+}
