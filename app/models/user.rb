@@ -9,17 +9,18 @@ class User < ActiveRecord::Base
   include Authentication::ByCookieToken
 
   validates_presence_of     :login
-  validates_length_of       :login,    :within => 3..40
+  validates_length_of       :login,    :within => 3..20
   validates_uniqueness_of   :login
-  validates_format_of       :login,    :with => Authentication.login_regex, :message => Authentication.bad_login_message
+  validates_format_of       :login,    :with => Authentication.login_regex, :message => "格式输入不正确"
 
-  validates_format_of       :name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
-  validates_length_of       :name,     :maximum => 100
+  validates_presence_of     :name
+  # validates_format_of       :name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
+  validates_length_of       :name,     :maximum => 45
 
   validates_presence_of     :email
-  validates_length_of       :email,    :within => 6..100 #r@a.wk
+  validates_length_of       :email,    :within => 6..45 #r@a.wk
   validates_uniqueness_of   :email
-  validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
+  validates_format_of       :email,    :with => Authentication.email_regex, :message => "格式输入不正确"
 
   validates_presence_of :password
   validates_presence_of :password_confirmation
@@ -67,7 +68,7 @@ class User < ActiveRecord::Base
 protected
   
   def check_password
-    errors.add(:old_password, "输入错误") unless User.authenticate(self.login, self.old_password)
+    errors.add(:old_password, "输入错误") if (!User.authenticate(self.login, self.old_password) && !self.old_password.blank?)
   end
 
 end
