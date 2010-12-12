@@ -17,3 +17,4 @@ _notes
 Thumbs.db
 db/schema.rb
 config/database.yml
+doc/model/*.bak
