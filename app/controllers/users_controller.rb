@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_filter :login_required
 
   access_control do
-    allow :rc
+    allow :admin
     action :change_password_form, :change_password do
       allow logged_in
     end
