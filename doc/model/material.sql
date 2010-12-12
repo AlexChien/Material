@@ -1,4 +1,4 @@
-SET NAMES utf8;
+SET names utf8;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
@@ -566,11 +566,11 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- Data for table `regions`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('1', '总部', NULL, 'true', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('2', '北京大区', NULL, 'false', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('3', '上海大区', NULL, 'false', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('4', '广州大区', NULL, 'false', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('5', '市场部', NULL, 'false', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('1', '总部', NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('2', '北京大区', NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('3', '上海大区', NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('4', '广州大区', NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('5', '市场部', NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL);
 
 COMMIT;
 
@@ -578,11 +578,11 @@ COMMIT;
 -- Data for table `warehouses`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('1', '中央仓库', '1', 'true', NULL, NULL);
-INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('2', '上海仓库', '2', 'false', NULL, NULL);
-INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('3', '北京仓库', '3', 'false', NULL, NULL);
-INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('4', '广州仓库', '4', 'false', NULL, NULL);
-INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('5', '市场部', '5', 'false', NULL, NULL);
+INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('1', '中央仓库', '1', '1', NULL, NULL);
+INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('2', '上海仓库', '2', '0', NULL, NULL);
+INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('3', '北京仓库', '3', '0', NULL, NULL);
+INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('4', '广州仓库', '4', '0', NULL, NULL);
+INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('5', '市场部', '5', '0', NULL, NULL);
 
 COMMIT;
 
