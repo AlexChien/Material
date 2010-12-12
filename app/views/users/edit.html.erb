@@ -1,14 +1,14 @@
 <% content_for :title, "添加用户" %>
 
-<%= render :partial => 'shared/leftnav',:locals => { :highlight => "users_new"} %>
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "users"} %>
 
 <div id="main">
 	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
 	<%= render :partial => 'shared/s_path'%>
 	<%end%>
-
+	
 	<div class="tab">
-		<% form_for :user, :url => users_path do |f| -%>
+		<% form_for @user do |f| -%>
 		<%=f.error_messages%>
 		<table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
 			<tbody>
@@ -18,25 +18,13 @@
 				<tr>
 					<td><%= f.label :login, "<em>*</em>登录帐号" %></td>
 					<td class="td_left">
-						<%= f.text_field :login %>
+						<%= f.text_field :login,:disabled=>"disabled" %>
 					</td>
 				</tr>
 				<tr>
 					<td><%= f.label :role_ids, "<em>*</em>用户角色" %></td>
 					<td class="td_left">
 						<%= f.select :role_ids,Role.include_admin(false).all.collect{|p| [p.full_name, p.id]} %>
-					</td>
-				</tr>
-				<tr>
-					<td><%= f.label :password, "<em>*</em>密码" %></td>
-					<td class="td_left">
-						<%= f.password_field :password %>
-					</td>
-				</tr>
-				<tr>
-					<td><%= f.label :password_confirmation, "<em>*</em>确认密码" %></td>
-					<td class="td_left">
-						<%= f.password_field :password_confirmation%>
 					</td>
 				</tr>
 				<tr>
@@ -78,8 +66,9 @@
 		</table>
 		<br/>
 		<div class="tab_btn">
-			<%= f.submit "保存",:class=>"button_btn" %>
+			<%= f.submit "修改",:class=>"button_btn" %>
 		</div>
 		<%end%>
 	</div>
+	
 </div>

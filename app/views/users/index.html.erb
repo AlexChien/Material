@@ -6,4 +6,71 @@
 	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
 	<%= render :partial => 'shared/s_path'%>
 	<%end%>
+
+	<% form_tag({:action => :index},{:method=>:get}) do %>
+	<div class="query">
+		<table cellspacing="0" cellpadding="0" border="0">
+			<tbody>
+				<tr>
+					<td width="100" align="right">用户角色</td>
+					<td width="10"></td>
+					<td>
+						<%=select_tag :role_id,options_for_select(Role.include_admin(false).all(:order=>"created_at DESC").collect{|p| [p.full_name, p.id]}.insert(0,['请选择用户角色',nil]),:selected=>params[:role_id].to_i)%>
+					</td>
+					
+					<td width="100" align="right">所属区</td>
+					<td width="10"></td>
+					<td>
+						<%=select_tag :region_id,options_for_select(Region.all(:order=>"created_at DESC").collect{|p| [p.name, p.id]}.insert (0,['请选择所属区',nil]),:selected=>params[:region_id].to_i)%>
+					</td>
+				</tr>
+			</tbody>
+		</table> 
+	</div>
+	
+	<div class="tab_btn">
+		<%=submit_tag "筛选",:class=>"button_btn"%>
+	</div>
+	<% end %>
+	
+	<br/>
+
+	<div class="tab">
+		<table width="786" cellspacing="1" cellpadding="0" border="0">
+			<tbody>
+				<tr>
+					<td id="tab_tit" colspan="8">所有用户</td>
+				</tr>
+				<tr>
+					<td class="f_tab">登录帐号</td>
+					<td class="f_tab">用户角色</td>
+					<td class="f_tab">用户姓名</td>
+					<td class="f_tab">电子邮箱</td>
+					<td class="f_tab">所属区</td>
+					<td class="f_tab">手机号码</td>
+					<td class="f_tab">联系电话</td>
+					<td class="f_tab">操作</td>
+				</tr>
+				<%@users.each do |user|%>
+					<tr>
+						<td><%=user.login%></td>
+						<td><%=user.role_names%></td>
+						<td><%=user.name%></td>
+						<td><%=user.email%></td>
+						<td><%=user.region.nil? ? "" : user.region.name%></td>
+						<td><%=user.mobile%></td>
+						<td><%=user.phone%></td>
+						<td>
+						<%= link_to image_tag("/images/icons/database_edit.png", {:alt => "修改", :title => "修改", :border => 0}), edit_user_url(user)%>
+						<%= link_to image_tag("/images/icons/database_delete.png", {:alt => "删除", :title => "删除", :border => 0}), user_url(user), :method => :delete, :confirm => "确认要删除这个用户吗?"%>
+						</td>
+					</tr>
+				<%end%>
+				<tr>
+					<td id="tab_tit02" colspan="8"><font color="green">共有<%=@users.total_entries%>条记录</font></td>
+				</tr>
+			</tbody>
+		</table>
+		<%=will_paginate @users%>
+	</div>
 </div>

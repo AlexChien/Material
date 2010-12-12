@@ -100,6 +100,18 @@ a:hover {
 	background-color: #c8e8f3;
 	border: 1px solid #429ed1;
 }
+.query td{
+	height:30px;
+}
+.query input {
+	width:200px;
+	border: 1px solid #429ed1;
+}
+.query select {
+	width:200px;
+	height:20px;
+	border: 1px solid #429ed1;
+}
 .txt01 {
 	padding-top:5px;
 }
@@ -135,6 +147,7 @@ a:hover {
 	background-color:#fffacd;
 	border: 1px solid #429ed1;
 }
+
 .tab {
 	margin-bottom:10px;
 }
@@ -214,6 +227,7 @@ a:hover {
 #error {border:2px solid #429ED1;background-color:#C8E8F3;padding:1em;color:red;}
 a.selected {color:green;}
 
+/* error_messages */
 .errorExplanation {background-color:#FFCCCC;border:1px solid #FF6666;margin:2px 0;}
 .errorExplanation h2 {
 padding: 2px 5px;
@@ -245,3 +259,12 @@ margin: 0;
 padding: 0;
 background-color: transparent;
 }
+/* error_messages */
+
+/* Pagination */
+.pagination {padding: 5px; margin: 5px; text-align:center}
+.pagination a {padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #ccc; text-decoration: none;}
+.pagination a:hover, .pagination a:active {border: 1px solid #429ED1; background-color: #C8E8F3;}
+.pagination span.current {padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #429ED1; font-weight: bold; background-color: #C8E8F3;}
+.pagination span.disabled {padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #eee; color: #ddd}
+/* Pagination */ 

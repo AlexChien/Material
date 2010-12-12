@@ -32,8 +32,22 @@ class User < ActiveRecord::Base
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
   attr_accessor :old_password
-  attr_accessible :login, :email, :name, :password, :password_confirmation, :old_password, :region_id, :role_ids
+  attr_accessible :login, :email, :name, :password, :password_confirmation, :old_password, :region_id, :role_ids, :mobile, :phone
 
+  named_scope :include_admin, lambda { |boolean|
+    if boolean
+    else
+      {:include=>:roles,:conditions=>["roles.name != 'admin'"]}
+    end
+  }
+  
+  named_scope :in_region, lambda { |region_id|
+    {:conditions=>["users.region_id in (?)",region_id]}
+  }
+  
+  named_scope :in_role, lambda { |role_id|
+    {:include=>:roles,:conditions=>["roles.id in (?)",role_id]}
+  }
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #

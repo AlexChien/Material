@@ -4,7 +4,7 @@ class Role < ActiveRecord::Base
   named_scope :include_admin, lambda { |boolean|
     if boolean
     else
-      {:conditions=>["name != 'admin'"]}
+      {:conditions=>["roles.name != 'admin'"]}
     end
   }
 end
