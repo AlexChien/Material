@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/stylesheets/powerposm/admin.css" rel="stylesheet" type="text/css" />
+<%= javascript_include_tag 'powerposm/jquery-1.4.4.min.js','powerposm/application'%>
+<title><%= yield_title yield(:title) %></title>
+</head>
+<body>
+<div id="container">
+	<%= render :partial => 'shared/header' %>
+
+	<div id="flash">
+		<%= flash_message %>
+	</div>
+
+	<div id="content">
+		<%= yield %>
+	</div>
+
+	<%= render :partial => 'shared/footer' %>
+</div>
+</body>
+</html>

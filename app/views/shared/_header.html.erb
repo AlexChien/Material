@@ -1,0 +1,13 @@
+<!--header start-->
+<div id="header">
+	<%if current_user%>
+	<div id="profile" class="fRight">
+			你好，<%=current_user.name%>
+			|
+			账号类型：<%=current_user.role_names%>
+			|
+			<a href="/logout">注销</a>
+	</div>
+	<%end%>
+</div>
+<!--header end-->

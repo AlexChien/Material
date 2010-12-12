@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/stylesheets/powerposm/admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/javascripts/powerposm/jquery-1.4.4.min.js" charset="UTF-8"></script>
+<title>达能物料流转管理系统</title>
+</head>
+<body>
+<div id="container">
+<!--header start-->
+<div id="header">
+	<div id="profile" class="fRight">
+			你好，testsc
+			|
+			账号类型：管理员
+			|
+			<a href="/logout">注销</a>
+	</div>
+</div>
+<!--header end-->
+
+<!--content start-->
+<div id="content">
+    <div id="menu">
+		<div class="leftnav_header">
+			<span class="leftnav_image leftnav_header_image_padding"><img src="/images/icons/user.png" /></span>
+			<span class="leftnav_title">aa11啊</span>
+		</div>
+		<div class="leftnav">
+			<ul>
+				<li><span class="leftnav_image leftnav_image_padding"><img src="/images/icons/user.png" /></span><span class="leftnav_title">aa11啊</span></li>
+				<li><span class="leftnav_image leftnav_image_padding"><img src="/images/icons/user.png" /></span><span class="leftnav_title">aa11啊</span></li>
+			</ul>
+		</div>
+
+		<div class="leftnav_header">
+			<span class="leftnav_image leftnav_header_image_padding"><img src="/images/icons/user.png" /></span>
+			<span class="leftnav_title">aa11啊</span>
+		</div>
+		<div class="leftnav">
+			<ul>
+				<li><span class="leftnav_image leftnav_image_padding"><img src="/images/icons/user.png" /></span><span class="leftnav_title">aa11啊</span></li>
+				<li><span class="leftnav_image leftnav_image_padding"><img src="/images/icons/user.png" /></span><span class="leftnav_title">aa11啊</span></li>
+				<li><span class="leftnav_image leftnav_image_padding"><img src="/images/icons/user.png" /></span><span class="leftnav_title">aa11啊</span></li>
+			</ul>
+		</div>
+	</div>
+
+	<div id="main">
+		<div id="s_path">
+			<p>
+				<a href="#">仓储管理</a>&nbsp;&gt;&gt;&nbsp;
+				<a href="#">入库管理</a>
+			</p>
+		</div>
+
+		<div class="query">
+			<form method="post" id="clientinfo" name="clientinfo">
+			  <table width="768" height="30" cellspacing="10" cellpadding="0" border="0">
+				<tbody>
+				<tr>
+				  <td width="80" align="right">客户名称</td>
+				  <td width="10">&nbsp;</td>
+				  <td width="220"><label for="txt01"></label>
+				   	<input type="text" class="txt01" id="clientName" tabindex="1" value="" name="clientName">
+				  </td>
+				  <td width="80" align="right"> </td>
+				  <td width="10">&nbsp;</td>
+				  <td width="220">
+				  </td>
+				</tr>
+				<tr>
+					<td width="80" align="right">所在地</td>
+					<td width="10">&nbsp;</td>
+					<td colspan="4">
+						   <select onchange="javascript:getCityProter('province','city');" style="width: 150px;" id="province" name="province">
+						    <option value="-1">请选择</option>
+						</select>
+						<font color="green"></font>
+			 		 	<select onchange="javascript:getDistrictProter('city','district');$('#clientAddr').val($('#clientAddr').val()+this.options[this.selectedIndex].text)" style="width: 150px ! important;" id="city" name="city">
+			 		 		<option value="-1">请选择</option>
+			 		 	</select>
+			 		 	<select style="width: 150px ! important;" id="district" name="district">
+			 		 		<option value="-1">请选择</option>
+			 		 	</select>
+					</td>
+				</tr>
+			  	</tbody>
+			  </table>
+			</form>
+		</div>
+
+		<div class="tab_btn">
+		 	 <ul>
+					    <li>
+					      <input type="button" onclick="javascript:searchClientManage('1','10')" class="button_btn" tabindex="2" value="查询" name="qy_btn">
+					    </li>
+					     <li>
+					     	<input type="button" onclick="javascript:customerRest()" class="button_btn" tabindex="2" value="清空" name="qy_btn">
+					     </li>
+			 </ul>
+		</div>
+		<br/>
+
+		<div class="tab">
+		 <table width="786" cellspacing="1" cellpadding="0" border="0">
+		            <tbody><tr>
+		              <td id="tab_tit" colspan="8">运单信息</td>
+		            </tr>
+		            <tr>
+		              <td width="112" class="f_tab">托运单编号</td>
+		              <td width="112" class="f_tab">货物名称</td>
+		              <td width="112" class="f_tab">托运人</td>
+		              <td width="112" class="f_tab">收货人</td>
+		              <td width="112" class="f_tab">运单状态</td>
+		              <td width="112" class="f_tab">办理日期</td>
+		              <td width="112" class="f_tab">收货人电话</td>
+		            </tr>
+
+		<!-- 分页代码 -->
+
+
+
+			<tr>
+			 <td id="tab_tit02" colspan="8"><font color="green">没有符合条件的记录</font></td>
+			 <div id="pageLaper">
+			</div>
+			</tr>
+
+
+
+		</tbody></table>
+		</div>
+
+	</div>
+
+</div>
+<!--content end-->
+
+<!--content start-->
+<div id="footer">
+
+</div>
+<!--footer end-->
+
+</div>
+</body>
+</html>

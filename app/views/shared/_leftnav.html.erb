@@ -1,0 +1,28 @@
+<div id="menu">
+	<%nav_bar.each_with_index do |nav,index|%>
+	<div class="leftnav_header" value="<%=index+1%>">
+		<span class="leftnav_image leftnav_header_image_padding"><img src="<%=nav[:navleft_header_logo]%>" /></span>
+		<span class="leftnav_title"><%=nav[:navleft_header_name]%></span>
+	</div>
+	
+		<%unless nav[:navleft].empty?%>
+			<div class="leftnav" id="leftnav_<%=index+1%>" style="display:none;">
+				<ul>
+					<%nav[:navleft].each do |nav_left|%>
+						<% if nav_left[:id] == highlight %>
+							<%@current_navleft_header_name=nav[:navleft_header_name]%>
+							<%@current_navleft_name=nav_left[:name]%>
+							<%javascript_tag do%>
+							  	$("#leftnav_<%=index+1%>").toggle("slow");
+							<%end%>
+						<% end %>
+						<li>
+							<span class="leftnav_image leftnav_image_padding"><img src="<%=nav_left[:logo]%>" /></span>
+							<span class="leftnav_title"><a href="<%=nav_left[:path]%>" <% if nav_left[:id] == highlight %> class="selected" <% end %>><%=nav_left[:name]%></a></span>
+						</li>
+					<%end%>
+				</ul>
+			</div>
+		<%end%>
+	<%end%>
+</div>
