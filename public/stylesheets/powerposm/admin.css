@@ -87,7 +87,7 @@ a:hover {
 	float: left;
 	font-size: 16px;
 	font-weight: bold;
-	padding: 2px;
+	padding: 4px;
 }
 #s_path {
 	padding:10px 0 10px 15px;
@@ -267,4 +267,4 @@ background-color: transparent;
 .pagination a:hover, .pagination a:active {border: 1px solid #429ED1; background-color: #C8E8F3;}
 .pagination span.current {padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #429ED1; font-weight: bold; background-color: #C8E8F3;}
 .pagination span.disabled {padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #eee; color: #ddd}
-/* Pagination */ 
+/* Pagination */
