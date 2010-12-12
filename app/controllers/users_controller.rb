@@ -17,13 +17,7 @@ class UsersController < ApplicationController
   def create
     # logout_keeping_session!
     @user = User.new(params[:user])
-    success = @user && @user.save
-    if success && @user.errors.empty?
-      # Protects against session fixation attacks, causes request forgery
-      # protection if visitor resubmits an earlier form using back
-      # button. Uncomment if you understand the tradeoffs.
-      # reset session
-      # self.current_user = @user # !! now logged in
+    if @user.save
       redirect_to "/users"
       flash[:notice] = "添加用户成功"
     else

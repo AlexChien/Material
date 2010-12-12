@@ -130,8 +130,8 @@ a:hover {
 }
 
 .tab01 select {
-	width  :100px;
-	height  :20px;
+	width:200px;
+	height:20px;
 	background-color:#fffacd;
 	border: 1px solid #429ed1;
 }
