@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_filter :login_required
 
   access_control do
-    allow :admin
+    allow :rc
     action :change_password_form, :change_password do
       allow logged_in
     end
@@ -27,7 +27,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     if @user.save
       redirect_to "/users"
-      flash[:notice] = "添加用户成功"
+      flash[:notice] = "用户#{@user.login}添加成功"
     else
       flash[:error]  = "添加失败，请重新尝试"
       render :action => 'new'

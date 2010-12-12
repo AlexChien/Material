@@ -16,7 +16,7 @@ module ApplicationHelper
   end
   
   def nav_bar
-    [
+    navleft = [
       {
         :navleft_header_name => "我的帐号",
         :navleft_header_logo => "/images/icons/application_home.png",
@@ -24,15 +24,24 @@ module ApplicationHelper
             { :name => "我的首页", :path => "/dashboard", :id => "dashboard", :logo => "/images/icons/user_suit.png"},
             { :name => "修改密码", :path => "/users/change_password_form", :id => "users_change_password", :logo => "/images/icons/key.png"}
           ]
-      },
-      {
+      }
+    ]
+    if current_user.has_role?("admin")
+      user_manager = [{
         :navleft_header_name => "用户管理",
         :navleft_header_logo => "/images/icons/user_edit.png",
         :navleft => [
             { :name => "添加用户", :path => "/users/new", :id => "users_new", :logo => "/images/icons/user_add.png"},
             { :name => "所有用户", :path => "/users", :id => "users", :logo => "/images/icons/user.png"}
           ]
-      }
-    ]
+      }]
+      navleft.concat(user_manager)
+    elsif current_user.has_role?("mm")
+    elsif current_user.has_role?("pm")
+    elsif current_user.has_role?("wa")
+    elsif current_user.has_role?("rm")
+    elsif current_user.has_role?("rc")
+    end
+    navleft
   end
 end
