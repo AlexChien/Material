@@ -140,14 +140,18 @@ a:hover {
 	background-color:#fffacd;
 	border: 1px solid #429ed1;
 }
-
 .tab01 select {
 	width:200px;
 	height:20px;
 	background-color:#fffacd;
 	border: 1px solid #429ed1;
 }
-
+.tab01 textarea {
+	width:250px;
+	height:100px;
+	background-color:#fffacd;
+	border: 1px solid #429ed1;
+}
 .tab {
 	margin-bottom:10px;
 }
@@ -174,7 +178,7 @@ a:hover {
 	height:35px;
 }
 .tab .td_left {
-	padding-left:5px;
+	padding:5px;
 	text-align:left;
 }
 #tab_tit {

@@ -1,0 +1,11 @@
+<% content_for :title, "所有物料" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "materials"} %>
+
+<div id="main">
+	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+	<%= render :partial => 'shared/s_path'%>
+	<%end%>
+
+	
+</div>

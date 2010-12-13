@@ -115,6 +115,7 @@
 
     models:
        user: "用户"
+       material: "物料"
 
     attributes:
        user:
@@ -124,3 +125,7 @@
          old_password: "当前密码"
          password: "密码"
          password_confirmation: "确认密码"
+       material:
+         name: "物料名称"
+         uploaded_data_content_type: "示意图类型"
+         uploaded_data_size: "示意图尺寸"

@@ -162,10 +162,15 @@ CREATE  TABLE IF NOT EXISTS `materials` (
   `description` VARCHAR(45) NULL ,
   `spec` VARCHAR(45) NULL COMMENT '规格' ,
   `usage` VARCHAR(45) NULL COMMENT '物料使用方法' ,
-  `image` VARCHAR(45) NULL COMMENT '图片' ,
   `memo` TEXT NULL ,
   `created_at` DATETIME NULL ,
   `updated_at` DATETIME NULL ,
+  `uploaded_data_file_name` VARCHAR(45) NULL ,
+  `uploaded_data_file_size` INT NULL ,
+  `uploaded_data_height` VARCHAR(45) NULL ,
+  `uploaded_data_width` VARCHAR(45) NULL ,
+  `uploaded_data_updated_at` DATETIME NULL ,
+  `uploaded_data_content_type` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
 ENGINE = InnoDB;

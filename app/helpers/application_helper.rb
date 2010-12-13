@@ -38,6 +38,15 @@ module ApplicationHelper
       navleft.concat(user_manager)
     elsif current_user.has_role?("mm")
     elsif current_user.has_role?("pm")
+      material_manager = [{
+        :navleft_header_name => "物料管理",
+        :navleft_header_logo => "/images/icons/brick_edit.png",
+        :navleft => [
+            { :name => "添加物料", :path => "/materials/new", :id => "materials_new", :logo => "/images/icons/brick_add.png"},
+            { :name => "所有物料", :path => "/materials", :id => "materials", :logo => "/images/icons/brick.png"}
+          ]
+      }]
+      navleft.concat(material_manager)
     elsif current_user.has_role?("wa")
     elsif current_user.has_role?("rm")
     elsif current_user.has_role?("rc")
