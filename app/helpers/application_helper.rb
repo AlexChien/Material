@@ -42,6 +42,14 @@ module ApplicationHelper
     elsif current_user.has_role?("pm")
       pm_manager = [
         {
+        :navleft_header_name => "活动管理",
+        :navleft_header_logo => "/images/icons/date_edit.png",
+        :navleft => [
+            { :name => "发起活动", :path => "/campaigns/new", :id => "campaigns_new", :logo => "/images/icons/date_add.png"},
+            { :name => "所有活动", :path => "/campaigns", :id => "campaigns", :logo => "/images/icons/date.png"}
+          ]
+        },
+        {
         :navleft_header_name => "物料管理",
         :navleft_header_logo => "/images/icons/brick_edit.png",
         :navleft => [

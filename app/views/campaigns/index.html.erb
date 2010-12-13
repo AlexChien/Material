@@ -1,0 +1,40 @@
+<% content_for :title, "所有活动" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "campaigns"} %>
+
+<div id="main">
+	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+	<%= render :partial => 'shared/s_path'%>
+	<%end%>
+
+	<div class="tab">
+		<table width="786" cellspacing="1" cellpadding="0" border="0">
+			<tbody>
+				<tr>
+					<td id="tab_tit" colspan="8">所有活动</td>
+				</tr>
+				<tr>
+					<td class="f_tab">活动名称</td>
+					<td class="f_tab">活动简介</td>
+					<td class="f_tab">物料目录</td>
+					<td class="f_tab">操作</td>
+				</tr>
+				<%@campaigns.each do |campaign|%>
+					<tr>
+						<td><%=campaign.name%></td>
+						<td><%=campaign.description%></td>
+						<td></td>
+						<td>
+						<%= link_to image_tag("/images/icons/database_edit.png", {:alt => "修改", :title => "修改", :border => 0}), edit_campaign_url(campaign)%>
+						<%= link_to image_tag("/images/icons/database_delete.png", {:alt => "删除", :title => "删除", :border => 0}), campaign_url(campaign), :method => :delete, :confirm => "确认要删除这个活动吗?"%>
+						</td>
+					</tr>
+				<%end%>
+				<tr>
+					<td id="tab_tit02" colspan="8"><font color="green">共有<%=@campaigns.total_entries%>条记录</font></td>
+				</tr>
+			</tbody>
+		</table>
+		<%=will_paginate @campaigns%>
+	</div>
+</div>

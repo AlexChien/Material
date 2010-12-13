@@ -117,6 +117,7 @@
        user: "用户"
        material: "物料"
        region: "大区"
+       campaign: "活动"
 
     attributes:
        user:
@@ -133,3 +134,5 @@
          uploaded_data_size: "示意图尺寸"
        region:
          assigned_budget: "分配预算"
+       campaign:
+         name: "活动名称"

@@ -121,6 +121,7 @@ CREATE  TABLE IF NOT EXISTS `campaigns` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
   `description` VARCHAR(45) NULL ,
+  `state` VARCHAR(45) NULL ,
   `created_at` DATETIME NULL ,
   `updated_at` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
