@@ -44,8 +44,8 @@ namespace :deploy do
     run "ln -nfs #{deploy_to}/#{shared_dir}/xls #{deploy_to}/#{current_dir}/public/xls"
 
     # 过滤后的用户excel文件
-    run "mv #{deploy_to}/#{current_dir}/tmp/tmp_xls #{deploy_to}/#{current_dir}/tmp/tmp_xls_dummy"
-    run "ln -nfs #{deploy_to}/#{shared_dir}/tmp/tmp_xls #{deploy_to}/#{current_dir}/tmp/tmp_xls"
+    # run "mv #{deploy_to}/#{current_dir}/tmp/tmp_xls #{deploy_to}/#{current_dir}/tmp/tmp_xls_dummy"
+    # run "ln -nfs #{deploy_to}/#{shared_dir}/tmp/tmp_xls #{deploy_to}/#{current_dir}/tmp/tmp_xls"
 
     run "mv #{deploy_to}/#{current_dir}/db/backup #{deploy_to}/#{current_dir}/db/backup_dummy"
     run "ln -nfs #{deploy_to}/#{shared_dir}/db/backup #{deploy_to}/#{current_dir}/db/backup"
