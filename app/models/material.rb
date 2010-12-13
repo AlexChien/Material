@@ -8,6 +8,7 @@ class Material < ActiveRecord::Base
   has_many :transfer_line_items
   
   validates_presence_of :name
+  validates_uniqueness_of :name
   validates_numericality_of :cost,:greater_than_or_equal_to=>0
   
   has_attached_file :uploaded_data,
