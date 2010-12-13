@@ -7,4 +7,6 @@ class Region < ActiveRecord::Base
   has_many :inventories
   has_one :warehouse
   has_many :transfer_line_items
+  
+  validates_numericality_of :assigned_budget,:greater_than_or_equal_to=>0
 end

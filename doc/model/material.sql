@@ -572,11 +572,11 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- Data for table `regions`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('1', '总部', NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('2', '北京大区', NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('3', '上海大区', NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('4', '广州大区', NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('5', '市场部', NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('1', '总部', '0', '1', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('2', '北京大区', '0', '0', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('3', '上海大区', '0', '0', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('4', '广州大区', '0', '0', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('5', '市场部', '0', '0', NULL, NULL, NULL, NULL, NULL, NULL);
 
 COMMIT;
 

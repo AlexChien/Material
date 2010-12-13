@@ -27,26 +27,37 @@ module ApplicationHelper
       }
     ]
     if current_user.has_role?("admin")
-      user_manager = [{
+      admin_manager = [
+        {
         :navleft_header_name => "用户管理",
         :navleft_header_logo => "/images/icons/user_edit.png",
         :navleft => [
             { :name => "添加用户", :path => "/users/new", :id => "users_new", :logo => "/images/icons/user_add.png"},
             { :name => "所有用户", :path => "/users", :id => "users", :logo => "/images/icons/user.png"}
           ]
-      }]
-      navleft.concat(user_manager)
+        }
+      ]
+      navleft.concat(admin_manager)
     elsif current_user.has_role?("mm")
     elsif current_user.has_role?("pm")
-      material_manager = [{
+      pm_manager = [
+        {
         :navleft_header_name => "物料管理",
         :navleft_header_logo => "/images/icons/brick_edit.png",
         :navleft => [
             { :name => "添加物料", :path => "/materials/new", :id => "materials_new", :logo => "/images/icons/brick_add.png"},
             { :name => "所有物料", :path => "/materials", :id => "materials", :logo => "/images/icons/brick.png"}
           ]
-      }]
-      navleft.concat(material_manager)
+        },
+        {
+        :navleft_header_name => "大区管理",
+        :navleft_header_logo => "/images/icons/world_edit.png",
+        :navleft => [
+            { :name => "所有大区", :path => "/regions", :id => "regions", :logo => "/images/icons/world.png"}
+          ]
+        }
+      ]
+      navleft.concat(pm_manager)
     elsif current_user.has_role?("wa")
     elsif current_user.has_role?("rm")
     elsif current_user.has_role?("rc")

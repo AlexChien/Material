@@ -1,0 +1,45 @@
+<% content_for :title, "所有大区" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "regions"} %>
+
+<div id="main">
+	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+	<%= render :partial => 'shared/s_path'%>
+	<%end%>
+
+	<div class="tab">
+		<table width="786" cellspacing="1" cellpadding="0" border="0">
+			<tbody>
+				<tr>
+					<td id="tab_tit" colspan="8">所有大区</td>
+				</tr>
+				<tr>
+					<td class="f_tab">大区名称</td>
+					<td class="f_tab">分配预算</td>
+					<td class="f_tab">联系电话</td>
+					<td class="f_tab">所属城市</td>
+					<td class="f_tab">地址</td>
+					<td class="f_tab">邮编</td>
+					<td class="f_tab">操作</td>
+				</tr>
+				<%@regions.each do |region|%>
+					<tr>
+						<td><%=region.name%></td>
+						<td><%=region.assigned_budget%></td>
+						<td><%=region.phone%></td>
+						<td><%=region.city%></td>
+						<td><%=region.address%></td>
+						<td><%=region.zip%></td>
+						<td>
+						<%= link_to image_tag("/images/icons/database_edit.png", {:alt => "修改", :title => "修改", :border => 0}), edit_region_url(region)%>
+						</td>
+					</tr>
+				<%end%>
+				<tr>
+					<td id="tab_tit02" colspan="8"><font color="green">共有<%=@regions.total_entries%>条记录</font></td>
+				</tr>
+			</tbody>
+		</table>
+		<%=will_paginate @regions%>
+	</div>
+</div>
