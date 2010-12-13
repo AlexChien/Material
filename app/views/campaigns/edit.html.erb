@@ -21,6 +21,20 @@
 						<%= f.text_field :name %>
 					</td>
 				</tr>
+				<% f.fields_for :catalogs do |catalog| %>
+				<tr>	
+					<td><%= catalog.label :order_startdate, "<em>*</em>预定开始时间" %></td>
+					<td class="td_left">
+						<%= catalog.text_field :order_startdate %>
+					</td>
+				</tr>
+				<tr>	
+					<td><%= catalog.label :order_enddate, "<em>*</em>预定结束时间" %></td>
+					<td class="td_left">
+						<%= catalog.text_field :order_enddate %>
+					</td>
+				</tr>
+				<% end %>
 				<tr>
 					<td><%= f.label :description, "活动简介" %></td>
 					<td class="td_left">

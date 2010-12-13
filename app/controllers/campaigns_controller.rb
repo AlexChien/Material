@@ -13,6 +13,7 @@ class CampaignsController < ApplicationController
   
   def new
     @campaign = Campaign.new
+    @campaign.catalogs.build
   end
   
   def create
