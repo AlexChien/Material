@@ -7,6 +7,7 @@ class MaterialsController < ApplicationController
   
   def index
     material = Material
+    material = material.in_state("activated")
     @materials = material.paginate(:all,:per_page=>20,:page => params[:page], :order => 'materials.created_at DESC')
   end
   
@@ -24,4 +25,30 @@ class MaterialsController < ApplicationController
       render :action => 'new'
     end
   end
+  
+  def edit
+    @material = Material.find(params[:id])
+  end
+  
+  def update
+    @material = Material.find(params[:id])
+    if @material.update_attributes(params[:material])
+      flash[:notice] = "#{@material.name} 修改成功"
+      redirect_to "/materials"
+    else
+      flash[:error] = "#{@material.name} 修改失败"
+      render :action => "edit"
+    end
+  end
+  
+  def destroy
+    @material = Material.find(params[:id])
+    if @material.delete_material!
+      flash[:notice] = "#{@material.name} 删除成功"
+    else
+      flash[:error] = "发生未知错误，请联系管理员"
+    end
+    redirect_to "/materials"
+  end
+  
 end

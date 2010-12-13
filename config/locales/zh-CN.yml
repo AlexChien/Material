@@ -127,5 +127,6 @@
          password_confirmation: "确认密码"
        material:
          name: "物料名称"
+         cost: "物料成本"
          uploaded_data_content_type: "示意图类型"
          uploaded_data_size: "示意图尺寸"
