@@ -2,7 +2,15 @@ class CampaignsController < ApplicationController
   before_filter :login_required
 
   access_control do
-    allow :pm
+    action :index do
+      allow :pm,:rc
+    end
+    action :new, :create, :edit, :update, :destroy do
+      allow :pm
+    end
+    action :book do
+      allow :rc
+    end
   end
 
   def index
@@ -73,6 +81,10 @@ class CampaignsController < ApplicationController
       flash[:error] = "发生未知错误，请联系管理员"
     end
     redirect_to "/campaigns"
+  end
+  
+  def book
+    @campaign = Campaign.find(params[:id])
   end
 
 end

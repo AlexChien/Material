@@ -1,0 +1,109 @@
+<% content_for :title, "我要预定" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "campaigns"} %>
+
+<div id="main">
+	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+	<%= render :partial => 'shared/s_path'%>
+	<%end%>
+	
+	<div class="campaign_info">
+		<p>活动名称：<%=@campaign.name%></p>
+		<p>预定时间：<%=@campaign.catalog_startdate%> 至  <%=@campaign.catalog_enddate%></p>
+		<p>活动简介：<%=@campaign.description%></p>
+	</div>
+	<br/>
+	
+	<div class="book_info">
+		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
+		<div class="good_info">
+			<p>物料标识：</p>
+			<p>物料名称：</p>
+			<p>预定数量：</p>
+			<p>
+				<span class="fLeft" style="color:red;">￥98.00</span>
+				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
+			</p>
+		</div>
+	</div>
+	
+	<div class="book_info">
+		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
+		<div class="good_info">
+			<p>物料标识：</p>
+			<p>物料名称：</p>
+			<p>预定数量：</p>
+			<p>
+				<span class="fLeft" style="color:red;">￥98.00</span>
+				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
+			</p>
+		</div>
+	</div>
+	
+	<div class="book_info">
+		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
+		<div class="good_info">
+			<p>物料标识：</p>
+			<p>物料名称：</p>
+			<p>预定数量：</p>
+			<p>
+				<span class="fLeft" style="color:red;">￥98.00</span>
+				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
+			</p>
+		</div>
+	</div>
+	
+	<div class="book_info">
+		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
+		<div class="good_info">
+			<p>物料标识：</p>
+			<p>物料名称：</p>
+			<p>预定数量：</p>
+			<p>
+				<span class="fLeft" style="color:red;">￥98.00</span>
+				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
+			</p>
+		</div>
+	</div>
+	
+	<div class="book_info">
+		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
+		<div class="good_info">
+			<p>物料标识：</p>
+			<p>物料名称：</p>
+			<p>预定数量：</p>
+			<p>
+				<span class="fLeft" style="color:red;">￥98.00</span>
+				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
+			</p>
+		</div>
+	</div>
+	
+	<div class="book_info">
+		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
+		<div class="good_info">
+			<p>物料标识：</p>
+			<p>物料名称：</p>
+			<p>预定数量：</p>
+			<p>
+				<span class="fLeft" style="color:red;">￥98.00</span>
+				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
+			</p>
+		</div>
+	</div>
+	
+	<div class="book_info">
+		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
+		<div class="good_info">
+			<p>物料标识：</p>
+			<p>物料名称：</p>
+			<p>预定数量：</p>
+			<p>
+				<span class="fLeft" style="color:red;">￥98.00</span>
+				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
+			</p>
+		</div>
+	</div>
+	
+
+</div>

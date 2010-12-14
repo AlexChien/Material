@@ -286,7 +286,7 @@ background-color: transparent;
 
 /* Info */
 .info {
--moz-border-radius:5px 5px 5px 5px;
+	-moz-border-radius:5px 5px 5px 5px;
 	background:url("/images/powerposm/alert-note.png") no-repeat scroll 5px 2px #FFFFFF;
 	border:3px solid #77CCDD;
 	margin:0 0 1em;
@@ -306,3 +306,33 @@ background-color: transparent;
 	padding:10px;
 }
 /* Info */
+
+.campaign_info{
+	-moz-border-radius:5px 5px 5px 5px;
+	border:2px solid #E1E1E1;
+	font-size:14px;
+	padding:10px;
+}
+
+.campaign_info p{
+	padding:2px;
+}
+
+.book_info {
+	-moz-border-radius:5px 5px 5px 5px;
+	border:1px solid #E1E1E1;
+	width:135px;
+	float:left;
+
+	margin:10px;
+}
+.book_info .good_image{
+	text-align:center;
+	height:110px;
+}
+.book_info .good_info{
+	padding:5px;
+}
+.book_info .good_info span{
+	margin:3px;
+}
