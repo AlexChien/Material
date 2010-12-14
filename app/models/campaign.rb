@@ -29,10 +29,14 @@ class Campaign < ActiveRecord::Base
 
   def catalogs_list
     list = ""
-    self.catalogs.first.catalogs_materials.each do |cm|
+    cms.each do |cm|
       list += "#{cm.material.name}（内部采购价：#{cm.price}）<br/>"
     end
     list
+  end
+  
+  def cms
+    self.catalogs.first.catalogs_materials
   end
 
 protected

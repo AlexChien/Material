@@ -189,7 +189,6 @@ CREATE  TABLE IF NOT EXISTS `catalogs_materials` (
   `updated_at` DATETIME NULL ,
   PRIMARY KEY (`catalog_id`, `material_id`) ,
   INDEX `fk_catalogs_has_materials_materials1` (`material_id` ASC) ,
-  UNIQUE INDEX `catalog_id_UNIQUE` (`catalog_id` ASC) ,
   CONSTRAINT `fk_catalogs_has_materials_catalogs1`
     FOREIGN KEY (`catalog_id` )
     REFERENCES `catalogs` (`id` )

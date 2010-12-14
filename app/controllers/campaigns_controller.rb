@@ -45,6 +45,18 @@ class CampaignsController < ApplicationController
   def update
     @campaign = Campaign.find(params[:id])
     if @campaign.update_attributes(params[:campaign])
+      @campaign.catalogs.first.materials.delete_all
+      unless params[:material_ids].nil?
+        params[:material_ids].each do |material_id|
+          price = params["price_#{material_id}".to_sym].to_f
+          catalog = @campaign.catalogs.first
+          cm = CatalogsMaterial.new
+          cm.catalog = catalog
+          cm.price = (price >= 0 ? price : 0)
+          cm.material_id = material_id
+          cm.save
+        end
+      end
       flash[:notice] = "#{@campaign.name} 修改成功"
       redirect_to "/campaigns"
     else
