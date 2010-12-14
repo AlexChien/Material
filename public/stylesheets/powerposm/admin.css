@@ -272,3 +272,26 @@ background-color: transparent;
 .pagination span.current {padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #429ED1; font-weight: bold; background-color: #C8E8F3;}
 .pagination span.disabled {padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #eee; color: #ddd}
 /* Pagination */
+
+/* Info */
+.info {
+-moz-border-radius:5px 5px 5px 5px;
+	background:url("/images/powerposm/alert-note.png") no-repeat scroll 5px 2px #FFFFFF;
+	border:3px solid #77CCDD;
+	margin:0 0 1em;
+	font-size:13px;
+}
+.info .info_action{
+	float:right;
+	font-weight:bold;
+	background-color:#77CCDD;
+	padding:10px;
+}
+.info .info_action a{
+	color:#FFFFFF;
+}
+.info .info_content{
+	margin:0 0 0 40px;
+	padding:10px;
+}
+/* Info */
