@@ -15,6 +15,8 @@
 				</tr>
 				<tr>
 					<td class="f_tab">活动名称</td>
+					<td class="f_tab">预定开始时间</td>
+					<td class="f_tab">预定结束时间</td>
 					<td class="f_tab">活动简介</td>
 					<td class="f_tab">物料目录</td>
 					<td class="f_tab">操作</td>
@@ -22,8 +24,10 @@
 				<%@campaigns.each do |campaign|%>
 					<tr>
 						<td><%=campaign.name%></td>
+						<td><%=campaign.catalog_startdate%></td>
+						<td><%=campaign.catalog_enddate%></td>
 						<td><%=campaign.description%></td>
-						<td></td>
+						<td><%=campaign.catalogs_list%></td>
 						<td>
 						<%= link_to image_tag("/images/icons/database_edit.png", {:alt => "修改", :title => "修改", :border => 0}), edit_campaign_url(campaign)%>
 						<%= link_to image_tag("/images/icons/database_delete.png", {:alt => "删除", :title => "删除", :border => 0}), campaign_url(campaign), :method => :delete, :confirm => "确认要删除这个活动吗?"%>

@@ -22,27 +22,26 @@
 					</td>
 				</tr>
 				<% f.fields_for :catalogs do |catalog| %>
-				<tr>	
+				<tr>
 					<td><%= catalog.label :order_startdate, "<em>*</em>预定开始时间" %></td>
 					<td class="td_left">
 						<%= catalog.text_field :order_startdate %>
 					</td>
 				</tr>
-				<tr>	
+				<tr>
 					<td><%= catalog.label :order_enddate, "<em>*</em>预定结束时间" %></td>
 					<td class="td_left">
 						<%= catalog.text_field :order_enddate %>
 					</td>
 				</tr>
 				<% end %>
-				
 				<tr>
 					<td><%= label_tag :catalogs_materials, "物料目录" %></td>
 					<td class="td_left">
 						<ul>
 							<%Material.in_state("activated").all.each do |material|%>
-							<li>		
-								<span><input type="checkbox" value="<%=material.id%>" name="material_ids[]" style="width:100%;" onclick="replace_html(this)"></span>
+							<li>
+								<span><input type="checkbox" value="<%=material.id%>" name="material_ids[]" style="width:auto;" onclick="replace_html(this)"></span>
 								<span style="width:200px;"><%=material.name%></span>
 								<span id="material_price_<%=material.id%>">
 				                </span>
@@ -72,10 +71,10 @@
 <%javascript_tag do%>
 	$(function() {
 			$("#campaign_catalogs_attributes_0_order_startdate").datepicker({showOn: 'button', buttonImage: '/images/icons/calendar.png', showOn:'both' ,dateFormat: 'yy-mm-dd'});
-			
+
 			$("#campaign_catalogs_attributes_0_order_enddate").datepicker({showOn: 'button', buttonImage: '/images/icons/calendar.png', showOn:'both' ,dateFormat: 'yy-mm-dd'});
 	});
-	
+
 	function replace_html(box){
 		var id = box.value;
 		var replace_id = $("#material_price_"+id)
