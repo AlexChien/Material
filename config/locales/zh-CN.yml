@@ -118,6 +118,7 @@
        material: "物料"
        region: "大区"
        campaign: "活动"
+       catalog: "物料目录"
 
     attributes:
        user:
@@ -136,3 +137,8 @@
          assigned_budget: "分配预算"
        campaign:
          name: "活动名称"
+       catalog:
+         name: "目录名"
+         description: "目录描述"
+         order_startdate: "预定开始时间"
+         order_enddate: "预定结束时间"

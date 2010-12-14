@@ -19,6 +19,17 @@ class CampaignsController < ApplicationController
   def create
     @campaign = Campaign.new(params[:campaign])
     if @campaign.save
+      unless params[:material_ids].nil?
+        params[:material_ids].each do |material_id|
+          price = params["price_#{material_id}".to_sym].to_f
+          catalog = @campaign.catalogs.first
+          cm = CatalogsMaterial.new
+          cm.catalog = catalog
+          cm.price = (price >= 0 ? price : 0)
+          cm.material_id = material_id
+          cm.save
+        end
+      end
       redirect_to "/campaigns"
       flash[:notice] = "活动#{@campaign.name}添加成功"
     else

@@ -15,11 +15,11 @@ class Campaign < ActiveRecord::Base
     event :delete_campaign  do transition all => :deleted end
   end
   
-  before_save :create_catalog
+  before_save :call_catalog
   
 protected
 
-  def create_catalog
+  def call_catalog
     catalog_name = self.name + " - 物料目录"
     catalog_description = self.description
     self.catalogs.each do |catalog|

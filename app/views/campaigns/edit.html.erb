@@ -53,3 +53,10 @@
 	</div>
 	
 </div>
+<%javascript_tag do%>
+	$(function() {
+			$("#campaign_catalogs_attributes_0_order_startdate").datepicker({showOn: 'button', buttonImage: '/images/icons/calendar.png', showOn:'both' ,dateFormat: 'yy-mm-dd'});
+			
+			$("#campaign_catalogs_attributes_0_order_enddate").datepicker({showOn: 'button', buttonImage: '/images/icons/calendar.png', showOn:'both' ,dateFormat: 'yy-mm-dd'});
+	});
+<%end%>

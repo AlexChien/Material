@@ -178,9 +178,20 @@ a:hover {
 	height:35px;
 }
 .tab .td_left {
+	width:500px;
 	padding:5px;
 	text-align:left;
 }
+.tab .td_left ul li {
+	width:500px;
+	float:left;
+}
+.tab .td_left ul li span {
+	font-size:14px;
+	padding:3px;
+	float:left;
+}
+
 #tab_tit {
 	background-color:#c8e8f3;
 	font-size: 14px;
