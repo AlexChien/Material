@@ -14,6 +14,8 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :regions
   
+  map.resources :salesreps
+  
   map.resources :campaigns,:member => {:book => :get}
   
   # The priority is based upon order of creation: first created -> highest priority.

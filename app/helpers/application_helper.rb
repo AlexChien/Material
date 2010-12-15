@@ -76,6 +76,14 @@ module ApplicationHelper
         :navleft => [
             { :name => "物料预定", :path => "/campaigns", :id => "campaigns", :logo => "/images/icons/cart.png"},
           ]
+        },
+        {
+        :navleft_header_name => "销售代表",
+        :navleft_header_logo => "/images/icons/user_edit.png",
+        :navleft => [
+            { :name => "添加销售", :path => "/salesreps/new", :id => "salesreps_new", :logo => "/images/icons/user_add.png"},
+            { :name => "所有销售", :path => "/salesreps", :id => "salesreps", :logo => "/images/icons/user.png"},
+          ]
         }
       ]
       navleft.concat(rc_manager)

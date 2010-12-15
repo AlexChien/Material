@@ -119,6 +119,7 @@
        region: "大区"
        campaign: "活动"
        catalog: "物料目录"
+       salesrep: "销售代表"
 
     attributes:
        user:
@@ -142,3 +143,5 @@
          description: "目录描述"
          order_startdate: "预定开始时间"
          order_enddate: "预定结束时间"
+       salesrep:
+         name: "销售姓名"

@@ -35,6 +35,27 @@ class Campaign < ActiveRecord::Base
     list
   end
   
+  def campaign_status
+    if Date.today < catalog_startdate
+      0#未开始
+    elsif Date.today >= catalog_startdate && Date.today <= catalog_enddate
+      1#进行中
+    else
+      2#已结束
+    end
+  end
+  
+  def show_status
+    status = campaign_status
+    if campaign_status == 0
+      "<font color='yellow'>未开始</font>"
+    elsif campaign_status == 1
+      "<font color='green'>进行中</font>"
+    else
+      "<font color='red'>已结束</font>"
+    end
+  end
+  
   def cms
     self.catalogs.first.catalogs_materials
   end

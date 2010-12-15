@@ -210,6 +210,7 @@ CREATE  TABLE IF NOT EXISTS `salesreps` (
   `region_id` INT NOT NULL ,
   `name` VARCHAR(45) NOT NULL ,
   `email` VARCHAR(45) NULL ,
+  `state` VARCHAR(45) NULL ,
   `mobile` VARCHAR(45) NULL ,
   `phone` VARCHAR(45) NULL ,
   `memo` TEXT NULL ,

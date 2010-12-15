@@ -1,0 +1,59 @@
+<% content_for :title, "更新销售" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "salesreps"} %>
+
+<div id="main">
+	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+	<%= render :partial => 'shared/s_path'%>
+	<%end%>
+	
+	<div class="tab">
+		<% form_for @salesrep, :html=>{:multipart => true} do |f| -%>
+		<%=f.error_messages%>
+		<table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
+			<tbody>
+				<tr>
+					<td id="tab_tit" colspan="4">更新销售</td>
+				</tr>
+				<tr>
+					<td><%= f.label :name, "<em>*</em>销售姓名" %></td>
+					<td class="td_left">
+						<%= f.text_field :name %>
+					</td>
+				</tr>
+				<tr>
+					<td><%= f.label :email, "销售邮箱" %></td>
+					<td class="td_left">
+						<%= f.text_field :email %>
+					</td>
+				</tr>
+				<tr>
+					<td><%= f.label :mobile, "手机号码" %></td>
+					<td class="td_left">
+						<%= f.text_field :mobile %>
+					</td>
+				</tr>
+				<tr>
+					<td><%= f.label :phone, "联系电话" %></td>
+					<td class="td_left">
+						<%= f.text_field :phone %>
+					</td>
+				</tr>
+				<tr>
+					<td><%= f.label :memo, "详细描述" %></td>
+					<td class="td_left">
+						<%= f.text_area :memo %>
+					</td>
+				</tr>
+				<tr><td id="tab_tit" colspan="4"></td>
+				</tr>
+			</tbody>
+		</table>
+		<br/>
+		<div class="tab_btn">
+			<%= f.submit "更新",:class=>"button_btn" %>
+		</div>
+		<%end%>
+	</div>
+	
+</div>

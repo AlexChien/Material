@@ -15,8 +15,8 @@
 				</tr>
 				<tr>
 					<td class="f_tab">活动名称</td>
-					<td class="f_tab">预定开始时间</td>
-					<td class="f_tab">预定结束时间</td>
+					<td class="f_tab">预定开始 - 结束时间</td>
+					<td class="f_tab">预定状态</td>
 					<td class="f_tab">活动简介</td>
 					<td class="f_tab">物料目录</td>
 					<td class="f_tab">操作</td>
@@ -24,8 +24,8 @@
 				<%@campaigns.each do |campaign|%>
 					<tr>
 						<td><%=campaign.name%></td>
-						<td><%=campaign.catalog_startdate%></td>
-						<td><%=campaign.catalog_enddate%></td>
+						<td><%=campaign.catalog_startdate%> - <%=campaign.catalog_enddate%></td>
+						<td><%=campaign.show_status%></td>
 						<td><%=campaign.description%></td>
 						<td><%=campaign.catalogs_list%></td>
 						<td>
@@ -35,7 +35,13 @@
 						<%end%>
 						
 						<%if current_user.has_role?("rc")%>
-							<%= link_to "我要预定", book_campaign_url(campaign)%>
+							<%if campaign.campaign_status == 0%>
+								预定未开始！
+							<%elsif campaign.campaign_status == 1%>
+								<%= link_to "我要预定", book_campaign_url(campaign)%>
+							<%else%>
+							
+							<%end%>
 						<%end%>
 						</td>
 					</tr>
