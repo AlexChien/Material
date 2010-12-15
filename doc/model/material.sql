@@ -288,7 +288,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `order_line_item_raws` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `order_id` INT NOT NULL ,
+  `order_id` INT NULL ,
+  `campaign_id` INT NOT NULL ,
+  `catalog_id` INT NOT NULL ,
   `material_id` INT NOT NULL ,
   `region_id` INT NOT NULL ,
   `salesrep_id` INT NOT NULL ,
@@ -302,6 +304,8 @@ CREATE  TABLE IF NOT EXISTS `order_line_item_raws` (
   INDEX `fk_order_line_items_salesreps1` (`salesrep_id` ASC) ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
+  INDEX `fk_order_line_item_raws_catalogs1` (`catalog_id` ASC) ,
+  INDEX `fk_order_line_item_raws_campaigns1` (`campaign_id` ASC) ,
   CONSTRAINT `fk_materials_has_orders_materials1`
     FOREIGN KEY (`material_id` )
     REFERENCES `materials` (`id` )
@@ -320,6 +324,16 @@ CREATE  TABLE IF NOT EXISTS `order_line_item_raws` (
   CONSTRAINT `fk_order_line_items_salesreps1`
     FOREIGN KEY (`salesrep_id` )
     REFERENCES `salesreps` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_order_line_item_raws_catalogs1`
+    FOREIGN KEY (`catalog_id` )
+    REFERENCES `catalogs` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_order_line_item_raws_campaigns1`
+    FOREIGN KEY (`campaign_id` )
+    REFERENCES `campaigns` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

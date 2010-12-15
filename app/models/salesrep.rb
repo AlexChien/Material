@@ -1,6 +1,7 @@
 class Salesrep < ActiveRecord::Base
   belongs_to :region
   has_many :transfer_line_items
+  has_many :order_line_item_raws
   
   validates_presence_of :name
   

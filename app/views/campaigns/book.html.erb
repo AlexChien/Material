@@ -14,96 +14,42 @@
 	</div>
 	<br/>
 	
-	<div class="book_info">
-		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
-		<div class="good_info">
-			<p>物料标识：</p>
-			<p>物料名称：</p>
-			<p>预定数量：</p>
-			<p>
-				<span class="fLeft" style="color:red;">￥98.00</span>
-				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
-			</p>
+	<%@cms.each do |cm|%>
+		<div class="book_info">
+			<div class="good_image"><%=image_tag (cm.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></div>
+			<div class="good_info">
+				<p>标识码：<%=cm.material.itemno%></p>
+				<p>物料名称：<%=cm.material.name%></p>
+				<p>预定数量：<input type="text" value="1" size="4" name="nums" id="num_<%=cm.material.id%>"></p>
+				<p>销售代表：<select name="salesrep" id="salesrep_<%=cm.material.id%>">
+						<option value="">请选择</option>
+						<%@salesreps.each do |salesrep|%>
+							<option value="<%=salesrep.id%>"><%=salesrep.name%></option>
+						<%end%>
+					</select>
+				</p>
+				<p>
+					<span class="fLeft" style="color:red;">价格：￥<%=cm.price%></span>
+					<span class="fRight">
+						<%= link_to_function "<img src='/images/icons/cart_add.png' />", "order(#{cm.material.id})" %>
+					</span>
+				</p>
+			</div>
 		</div>
-	</div>
+	<%end%>
 	
-	<div class="book_info">
-		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
-		<div class="good_info">
-			<p>物料标识：</p>
-			<p>物料名称：</p>
-			<p>预定数量：</p>
-			<p>
-				<span class="fLeft" style="color:red;">￥98.00</span>
-				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
-			</p>
-		</div>
-	</div>
+	<div class="clear"></div>
+	<br/>
 	
-	<div class="book_info">
-		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
-		<div class="good_info">
-			<p>物料标识：</p>
-			<p>物料名称：</p>
-			<p>预定数量：</p>
-			<p>
-				<span class="fLeft" style="color:red;">￥98.00</span>
-				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
-			</p>
-		</div>
+	<div class="tab" id="order_list">
+		<%=render :partial=> "order_list"%>
 	</div>
-	
-	<div class="book_info">
-		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
-		<div class="good_info">
-			<p>物料标识：</p>
-			<p>物料名称：</p>
-			<p>预定数量：</p>
-			<p>
-				<span class="fLeft" style="color:red;">￥98.00</span>
-				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
-			</p>
-		</div>
-	</div>
-	
-	<div class="book_info">
-		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
-		<div class="good_info">
-			<p>物料标识：</p>
-			<p>物料名称：</p>
-			<p>预定数量：</p>
-			<p>
-				<span class="fLeft" style="color:red;">￥98.00</span>
-				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
-			</p>
-		</div>
-	</div>
-	
-	<div class="book_info">
-		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
-		<div class="good_info">
-			<p>物料标识：</p>
-			<p>物料名称：</p>
-			<p>预定数量：</p>
-			<p>
-				<span class="fLeft" style="color:red;">￥98.00</span>
-				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
-			</p>
-		</div>
-	</div>
-	
-	<div class="book_info">
-		<div class="good_image"><img src="/images/powerposm/missing.jpg" /></div>
-		<div class="good_info">
-			<p>物料标识：</p>
-			<p>物料名称：</p>
-			<p>预定数量：</p>
-			<p>
-				<span class="fLeft" style="color:red;">￥98.00</span>
-				<span class="fRight"><a href="#"><img src="/images/icons/cart_add.png" /></a></span>
-			</p>
-		</div>
-	</div>
-	
-
 </div>
+
+<%javascript_tag do%>
+function order(m_id){
+  	var num = $("#num_"+m_id).val();
+	var salesrep_id = $("#salesrep_"+m_id).val();
+	$("#order_list").load("/campaigns/raw",{'salesrep_id':salesrep_id,'material_id':m_id,'num':num,'id':<%=@campaign.id%>,'authenticity_token':"<%= form_authenticity_token %>"});
+}
+<%end%>

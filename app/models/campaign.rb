@@ -2,6 +2,7 @@ class Campaign < ActiveRecord::Base
   has_many :catalogs
   has_many :orders
   has_many :productions
+  has_many :order_line_item_raws
 
   accepts_nested_attributes_for :catalogs
 
@@ -18,6 +19,10 @@ class Campaign < ActiveRecord::Base
   # 使用before_save时，修改catalog属性不生效
   before_create :create_catalog_name_memo
   after_update :update_catalog_name_memo
+
+  def campaign_catalog
+    self.catalogs.first
+  end
 
   def catalog_startdate
     self.catalogs.first.order_startdate.to_date

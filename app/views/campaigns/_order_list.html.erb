@@ -1,0 +1,54 @@
+<% javascript_tag do %>
+<%if @material%>
+	<%if @error_message%>
+		alert("<%=@error_message%>");
+	<%else%>
+		$("#num_"+<%=@material.id%>).attr("value","1");
+		$("#salesrep_"+<%=@material.id%>).attr("value","");
+	<%end%>
+<%end%>
+<% end %>
+
+<%unless @olirs.empty?%>
+<table cellspacing="1" cellpadding="0" border="0" width="786">
+	<tbody>
+		<tr>
+			<td colspan="9" id="tab_tit">订单详细</td>
+		</tr>
+		<tr>
+			<td class="f_tab">标识码</td>
+			<td class="f_tab">物料图片</td>
+			<td class="f_tab">物料名称</td>
+			<td class="f_tab">所属区</td>
+			<td class="f_tab">销售姓名</td>
+			<td class="f_tab">物料价格</td>
+			<td class="f_tab">数量</td>
+			<td class="f_tab">小计</td>
+			<td class="f_tab">操作</td>
+		</tr>
+
+		<%@olirs.each do |olir|%>
+		<tr>
+			<td><%=olir.material.itemno%></td>
+			<td><%=olir.material.itemno%></td>
+			<td><%=olir.material.name%></td>
+			<td><%=olir.region.name%></td>
+			<td><%=olir.salesrep.name%></td>
+			<td><%=olir.unit_price%></td>
+			<td><%=olir.quantity%></td>
+			<td><%=olir.subtotal%></td>
+			<td><%= link_to_remote '<img src="/images/icons/cross.png" />',
+			:url => {:controller => :order_line_item_raws, :action => :destroy, :id => olir.id},
+			:with => "'campaign_id='+#{@campaign.id}",
+			:method => :delete,
+			:update => "order_list"%>
+			</td>
+		</tr>
+		<%end%>
+
+		<tr>
+			<td colspan="9" id="tab_tit02"><font color="green">共有<%=@olirs.size%>条记录</font></td>
+		</tr>
+	</tbody>
+</table>
+<%end%>

@@ -8,7 +8,7 @@ class CampaignsController < ApplicationController
     action :new, :create, :edit, :update, :destroy do
       allow :pm
     end
-    action :book do
+    action :book,:raw do
       allow :rc
     end
   end
@@ -85,6 +85,50 @@ class CampaignsController < ApplicationController
   
   def book
     @campaign = Campaign.find(params[:id])
+    cm = CatalogsMaterial
+    cm = cm.in_catalog(@campaign.campaign_catalog.id)
+    @cms = cm.all(:order=>"created_at DESC")
+    olir = OrderLineItemRaw
+    olir = olir.in_catalog(@campaign.campaign_catalog.id)
+    @olirs = olir.all(:order=>"created_at DESC")
+    salesrep = Salesrep
+    salesrep = salesrep.in_state("activated")
+    salesrep = salesrep.in_region(current_user.region)
+    @salesreps = salesrep.all(:order=>"created_at DESC")
+  end
+  
+  def raw
+    @campaign = Campaign.find(params[:id])
+    num = params[:num].to_i
+    @material = Material.find(params[:material_id])
+    @cm = CatalogsMaterial.in_catalog(@campaign.campaign_catalog.id).in_material(@material.id).first
+    check(num,params[:salesrep_id])
+    OrderLineItemRaw.create(:campaign=>@campaign,
+                            :catalog=>@campaign.campaign_catalog,
+                            :material=>@material,
+                            :region=>current_user.region,
+                            :quantity=>num,
+                            :unit_price=>@cm.price,
+                            :subtotal=>num * @cm.price,
+                            :salesrep=>Salesrep.find(params[:salesrep_id])) if @error_message.nil?
+                            
+    olir = OrderLineItemRaw
+    olir = olir.in_catalog(@campaign.campaign_catalog.id)
+    @olirs = olir.all(:order=>"created_at DESC")
+    render :partial => "order_list"
+  end
+
+private
+
+  def check(num,salesrep)
+    if num <= 0
+      @error_message = "请正确填写预定数量"
+      return
+    end
+    if salesrep.blank?
+      @error_message = "请选择销售代表"
+      return
+    end
   end
 
 end

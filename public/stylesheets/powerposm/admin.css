@@ -21,6 +21,7 @@ a:hover {
 }
 .fLeft {float:left;}
 .fRight {float:right;}
+.clear {clear:both;}
 #container {
 	width: 1003px;
 	margin: 0 auto;
@@ -323,10 +324,13 @@ background-color: transparent;
 	border:1px solid #E1E1E1;
 	width:135px;
 	float:left;
-
 	margin:10px;
 }
+.book_info p{
+	margin:2px;
+}
 .book_info .good_image{
+	padding-top:10px;
 	text-align:center;
 	height:110px;
 }
@@ -335,4 +339,7 @@ background-color: transparent;
 }
 .book_info .good_info span{
 	margin:3px;
+}
+.book_info .good_info input,.book_info .good_info select{
+	border:1px solid #BBBBBB;
 }

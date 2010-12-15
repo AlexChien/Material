@@ -16,7 +16,10 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :salesreps
   
-  map.resources :campaigns,:member => {:book => :get}
+  map.resources :order_line_item_raws
+  
+  map.resources :campaigns, :member => {:book => :get},
+                            :collection => {:raw => :post}
   
   # The priority is based upon order of creation: first created -> highest priority.
 
