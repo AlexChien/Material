@@ -173,6 +173,9 @@ a:hover {
 	text-align:center;
 	height:35px;
 }
+.tab input {
+	border:1px solid #BBBBBB;
+}
 #tab_td{
 	background-color:#fff;
 	text-align:center;

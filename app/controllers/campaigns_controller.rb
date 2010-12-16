@@ -103,15 +103,22 @@ class CampaignsController < ApplicationController
     @material = Material.find(params[:material_id])
     @cm = CatalogsMaterial.in_catalog(@campaign.campaign_catalog.id).in_material(@material.id).first
     check(num,params[:salesrep_id])
-    OrderLineItemRaw.create(:campaign=>@campaign,
-                            :catalog=>@campaign.campaign_catalog,
-                            :material=>@material,
-                            :region=>current_user.region,
-                            :quantity=>num,
-                            :unit_price=>@cm.price,
-                            :subtotal=>num * @cm.price,
-                            :salesrep=>Salesrep.find(params[:salesrep_id])) if @error_message.nil?
-                            
+    if @error_message.nil?
+      salesrep = Salesrep.find(params[:salesrep_id])
+      exist_olir = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_salesrep(salesrep.id).in_material(@material.id).first
+      if exist_olir.nil?
+        OrderLineItemRaw.create(:campaign=>@campaign,
+                                :catalog=>@campaign.campaign_catalog,
+                                :material=>@material,
+                                :region=>current_user.region,
+                                :quantity=>num,
+                                :unit_price=>@cm.price,
+                                :subtotal=>num * @cm.price,
+                                :salesrep=>salesrep)
+      else
+        exist_olir.update_attributes(:quantity=>exist_olir.quantity+num,:subtotal=>exist_olir.subtotal+num * @cm.price)
+      end
+    end
     olir = OrderLineItemRaw
     olir = olir.in_catalog(@campaign.campaign_catalog.id)
     @olirs = olir.all(:order=>"created_at DESC")
