@@ -7,8 +7,6 @@
 	<%= render :partial => 'shared/s_path'%>
 	<%end%>
 
-	<%form_for @order do |f|%>
-	<%=f.hidden_field :catalog_id,:value=>"#{@campaign.campaign_catalog.id}"%>
 	<div class="campaign_info">
 		<p>活动名称：<%=@campaign.name%></p>
 		<p>预定时间：<%=@campaign.catalog_startdate%> 至  <%=@campaign.catalog_enddate%> （<%=@campaign.show_status%>）</p>
@@ -16,6 +14,7 @@
 	</div>
 	<br/>
 
+	<%if @campaign_order.nil? && @campaign.campaign_status == 1%>
 	<%@cms.each do |cm|%>
 		<div class="book_info">
 			<div class="good_image"><%=image_tag (cm.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></div>
@@ -43,15 +42,11 @@
 	<div class="clear"></div>
 	<br/>
 
-	<div class="tab" id="order_list">
+	<div id="order_list">
 		<%=render :partial=> "order_list"%>
 	</div>
-
-	<br/>
-	<div class="tab_btn">
-		<%= f.submit "提交",:class=>"button_btn" %>
-	</div>
 	<%end%>
+
 </div>
 
 <%javascript_tag do%>

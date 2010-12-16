@@ -85,18 +85,11 @@ class CampaignsController < ApplicationController
   end
 
   def book
-    @order = Order.new
     @campaign = Campaign.find(params[:id])
-    cm = CatalogsMaterial
-    cm = cm.in_catalog(@campaign.campaign_catalog.id)
-    @cms = cm.all(:order=>"created_at DESC")
-    olir = OrderLineItemRaw
-    olir = olir.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id)
-    @olirs = olir.all(:order=>"created_at DESC")
-    salesrep = Salesrep
-    salesrep = salesrep.in_state("activated")
-    salesrep = salesrep.in_region(current_user.region)
-    @salesreps = salesrep.all(:order=>"created_at DESC")
+    @cms = CatalogsMaterial.in_catalog(@campaign.campaign_catalog.id).all(:order=>"created_at DESC")
+    @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
+    @salesreps = Salesrep.in_state("activated").in_region(current_user.region).all(:order=>"created_at DESC")
+    @campaign_order = Order.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).first
   end
 
   def raw
@@ -120,9 +113,7 @@ class CampaignsController < ApplicationController
         exist_olir.update_attributes(:quantity=>exist_olir.quantity+num,:subtotal=>exist_olir.subtotal+num * @cm.price)
       end
     end
-    olir = OrderLineItemRaw
-    olir = olir.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id)
-    @olirs = olir.all(:order=>"created_at DESC")
+    @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
     render :partial => "order_list"
   end
 
