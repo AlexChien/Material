@@ -6,14 +6,14 @@
 	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
 	<%= render :partial => 'shared/s_path'%>
 	<%end%>
-	
+
 	<div class="campaign_info">
 		<p>活动名称：<%=@campaign.name%></p>
 		<p>预定时间：<%=@campaign.catalog_startdate%> 至  <%=@campaign.catalog_enddate%> （<%=@campaign.show_status%>）</p>
 		<p>活动简介：<%=@campaign.description%></p>
 	</div>
 	<br/>
-	
+
 	<%@cms.each do |cm|%>
 		<div class="book_info">
 			<div class="good_image"><%=image_tag (cm.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></div>
@@ -37,10 +37,10 @@
 			</div>
 		</div>
 	<%end%>
-	
+
 	<div class="clear"></div>
 	<br/>
-	
+
 	<div class="tab" id="order_list">
 		<%=render :partial=> "order_list"%>
 	</div>

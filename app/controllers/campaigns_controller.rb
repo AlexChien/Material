@@ -1,5 +1,6 @@
 class CampaignsController < ApplicationController
   before_filter :login_required
+  before_filter :check_campaign,:only=>[:raw]
 
   access_control do
     action :index do
@@ -82,30 +83,29 @@ class CampaignsController < ApplicationController
     end
     redirect_to "/campaigns"
   end
-  
+
   def book
     @campaign = Campaign.find(params[:id])
     cm = CatalogsMaterial
     cm = cm.in_catalog(@campaign.campaign_catalog.id)
     @cms = cm.all(:order=>"created_at DESC")
     olir = OrderLineItemRaw
-    olir = olir.in_catalog(@campaign.campaign_catalog.id)
+    olir = olir.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id)
     @olirs = olir.all(:order=>"created_at DESC")
     salesrep = Salesrep
     salesrep = salesrep.in_state("activated")
     salesrep = salesrep.in_region(current_user.region)
     @salesreps = salesrep.all(:order=>"created_at DESC")
   end
-  
+
   def raw
-    @campaign = Campaign.find(params[:id])
     num = params[:num].to_i
     @material = Material.find(params[:material_id])
     @cm = CatalogsMaterial.in_catalog(@campaign.campaign_catalog.id).in_material(@material.id).first
     check(num,params[:salesrep_id])
     if @error_message.nil?
       salesrep = Salesrep.find(params[:salesrep_id])
-      exist_olir = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_salesrep(salesrep.id).in_material(@material.id).first
+      exist_olir = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_salesrep(salesrep.id).in_material(@material.id).in_region(current_user.region.id).first
       if exist_olir.nil?
         OrderLineItemRaw.create(:campaign=>@campaign,
                                 :catalog=>@campaign.campaign_catalog,
@@ -120,7 +120,7 @@ class CampaignsController < ApplicationController
       end
     end
     olir = OrderLineItemRaw
-    olir = olir.in_catalog(@campaign.campaign_catalog.id)
+    olir = olir.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id)
     @olirs = olir.all(:order=>"created_at DESC")
     render :partial => "order_list"
   end
@@ -135,6 +135,14 @@ private
     if salesrep.blank?
       @error_message = "请选择销售代表"
       return
+    end
+  end
+
+  def check_campaign
+    @campaign = Campaign.find(params[:id])
+    if @campaign.campaign_status != 1
+      flash[:error] = "活动不能预订"
+      redirect_to "/campaigns"
     end
   end
 

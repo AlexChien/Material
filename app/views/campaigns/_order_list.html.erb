@@ -9,7 +9,9 @@
 <%end%>
 <% end %>
 
-<%unless @olirs.empty?%>
+<%if @olirs.empty?%>
+<font color="red">您在此活动中无任何预订记录</font>
+<%else%>
 <table cellspacing="1" cellpadding="0" border="0" width="786">
 	<tbody>
 		<tr>
@@ -43,7 +45,7 @@
 				:method => :put,
 				:update => "order_list"%>
 			</td>
-			<td><%=olir.subtotal%></td>
+			<td>￥<%=olir.subtotal%></td>
 			<td><%= link_to_remote '<img src="/images/icons/cross.png" />',
 			:url => {:controller => :order_line_item_raws, :action => :destroy, :id => olir.id},
 			:with => "'campaign_id='+#{@campaign.id}",
@@ -52,6 +54,17 @@
 			</td>
 		</tr>
 		<%end%>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>总计：￥<%=OrderLineItemRaw.raw_total(@campaign.campaign_catalog.id,current_user.region.id)%></td>
+			<td></td>
+		</tr>
 
 		<tr>
 			<td colspan="9" id="tab_tit02"><font color="green">共有<%=@olirs.size%>条记录</font></td>
