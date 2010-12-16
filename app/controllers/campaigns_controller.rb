@@ -85,6 +85,7 @@ class CampaignsController < ApplicationController
   end
 
   def book
+    @order = Order.new
     @campaign = Campaign.find(params[:id])
     cm = CatalogsMaterial
     cm = cm.in_catalog(@campaign.campaign_catalog.id)

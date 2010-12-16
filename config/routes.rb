@@ -7,20 +7,22 @@ ActionController::Routing::Routes.draw do |map|
                         :member => {:change_password => :put}
   map.resource :session
   map.root :controller => 'sessions', :action => 'new'
-  
+
   map.dashboard '/dashboard',:controller => 'dashboard', :action => 'index'
-  
+
   map.resources :materials
-  
+
   map.resources :regions
-  
+
   map.resources :salesreps
-  
+
   map.resources :order_line_item_raws
-  
+
+  map.resources :orders
+
   map.resources :campaigns, :member => {:book => :get},
                             :collection => {:raw => :post}
-  
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
