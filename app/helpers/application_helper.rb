@@ -68,6 +68,16 @@ module ApplicationHelper
       navleft.concat(pm_manager)
     elsif current_user.has_role?("wa")
     elsif current_user.has_role?("rm")
+      rm_manager = [
+        {
+        :navleft_header_name => "订单管理",
+        :navleft_header_logo => "/images/icons/cart_edit.png",
+        :navleft => [
+            { :name => "审核订单", :path => "/orders", :id => "orders", :logo => "/images/icons/cart.png"},
+          ]
+        }
+      ]
+      navleft.concat(rm_manager)
     elsif current_user.has_role?("rc")
       rc_manager = [
         {

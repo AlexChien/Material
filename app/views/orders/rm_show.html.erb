@@ -1,0 +1,20 @@
+<% content_for :title, "查看订单" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "orders"} %>
+
+<div id="main">
+	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+	<%= render :partial => 'shared/s_path'%>
+	<%end%>
+
+	<div class="campaign_info">
+		<p>活动名称：<%=@order.campaign.name%></p>
+		<p>预定时间：<%=@order.campaign.catalog_startdate%> 至  <%=@order.campaign.catalog_enddate%> （<%=@order.campaign.show_status%>）</p>
+		<p>活动简介：<%=@order.campaign.description%></p>
+	</div>
+	<br/>
+
+<div class="tab" id="order_list">
+	<%=render :partial=>"rm_order_list"%>
+</div>
+</div>

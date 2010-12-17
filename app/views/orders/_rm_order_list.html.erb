@@ -1,0 +1,81 @@
+<% javascript_tag do %>
+	<%if @error_message%>
+		alert("<%=@error_message%>");
+	<%end%>
+<% end %>
+
+<% form_for @order do |f| -%>
+<table cellspacing="1" cellpadding="0" border="0" width="786">
+	<tbody>
+		<tr>
+			<td colspan="9" id="tab_tit">订单详细（<%=@order.order_status.name%>）</td>
+		</tr>
+		<tr>
+			<td class="f_tab">标识码</td>
+			<td class="f_tab">物料图片</td>
+			<td class="f_tab">物料名称</td>
+			<td class="f_tab">所属区</td>
+			<td class="f_tab">物料价格</td>
+			<td class="f_tab">预定数量</td>
+			<td class="f_tab">调整数量</td>
+			<td class="f_tab">预定总数</td>
+			<td class="f_tab">小计</td>
+		</tr>
+		<%order_amount=@order.order_line_item_adjusteds.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f%>
+		<%@order.order_line_item_adjusteds.each do |olia|%>
+		<tr>
+			<td><%=olia.material.itemno%></td>
+			<td><%=image_tag (olia.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+			<td><%=olia.material.name%></td>
+			<td><%=olia.region.name%></td>
+			<td><%=olia.unit_price%></td>
+			<td><%=olia.quantity_collected%></td>
+			<td>
+				<%if @order.order_status_id ==1 %>
+					<input type="text" value="<%=olia.quantity_adjust%>" size="3" id="quantity_adjust_<%=olia.id%>">
+					<%= link_to_remote '<img src="/images/icons/tick.png" />',
+			:url => {:controller => :order_line_item_adjusteds, :action => :update, :id => olia.id},
+			:with => "'campaign_id='+#{@order.campaign.id}+'&quantity_adjust='+$('#quantity_adjust_#{olia.id}').val()",
+			:method => :put,
+			:update => "order_list"%>
+				<%else%>
+					<%=olia.quantity_adjust%>
+				<%end%>
+			</td>
+			<td><%=olia.quantity_total%></td>
+			<td>￥<%=olia.subtotal%></td>
+		</tr>
+		<%end%>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<%if @order.order_status_id ==1 %>
+			<td style="text-align:left;padding-left:5px;width:150px;">
+				预定总计：￥<%=order_amount%><br/>
+				大区预算：￥<%=current_user.region.assigned_budget%><br/>
+				预算剩余：￥<%=current_user.region.assigned_budget - order_amount%><br/>
+			</td>
+			<%else%>
+			<td>总计：￥<%=order_amount%></td>
+			<%end%>
+			<td></td>
+		</tr>
+
+		<tr>
+			<td colspan="9" id="tab_tit02"><font color="green">共有<%=@order.order_line_item_adjusteds.size%>条记录</font></td>
+		</tr>
+	</tbody>
+</table>
+<%if @order.order_status_id ==1 %>
+<br/>
+<div class="tab_btn">
+	<%= f.submit "审批通过",:class=>"button_btn" %>
+</div>
+<%end%>
+<%end%>

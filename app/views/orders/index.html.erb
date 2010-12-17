@@ -1,0 +1,41 @@
+<% content_for :title, "所有订单" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "orders"} %>
+
+<div id="main">
+	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+	<%= render :partial => 'shared/s_path'%>
+	<%end%>
+
+	<div class="tab">
+		<table width="786" cellspacing="1" cellpadding="0" border="0">
+			<tbody>
+				<tr>
+					<td id="tab_tit" colspan="8">所有订单</td>
+				</tr>
+				<tr>
+					<td class="f_tab">活动名称</td>
+					<td class="f_tab">所属区</td>
+					<td class="f_tab">订单状态</td>
+					<td class="f_tab">订单总计：</td>
+					<td class="f_tab">操作</td>
+				</tr>
+				<%@orders.each do |order|%>
+					<tr>
+						<td><%=order.campaign.name%></td>
+						<td><%=order.region.name%></td>
+						<td><%=order.order_status.name%></td>
+						<td>￥<%=order.amount%></td>
+						<td>
+							<%= link_to "#{order.order_status_id==1? '审核订单' : '查看订单'}", order_url(order),:target=>"_blank"%>
+						</td>
+					</tr>
+				<%end%>
+				<tr>
+					<td id="tab_tit02" colspan="8"><font color="green">共有<%=@orders.total_entries%>条记录</font></td>
+				</tr>
+			</tbody>
+		</table>
+		<%=will_paginate @orders%>
+	</div>
+</div>

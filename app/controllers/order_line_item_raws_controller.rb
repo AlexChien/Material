@@ -1,6 +1,6 @@
 class OrderLineItemRawsController < ApplicationController
   before_filter :login_required
-  before_filter :check_campaign
+  before_filter :check
 
   access_control do
     allow :rc
@@ -31,15 +31,15 @@ class OrderLineItemRawsController < ApplicationController
   end
 
 protected
-  def check_campaign
+  def check
     @campaign = Campaign.find(params[:campaign_id])
     @olir = OrderLineItemRaw.find(params[:id])
     if @campaign.campaign_status != 1
-      flash[:error] = "预订不能修改"
+      flash[:error] = "活动已结束，预订不能修改"
       redirect_to "/campaigns"
     end
     if !@olir.order.nil?
-      flash[:error] = "预订不能修改"
+      flash[:error] = "订单已生成，预订不能修改"
       redirect_to "/campaigns"
     end
   end

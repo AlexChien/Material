@@ -18,7 +18,7 @@
 <table cellspacing="1" cellpadding="0" border="0" width="786">
 	<tbody>
 		<tr>
-			<td colspan="9" id="tab_tit">我的订单详细</td>
+			<td colspan="9" id="tab_tit">订单详细（<%=@order.order_status.name%>）</td>
 		</tr>
 		<tr>
 			<td class="f_tab">标识码</td>
@@ -31,6 +31,7 @@
 			<td class="f_tab">小计</td>
 		</tr>
 
+		<%order_amount=@order.order_line_item_raws.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f%>
 		<%@order.order_line_item_raws.each do |olir|%>
 		<tr>
 			<td><%=olir.material.itemno%></td>
@@ -51,7 +52,12 @@
 			<td></td>
 			<td></td>
 			<td></td>
-			<td>总计：￥<%=@order.amount%></td>
+			<td>
+				预定总计：￥<%=order_amount%><br/>
+				<%if @order.order_status_id != 1%>
+					审批总计：￥<%=@order.amount%><br/>
+				<%end%>
+			</td>
 			<td></td>
 		</tr>
 

@@ -17,6 +17,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :salesreps
 
   map.resources :order_line_item_raws
+  
+  map.resources :order_line_item_adjusteds
 
   map.resources :orders
 
