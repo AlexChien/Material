@@ -15,19 +15,31 @@
 				</tr>
 				<tr>
 					<td class="f_tab">活动名称</td>
+					<td class="f_tab">预定开始 - 结束时间</td>
+					<td class="f_tab">预定状态</td>
 					<td class="f_tab">所属区</td>
 					<td class="f_tab">订单状态</td>
-					<td class="f_tab">订单总计：</td>
+					<td class="f_tab">订单总计</td>
 					<td class="f_tab">操作</td>
 				</tr>
 				<%@orders.each do |order|%>
 					<tr>
 						<td><%=order.campaign.name%></td>
+						<td><%=order.campaign.catalog_startdate%> - <%=order.campaign.catalog_enddate%></td>
+						<td><%=order.campaign.show_status%></td>
 						<td><%=order.region.name%></td>
 						<td><%=order.order_status.name%></td>
 						<td>￥<%=order.amount%></td>
 						<td>
-							<%= link_to "#{order.order_status_id==1? '审核订单' : '查看订单'}", order_url(order),:target=>"_blank"%>
+							<%if order.order_status_id==1%>
+								<%if order.campaign.campaign_status == 2%>
+									预定已过期！
+								<%else%>
+									<%= link_to "审核订单", order_url(order),:target=>"_blank"%>
+								<%end%>
+							<%else%>
+								<%= link_to "查看订单", order_url(order),:target=>"_blank"%>
+							<%end%>
 						</td>
 					</tr>
 				<%end%>

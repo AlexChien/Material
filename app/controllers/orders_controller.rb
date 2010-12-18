@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
   def index
     order = Order
     order = order.in_region(current_user.region.id)
-    @orders = Order.paginate(:all,:per_page=>20,:page => params[:page], :order => 'orders.created_at DESC')
+    @orders = order.paginate(:all,:per_page=>20,:page => params[:page], :order => 'orders.created_at DESC')
   end
 
   def create
@@ -58,12 +58,17 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     if @order.region != current_user.region
       flash[:error] = "不能查看他人订单"
-      redirect_to "/campaigns"
+      redirect_to "/dashboard"
       return
     end
     if current_user.has_role?("rc")
       render :template => "/orders/rc_show"
     elsif current_user.has_role?("rm")
+      if @order.campaign.campaign_status == 2 && @order.order_status_id ==1 
+        flash[:error] = "活动已过期"
+        redirect_to "/dashboard"
+        return
+      end
       render :template => "/orders/rm_show"
     end
   end
