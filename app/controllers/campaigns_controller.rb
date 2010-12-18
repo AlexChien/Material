@@ -1,12 +1,13 @@
 class CampaignsController < ApplicationController
   before_filter :login_required
   before_filter :check_campaign,:only=>[:raw]
+  before_filter :check_campaign_status,:only=>[:edit,:update,:destroy]
 
   access_control do
     action :index do
       allow :pm,:rc
     end
-    action :new, :create, :edit, :update, :destroy do
+    action :new, :create, :edit, :update, :destroy, :production do
       allow :pm
     end
     action :book,:raw do
@@ -48,11 +49,9 @@ class CampaignsController < ApplicationController
   end
 
   def edit
-    @campaign = Campaign.find(params[:id])
   end
 
   def update
-    @campaign = Campaign.find(params[:id])
     if @campaign.update_attributes(params[:campaign])
       @campaign.catalogs.first.materials.delete_all
       unless params[:material_ids].nil?
@@ -75,7 +74,6 @@ class CampaignsController < ApplicationController
   end
 
   def destroy
-    @campaign = Campaign.find(params[:id])
     if @campaign.delete_campaign!
       flash[:notice] = "#{@campaign.name} 删除成功"
     else
@@ -116,6 +114,26 @@ class CampaignsController < ApplicationController
     @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
     render :partial => "order_list"
   end
+  
+  def production
+    @campaign = Campaign.find(params[:id])
+    @catalog = @campaign.campaign_catalog
+    @production = @catalog.production
+    if @production.nil?
+      order_ids = @catalog.order_ids
+      olias = OrderLineItemAdjusted.in_order(order_ids).all(:select=>"sum(quantity_total) as quantity_total,order_line_item_adjusteds.*",:group=>"material_id")
+      Production.transaction do
+        @production = Production.create(:campaign=>@campaign,:catalog=>@catalog)
+        olias.each do |olia|
+          ProductionLineItem.create(:production=>@production,
+                                    :material=>olia.material,
+                                    :quantity_collected=>olia.quantity_total,
+                                    :quantity_total=>olia.quantity_total)
+        end
+      end
+    end
+    redirect_to "/productions/#{@production.id}"
+  end
 
 private
 
@@ -134,6 +152,14 @@ private
     @campaign = Campaign.find(params[:id])
     if @campaign.campaign_status != 1
       flash[:error] = "活动不能预订"
+      redirect_to "/campaigns"
+    end
+  end
+  
+  def check_campaign_status
+    @campaign = Campaign.find(params[:id])
+    if @campaign.campaign_status == 2
+      flash[:error] = "活动已结束，不能修改或删除"
       redirect_to "/campaigns"
     end
   end

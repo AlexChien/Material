@@ -81,6 +81,8 @@ class OrdersController < ApplicationController
     else
       if @order.order_status_id == 1
         @order.update_attributes(:amount=>amount,:order_status_id=>2)
+        region = current_user.region
+        region.update_attribute(:assigned_budget,region.assigned_budget-amount)
         flash[:notice] = "订单已提交总部，等待总部审核"
       else
         flash[:error] = "订单已提交，不能重复修改"

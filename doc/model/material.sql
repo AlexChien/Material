@@ -409,7 +409,7 @@ ENGINE = InnoDB;
 -- Table `production_line_items`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `production_line_items` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `production_id` INT NOT NULL ,
   `material_id` INT NOT NULL ,
   `quantity_collected` INT NOT NULL DEFAULT 0 ,
@@ -420,6 +420,7 @@ CREATE  TABLE IF NOT EXISTS `production_line_items` (
   PRIMARY KEY (`id`) ,
   INDEX `fk_production_line_items_materials1` (`material_id` ASC) ,
   INDEX `fk_production_line_items_production1` (`production_id` ASC) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
   CONSTRAINT `fk_production_line_items_materials1`
     FOREIGN KEY (`material_id` )
     REFERENCES `materials` (`id` )
