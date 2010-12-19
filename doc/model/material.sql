@@ -486,7 +486,7 @@ ENGINE = InnoDB;
 -- Table `transfers`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `transfers` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `from_region_id` INT NULL ,
   `to_region_id` INT NOT NULL ,
   `from_warehouse_id` INT NULL ,
@@ -502,6 +502,7 @@ CREATE  TABLE IF NOT EXISTS `transfers` (
   INDEX `fk_transfers_warehouses1` (`from_warehouse_id` ASC) ,
   INDEX `fk_transfers_warehouses2` (`to_warehouse_id` ASC) ,
   INDEX `fk_transfers_transfer_types1` (`transfer_type_id` ASC) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
   CONSTRAINT `fk_transfers_regions1`
     FOREIGN KEY (`from_region_id` )
     REFERENCES `regions` (`id` )
@@ -534,7 +535,7 @@ ENGINE = InnoDB;
 -- Table `transfer_line_items`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `transfer_line_items` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `transfer_id` INT NOT NULL ,
   `region_id` INT NOT NULL ,
   `warehouse_id` INT NOT NULL ,
@@ -551,6 +552,7 @@ CREATE  TABLE IF NOT EXISTS `transfer_line_items` (
   INDEX `fk_transfer_line_items_warehouses1` (`warehouse_id` ASC) ,
   INDEX `fk_transfer_line_items_materials1` (`material_id` ASC) ,
   INDEX `fk_transfer_line_items_salesreps1` (`salesrep_id` ASC) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
   CONSTRAINT `fk_transfer_line_items_transfers1`
     FOREIGN KEY (`transfer_id` )
     REFERENCES `transfers` (`id` )

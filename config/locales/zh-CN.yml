@@ -120,6 +120,7 @@
        campaign: "活动"
        catalog: "物料目录"
        salesrep: "销售代表"
+       transfer: "库存"
 
     attributes:
        user:
@@ -145,3 +146,6 @@
          order_enddate: "预定结束时间"
        salesrep:
          name: "销售姓名"
+       transfer_line_item:
+         unit_price: "内部单价"
+         quantity: "数量"

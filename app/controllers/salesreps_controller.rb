@@ -20,8 +20,8 @@ class SalesrepsController < ApplicationController
   def create
     @salesrep = Salesrep.new(params[:salesrep])
     if @salesrep.save
-      redirect_to "/salesreps"
       flash[:notice] = "物料#{@salesrep.name}添加成功"
+      redirect_to "/salesreps"
     else
       flash[:error]  = "添加失败，请重新尝试"
       render :action => 'new'

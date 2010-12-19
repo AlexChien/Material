@@ -1,0 +1,64 @@
+<% content_for :title, "物料入库" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "transfers_new"} %>
+
+<div id="main">
+	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+	<%= render :partial => 'shared/s_path'%>
+	<%end%>
+
+	<div class="tab">
+		<% form_for @transfer, :url => transfers_path,:html=>{:onSubmit=>"return check_quantity();"} do |f| -%>
+		<%=f.error_messages%>
+		<table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
+			<tbody>
+				<tr>
+					<td id="tab_tit" colspan="4">物料入库</td>
+				</tr>
+				<% f.fields_for :transfer_line_items do |transfer_line_item| %>
+				<tr>
+					<td><%= transfer_line_item.label :material_id, "<em>*</em>物料名称" %></td>
+					<td class="td_left">
+						<%= transfer_line_item.select :material_id ,Material.all.collect{|p| [p.name, p.id]}%>
+					</td>
+				</tr>
+				<tr>
+					<td><%= transfer_line_item.label :quantity, "<em>*</em>入库数量" %></td>
+					<td class="td_left">
+						<%= transfer_line_item.text_field :quantity %>
+					</td>
+				</tr>
+				<tr>
+					<td><%= transfer_line_item.label :unit_price, "<em>*</em>内部单价" %></td>
+					<td class="td_left">
+						<%= transfer_line_item.text_field :unit_price %>
+					</td>
+				</tr>
+				<% end %>
+				<tr>
+					<td><%= f.label :memo, "备注" %></td>
+					<td class="td_left">
+						<%= f.text_area :memo %>
+					</td>
+				</tr>
+				<tr><td id="tab_tit" colspan="4"></td>
+				</tr>
+			</tbody>
+		</table>
+		<br/>
+		<div class="tab_btn">
+			<%= f.submit "入库",:class=>"button_btn" %>
+		</div>
+		<%end%>
+	</div>
+</div>
+
+<%javascript_tag do%>
+	function check_quantity(){
+		var quantity= $("#transfer_transfer_line_items_attributes_0_quantity").val();
+		if(quantity <= 0){
+			alert("入库数量不能小于0");
+			return false;
+		}
+	}
+<%end%>

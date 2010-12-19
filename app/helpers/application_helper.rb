@@ -67,6 +67,17 @@ module ApplicationHelper
       ]
       navleft.concat(pm_manager)
     elsif current_user.has_role?("wa")
+      wa_manager = [
+        {
+        :navleft_header_name => "仓库管理",
+        :navleft_header_logo => "/images/icons/package_green.png",
+        :navleft => [
+            { :name => "物料入库", :path => "/transfers/new", :id => "transfers_new", :logo => "/images/icons/package_add.png"},
+            { :name => "总仓库", :path => "/inventories", :id => "inventories", :logo => "/images/icons/package.png"},
+          ]
+        }
+      ]
+      navleft.concat(wa_manager)
     elsif current_user.has_role?("rm")
       rm_manager = [
         {

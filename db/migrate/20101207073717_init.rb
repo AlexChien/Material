@@ -10,6 +10,9 @@ class Init < ActiveRecord::Migration
     
     user = User.create(:login=>"admin",:name=>"admin",:email=>"jj365952505@gmail.com",:password=>"56501808",:password_confirmation=>"56501808")
     user.roles << Role.find_by_name("admin")
+    
+    user = User.create(:login=>"alex",:name=>"Alex Chien",:email=>"alex.chien@koocaa.com",:password=>"alexgem",:password_confirmation=>"alexgem")
+    user.roles << Role.find_by_name("admin")
   end
 
   def self.down

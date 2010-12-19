@@ -25,6 +25,12 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :productions
   
   map.resources :production_line_items
+  
+  map.resources :inventories
+  
+  map.resources :transfers
+  
+  map.resources :transfer_line_items
 
   map.resources :campaigns, :member => {:book => :get,:production=>:get},
                             :collection => {:raw => :post}
