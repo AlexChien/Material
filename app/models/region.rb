@@ -19,4 +19,8 @@ class Region < ActiveRecord::Base
       {:conditions => ["regions.is_central = 0"]}
     end 
   }
+  
+  named_scope :in_id, lambda {|id|
+        {:conditions => ["regions.id in (?)", id]}
+  }
 end

@@ -17,14 +17,18 @@
 					<td class="f_tab">物料标识码</td>
 					<td class="f_tab">物料示意图</td>
 					<td class="f_tab">物料名称</td>
+					<td class="f_tab">所属区</td>
 					<td class="f_tab">库存量</td>
+					<td class="f_tab">操作</td>
 				</tr>
 				<%@inventories.each do |inventory|%>
 					<tr>
 						<td><%=inventory.material.itemno%></td>
 						<td><%=image_tag (inventory.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
 						<td><%=inventory.material.name%></td>
+						<td><%=inventory.region.name%></td>
 						<td><%=inventory.quantity%></td>
+						<td><%=link_to "库存转移","/transfers/new?type=2_3"%></td>
 					</tr>
 				<%end%>
 				<tr>

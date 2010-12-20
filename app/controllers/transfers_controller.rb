@@ -8,19 +8,54 @@ class TransfersController < ApplicationController
   def new
     @transfer = Transfer.new
     @transfer.transfer_line_items.build
+    if params[:type]=="1"
+      #总库入库
+      render :template=>"transfers/new" 
+    elsif params[:type]=="2_3"
+      #转移库存
+      render :template=>"transfers/transfer"
+    end
   end
   
-  #总库入库
   def create
+    tr_id = params[:transfer][:transfer_type_id]
     @transfer = Transfer.new(params[:transfer])
-    @material = @transfer.transfer_line_items.first.material
-    @transfer.transfer_type = TransferType.find(1)
-    if @transfer.save
-      flash[:notice] = "物料#{@material.name}入库成功"
-      redirect_to "/inventories"
-    else
-      flash[:error] = "物料#{@material.name}入库失败，请重新尝试"
-      render :action => "new"
+    #总库入库
+    if tr_id == "1"
+      @material = @transfer.transfer_line_items.first.material
+      if @transfer.save
+        flash[:notice] = "物料#{@material.name}入库成功"
+        redirect_to "/inventories"
+      else
+        flash[:error] = "物料#{@material.name}入库失败，请重新尝试"
+        render :action => "new"
+      end
+    elsif tr_id == "2" || tr_id == "3"
+        Transfer.transaction do
+        tli = @transfer.transfer_line_items.first
+        @material = tli.material
+        if @transfer.save
+          params = {:from_region_id=>@transfer.to_region_id,
+                    :to_region_id=>@transfer.from_region_id,
+                    :from_warehouse_id=>@transfer.to_warehouse_id,
+                    :to_warehouse_id=>@transfer.from_warehouse_id,
+                    :transfer_type_id=>@transfer.transfer_type_id,
+                    :memo=>@transfer.memo,
+                    :transfer_line_items_attributes=>{"0"=>{"material_id"=>"#{@material.id}", 
+                                                            "quantity"=>"-#{tli.quantity}",
+                                                            "unit_price"=>"#{tli.unit_price}",
+                                                            "subtotal"=>"-#{tli.subtotal}",
+                                                            "region_id"=>"#{@transfer.from_region_id}",
+                                                            "warehouse_id"=>"#{@transfer.from_warehouse_id}"}}
+                    }
+          Transfer.new(params).save#transfer创建一条相反的记录
+          flash[:notice] = "物料#{@material.name}转移成功"
+          redirect_to "/inventories"
+        else
+          flash[:error] = "物料#{@material.name}转移失败，请重新尝试"
+          render :action => "new"
+        end
+      end
     end
   end
   

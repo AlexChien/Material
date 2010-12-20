@@ -72,7 +72,7 @@ module ApplicationHelper
         :navleft_header_name => "仓库管理",
         :navleft_header_logo => "/images/icons/package_green.png",
         :navleft => [
-            { :name => "物料入库", :path => "/transfers/new", :id => "transfers_new", :logo => "/images/icons/package_add.png"},
+            { :name => "物料入库", :path => "/transfers/new?type=1", :id => "transfers_new", :logo => "/images/icons/package_add.png"},
             { :name => "总仓库", :path => "/inventories", :id => "inventories", :logo => "/images/icons/package.png"},
           ]
         }

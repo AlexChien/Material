@@ -9,6 +9,7 @@
 
 	<div class="tab">
 		<% form_for @transfer, :url => transfers_path,:html=>{:onSubmit=>"return check_quantity();"} do |f| -%>
+		<%= f.hidden_field :transfer_type_id,:value=>1%>
 		<%=f.error_messages%>
 		<table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
 			<tbody>

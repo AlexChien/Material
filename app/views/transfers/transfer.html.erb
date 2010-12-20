@@ -1,0 +1,76 @@
+<% content_for :title, "转移库存" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "inventories"} %>
+
+<div id="main">
+	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+	<%= render :partial => 'shared/s_path'%>
+	<%end%>
+
+	<div class="tab">
+		<% form_for @transfer, :url => transfers_path,:html=>{:onSubmit=>"return check_quantity();"} do |f| -%>
+		<%=f.error_messages%>
+		<table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
+			<tbody>
+				<tr>
+					<td id="tab_tit" colspan="4">转移库存</td>
+				</tr>
+				<tr>
+					<td><%= f.label :transfer_type_id, "<em>*</em>转移类型" %></td>
+					<td class="td_left">
+						<%= f.select :transfer_type_id,TransferType.in_id([2,3]).all.collect{|p| [p.name, p.id]} %>
+					</td>
+				</tr>
+				<tr>
+					<td><%= f.label :from_region_id, "<em>*</em>源地址" %></td>
+					<td class="td_left">
+						<%= f.select :from_region_id,Region.in_id(5).all.collect{|p| [p.name, p.id]} %>
+					</td>
+				</tr>
+				<tr>
+					<td><%= f.label :to_region_id, "<em>*</em>目标地址" %></td>
+					<td class="td_left">
+						<%= f.select :to_region_id,Region.in_id([2,3,4]).all.collect{|p| [p.name, p.id]} %>
+					</td>
+				</tr>
+				<% f.fields_for :transfer_line_items do |transfer_line_item| %>
+				<tr>
+					<td><%= transfer_line_item.label :material_id, "<em>*</em>转移物料" %></td>
+					<td class="td_left">
+						<%= transfer_line_item.select :material_id ,Material.all.collect{|p| [p.name, p.id]}%>
+					</td>
+				</tr>
+				<tr>
+					<td><%= transfer_line_item.label :quantity, "<em>*</em>转移数量" %></td>
+					<td class="td_left">
+						<%= transfer_line_item.text_field :quantity %>
+					</td>
+				</tr>
+				<% end %>
+				<tr>
+					<td><%= f.label :memo, "备注" %></td>
+					<td class="td_left">
+						<%= f.text_area :memo %>
+					</td>
+				</tr>
+				<tr><td id="tab_tit" colspan="4"></td>
+				</tr>
+			</tbody>
+		</table>
+		<br/>
+		<div class="tab_btn">
+			<%= f.submit "转移",:class=>"button_btn" %>
+		</div>
+		<%end%>
+	</div>
+</div>
+
+<%javascript_tag do%>
+	function check_quantity(){
+		var quantity= $("#transfer_transfer_line_items_attributes_0_quantity").val();
+		if(quantity <= 0){
+			alert("转移数量不能小于0");
+			return false;
+		}
+	}
+<%end%>

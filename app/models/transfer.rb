@@ -24,18 +24,32 @@ protected
         tli.region = region
         tli.subtotal = tli.quantity * tli.unit_price
       end
+    elsif self.transfer_type_id == 2 || self.transfer_type_id == 3
+      if self.from_warehouse.nil? && self.to_warehouse.nil?
+        from_ware_house = Warehouse.in_central(true).first
+        if self.transfer_type_id == 2
+          to_ware_house = Warehouse.find(self.to_region.id)
+        else
+          to_ware_house = from_ware_house
+        end
+        self.from_warehouse = from_ware_house
+        self.to_warehouse = to_ware_house
+        self.transfer_line_items.each do |tli|
+          tli.warehouse = to_warehouse
+          tli.region = self.to_region
+          tli.subtotal = tli.quantity * tli.unit_price
+        end
+      end
     end
   end
   
   def observer_inventory
-    warehouse = Warehouse.in_central(true).first #总仓库
-    region = Region.find(5) #市场部
     self.transfer_line_items.each do |tli|
-      @inventory = Inventory.in_region(region).in_warehouse(warehouse).in_material(tli.material).first
+      @inventory = Inventory.in_region(tli.region).in_warehouse(tli.warehouse).in_material(tli.material).first
       if @inventory
         @inventory.update_attribute(:quantity,@inventory.quantity+tli.quantity)
       else
-        Inventory.create(:material=>tli.material,:region=>region,:warehouse=>warehouse,:quantity=>tli.quantity)
+        Inventory.create(:material=>tli.material,:region=>tli.region,:warehouse=>tli.warehouse,:quantity=>tli.quantity)
       end
     end
   end
