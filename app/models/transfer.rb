@@ -16,7 +16,7 @@ protected
   def observer_transfer_type
     if self.transfer_type_id == 1
       warehouse = Warehouse.in_central(true).first #总仓库
-      region = Region.find(5) #市场部
+      region = Region.in_central(true).first#Region.find(5) #市场部
       self.to_region = region
       self.to_warehouse = warehouse
       self.transfer_line_items.each do |tli|
@@ -26,7 +26,7 @@ protected
       end
     elsif self.transfer_type_id == 2 || self.transfer_type_id == 3
       if self.from_warehouse.nil? && self.to_warehouse.nil?
-        from_ware_house = Warehouse.in_central(true).first
+        from_ware_house = Warehouse.find(self.from_region.id)
         if self.transfer_type_id == 2
           to_ware_house = Warehouse.find(self.to_region.id)
         else

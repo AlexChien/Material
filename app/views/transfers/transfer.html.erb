@@ -24,13 +24,13 @@
 				<tr>
 					<td><%= f.label :from_region_id, "<em>*</em>源地址" %></td>
 					<td class="td_left">
-						<%= f.select :from_region_id,Region.in_id(5).all.collect{|p| [p.name, p.id]} %>
+						<%= f.select :from_region_id,Region.all.collect{|p| [p.name, p.id]} %>
 					</td>
 				</tr>
 				<tr>
 					<td><%= f.label :to_region_id, "<em>*</em>目标地址" %></td>
 					<td class="td_left">
-						<%= f.select :to_region_id,Region.in_id([2,3,4]).all.collect{|p| [p.name, p.id]} %>
+						<%= f.select :to_region_id,Region.all.collect{|p| [p.name, p.id]} %>
 					</td>
 				</tr>
 				<% f.fields_for :transfer_line_items do |transfer_line_item| %>
