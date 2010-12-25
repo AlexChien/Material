@@ -5,10 +5,10 @@ class CampaignsController < ApplicationController
 
   access_control do
     action :index do
-      allow :pm,:rc
+      allow :pm,:rc,:admin
     end
     action :new, :create, :edit, :update, :destroy, :production do
-      allow :pm
+      allow :pm,:admin
     end
     action :book,:raw do
       allow :rc

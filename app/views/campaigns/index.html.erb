@@ -3,67 +3,67 @@
 <%= render :partial => 'shared/leftnav',:locals => { :highlight => "campaigns"} %>
 
 <div id="main">
-	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
-	<%= render :partial => 'shared/s_path'%>
-	<%end%>
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+    <%= render :partial => 'shared/s_path'%>
+    <%end%>
 
-	<div class="tab">
-		<table width="786" cellspacing="1" cellpadding="0" border="0">
-			<tbody>
-				<tr>
-					<td id="tab_tit" colspan="8">所有活动</td>
-				</tr>
-				<tr>
-					<td class="f_tab">活动名称</td>
-					<td class="f_tab">预定开始 - 结束时间</td>
-					<td class="f_tab">预定状态</td>
-					<td class="f_tab">活动简介</td>
-					<td class="f_tab">物料目录</td>
-					<td class="f_tab">操作</td>
-				</tr>
-				<%@campaigns.each do |campaign|%>
-					<tr>
-						<td><%=campaign.name%></td>
-						<td><%=campaign.catalog_startdate%> - <%=campaign.catalog_enddate%></td>
-						<td><%=campaign.show_status%></td>
-						<td><%=campaign.description%></td>
-						<td><%=campaign.catalogs_list%></td>
-						<td>
-						<%if current_user.has_role?("pm")%>
-							<%if campaign.campaign_status==2%>
-								<%= link_to "查看生产单", production_campaign_url(campaign)%>
-							<%else%>
-							<%= link_to image_tag("/images/icons/database_edit.png", {:alt => "修改", :title => "修改", :border => 0}), edit_campaign_url(campaign)%>
-							<%= link_to image_tag("/images/icons/database_delete.png", {:alt => "删除", :title => "删除", :border => 0}), campaign_url(campaign), :method => :delete, :confirm => "确认要删除这个活动吗?"%>
-							<%end%>
-						<%end%>
+    <div class="tab">
+        <table width="786" cellspacing="1" cellpadding="0" border="0">
+            <tbody>
+                <tr>
+                    <td id="tab_tit" colspan="8">所有活动</td>
+                </tr>
+                <tr>
+                    <td class="f_tab">活动名称</td>
+                    <td class="f_tab">预定开始 - 结束时间</td>
+                    <td class="f_tab">预定状态</td>
+                    <td class="f_tab">活动简介</td>
+                    <td class="f_tab">物料目录</td>
+                    <td class="f_tab">操作</td>
+                </tr>
+                <%@campaigns.each do |campaign|%>
+                    <tr>
+                        <td><%=campaign.name%></td>
+                        <td><%=campaign.catalog_startdate%> - <%=campaign.catalog_enddate%></td>
+                        <td><%=campaign.show_status%></td>
+                        <td><%=campaign.description%></td>
+                        <td><%=campaign.catalogs_list%></td>
+                        <td>
+                        <%if current_user.has_role?("pm") || current_user.has_role?("admin")%>
+                            <%if campaign.campaign_status==2%>
+                                <%= link_to "查看生产单", production_campaign_url(campaign)%>
+                            <%else%>
+                            <%= link_to image_tag("/images/icons/database_edit.png", {:alt => "修改", :title => "修改", :border => 0}), edit_campaign_url(campaign)%>
+                            <%= link_to image_tag("/images/icons/database_delete.png", {:alt => "删除", :title => "删除", :border => 0}), campaign_url(campaign), :method => :delete, :confirm => "确认要删除这个活动吗?"%>
+                            <%end%>
+                        <%end%>
 
-						<%if current_user.has_role?("rc")%>
-							<%campaign_order = Order.in_catalog(campaign.campaign_catalog.id).in_region(current_user.region.id).first%>
-							<%if campaign.campaign_status == 0%>
-								预定未开始！
-							<%elsif campaign.campaign_status == 1%>
-								<%if campaign_order.nil?%>
-									<%= link_to "我要预定", book_campaign_url(campaign)%>
-								<%else%>
-									<%= link_to "查看预定", order_url(campaign_order),:target=>"_blank"%>
-								<%end%>
-							<%else%>
-								<%if campaign_order.nil?%>
-									此活动您没预订！
-								<%else%>
-									<%= link_to "查看预定", order_url(campaign_order),:target=>"_blank"%>
-								<%end%>
-							<%end%>
-						<%end%>
-						</td>
-					</tr>
-				<%end%>
-				<tr>
-					<td id="tab_tit02" colspan="8"><font color="green">共有<%=@campaigns.total_entries%>条记录</font></td>
-				</tr>
-			</tbody>
-		</table>
-		<%=will_paginate @campaigns%>
-	</div>
+                        <%if current_user.has_role?("rc")%>
+                            <%campaign_order = Order.in_catalog(campaign.campaign_catalog.id).in_region(current_user.region.id).first%>
+                            <%if campaign.campaign_status == 0%>
+                                预定未开始！
+                            <%elsif campaign.campaign_status == 1%>
+                                <%if campaign_order.nil?%>
+                                    <%= link_to "我要预定", book_campaign_url(campaign)%>
+                                <%else%>
+                                    <%= link_to "查看预定", order_url(campaign_order),:target=>"_blank"%>
+                                <%end%>
+                            <%else%>
+                                <%if campaign_order.nil?%>
+                                    此活动您没预订！
+                                <%else%>
+                                    <%= link_to "查看预定", order_url(campaign_order),:target=>"_blank"%>
+                                <%end%>
+                            <%end%>
+                        <%end%>
+                        </td>
+                    </tr>
+                <%end%>
+                <tr>
+                    <td id="tab_tit02" colspan="8"><font color="green">共有<%=@campaigns.total_entries%>条记录</font></td>
+                </tr>
+            </tbody>
+        </table>
+        <%=will_paginate @campaigns%>
+    </div>
 </div>

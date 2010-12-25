@@ -3,9 +3,9 @@ class ProductionLineItemsController < ApplicationController
   before_filter :check
 
   access_control do
-    allow :pm
+    allow :pm,:admin
   end
-  
+
   def update
     quantity_adjusted = params[:quantity_adjusted].to_i
     quantity_total = @oli.quantity_collected+quantity_adjusted
@@ -16,7 +16,7 @@ class ProductionLineItemsController < ApplicationController
                            :quantity_total=>quantity_total) if @error_message.blank?
     render :partial => "productions/production_list"
   end
-  
+
 protected
   def check
     @production = Production.find(params[:production_id])
@@ -26,5 +26,5 @@ protected
       redirect_to "/campaigns"
     end
   end
-    
+
 end

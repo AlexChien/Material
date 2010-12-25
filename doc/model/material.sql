@@ -603,8 +603,8 @@ COMMIT;
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
 INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('1', '中央仓库', '1', '1', NULL, NULL);
-INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('2', '上海仓库', '2', '0', NULL, NULL);
-INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('3', '北京仓库', '3', '0', NULL, NULL);
+INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('2', '北京仓库', '2', '0', NULL, NULL);
+INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('3', '上海仓库', '3', '0', NULL, NULL);
 INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('4', '广州仓库', '4', '0', NULL, NULL);
 INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('5', '市场部', '5', '0', NULL, NULL);
 

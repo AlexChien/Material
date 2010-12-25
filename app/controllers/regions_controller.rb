@@ -1,19 +1,19 @@
 class RegionsController < ApplicationController
   before_filter :login_required
-  
+
   access_control do
-    allow :pm
+    allow :pm,:admin
   end
-  
+
   def index
     region = Region
     @regions = region.paginate(:all,:per_page=>20,:page => params[:page], :order => 'regions.created_at DESC')
   end
-  
+
   def edit
     @region = Region.find(params[:id])
   end
-  
+
   def update
     @region = Region.find(params[:id])
     if @region.update_attributes(params[:region])
@@ -24,5 +24,5 @@ class RegionsController < ApplicationController
       render :action => "edit"
     end
   end
-  
+
 end
