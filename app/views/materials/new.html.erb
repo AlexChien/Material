@@ -3,56 +3,56 @@
 <%= render :partial => 'shared/leftnav',:locals => { :highlight => "materials_new"} %>
 
 <div id="main">
-	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
-	<%= render :partial => 'shared/s_path'%>
-	<%end%>
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+    <%= render :partial => 'shared/s_path'%>
+    <%end%>
 
-	<div class="tab">
-		<% form_for :material, :url => materials_path, :html=>{:multipart => true} do |f| -%>
-		<%=f.error_messages%>
-		<table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
-			<tbody>
-				<tr>
-					<td id="tab_tit" colspan="4">添加物料</td>
-				</tr>
-				<tr>
-					<td><%= f.label :name, "<em>*</em>物料名称" %></td>
-					<td class="td_left">
-						<%= f.text_field :name %>
-					</td>
-				</tr>
-				<tr>
-					<td><%= f.label :cost, "物料成本" %></td>
-					<td class="td_left">
-						<%= f.text_field :cost %>
-					</td>
-				</tr>
-				<tr>
-		          	<td><%= f.label :uploaded_data, "上传示意图" %></td>
-					<td class="td_left">
-		          		<%= f.file_field :uploaded_data%>
-		          	</td>
-		        </tr>
-				<tr>
-					<td><%= f.label :usage, "使用指导" %></td>
-					<td class="td_left">
-						<%= f.text_area :usage %>
-					</td>
-				</tr>
-				<tr>
-					<td><%= f.label :memo, "详细描述" %></td>
-					<td class="td_left">
-						<%= f.text_area :memo %>
-					</td>
-				</tr>
-				<tr><td id="tab_tit" colspan="4"></td>
-				</tr>
-			</tbody>
-		</table>
-		<br/>
-		<div class="tab_btn">
-			<%= f.submit "保存",:class=>"button_btn" %>
-		</div>
-		<%end%>
-	</div>
+    <div class="tab">
+        <% form_for :material, :url => materials_path, :html=>{:multipart => true} do |f| -%>
+        <%=f.error_messages%>
+        <table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
+            <tbody>
+                <tr>
+                    <td id="tab_tit" colspan="4">添加物料</td>
+                </tr>
+                <tr>
+                    <td><%= f.label :name, "<em>*</em>物料名称" %></td>
+                    <td class="td_left">
+                        <%= f.text_field :name %>
+                    </td>
+                </tr>
+                <tr>
+                    <td><%= f.label :cost, "物料市场价" %></td>
+                    <td class="td_left">
+                        <%= f.text_field :cost %>
+                    </td>
+                </tr>
+                <tr>
+                    <td><%= f.label :uploaded_data, "上传示意图" %></td>
+                    <td class="td_left">
+                        <%= f.file_field :uploaded_data%>
+                    </td>
+                </tr>
+                <tr>
+                    <td><%= f.label :usage, "使用指导" %></td>
+                    <td class="td_left">
+                        <%= f.text_area :usage %>
+                    </td>
+                </tr>
+                <tr>
+                    <td><%= f.label :memo, "详细描述" %></td>
+                    <td class="td_left">
+                        <%= f.text_area :memo %>
+                    </td>
+                </tr>
+                <tr><td id="tab_tit" colspan="4"></td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <div class="tab_btn">
+            <%= f.submit "保存",:class=>"button_btn" %>
+        </div>
+        <%end%>
+    </div>
 </div>

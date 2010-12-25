@@ -114,7 +114,7 @@ class CampaignsController < ApplicationController
     @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
     render :partial => "order_list"
   end
-  
+
   def production
     @campaign = Campaign.find(params[:id])
     @catalog = @campaign.campaign_catalog
@@ -157,7 +157,7 @@ private
       redirect_to "/campaigns"
     end
   end
-  
+
   def check_campaign_status
     @campaign = Campaign.find(params[:id])
     if @campaign.campaign_status == 2
