@@ -3,41 +3,45 @@
 <%= render :partial => 'shared/leftnav',:locals => { :highlight => "inventories_#{params[:is_central]=='1' ? 1 : 0}"} %>
 
 <div id="main">
-	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
-	<%= render :partial => 'shared/s_path'%>
-	<%end%>
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+    <%= render :partial => 'shared/s_path'%>
+    <%end%>
 
-	<div class="tab">
-		<table width="786" cellspacing="1" cellpadding="0" border="0">
-			<tbody>
-				<tr>
-					<td id="tab_tit" colspan="8">所有物料</td>
-				</tr>
-				<tr>
-					<td class="f_tab">物料标识码</td>
-					<td class="f_tab">物料示意图</td>
-					<td class="f_tab">物料名称</td>
-					<td class="f_tab">所属大区</td>
-					<td class="f_tab">所在仓库</td>
-					<td class="f_tab">库存量</td>
-					<td class="f_tab">操作</td>
-				</tr>
-				<%@inventories.each do |inventory|%>
-					<tr>
-						<td><%=inventory.material.itemno%></td>
-						<td><%=image_tag (inventory.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
-						<td><%=inventory.material.name%></td>
-						<td><%=inventory.region.name%></td>
-						<td><%=inventory.warehouse.name%></td>
-						<td><%=inventory.quantity%></td>
-						<td><%=link_to "库存转移","/transfers/new?type=2_3"%></td>
-					</tr>
-				<%end%>
-				<tr>
-					<td id="tab_tit02" colspan="8"><font color="green">共有<%=@inventories.total_entries%>条记录</font></td>
-				</tr>
-			</tbody>
-		</table>
-		<%=will_paginate @inventories%>
-	</div>
+    <div class="tab">
+        <table width="786" cellspacing="1" cellpadding="0" border="0">
+            <tbody>
+                <tr>
+                    <td id="tab_tit" colspan="8">所有物料</td>
+                </tr>
+                <tr>
+                    <td class="f_tab">物料标识码</td>
+                    <td class="f_tab">物料示意图</td>
+                    <td class="f_tab">物料名称</td>
+                    <td class="f_tab">所属大区</td>
+                    <td class="f_tab">所在仓库</td>
+                    <td class="f_tab">库存量</td>
+                    <td class="f_tab">操作</td>
+                </tr>
+                <%@inventories.each do |inventory|%>
+                    <tr>
+                        <td><%=inventory.material.itemno%></td>
+                        <td><%=image_tag (inventory.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+                        <td><%=inventory.material.name%></td>
+                        <td><%=inventory.region.name%></td>
+                        <td><%=inventory.warehouse.name%></td>
+                        <td><%=inventory.quantity%></td>
+                        <td>
+                            <%if params[:is_central]== "1"%>
+                                <%=link_to "库存转移","/transfers/new?type=2_3&material_id=#{inventory.material.id}"%>
+                            <%end%>
+                        </td>
+                    </tr>
+                <%end%>
+                <tr>
+                    <td id="tab_tit02" colspan="8"><font color="green">共有<%=@inventories.total_entries%>条记录</font></td>
+                </tr>
+            </tbody>
+        </table>
+        <%=will_paginate @inventories%>
+    </div>
 </div>

@@ -29,7 +29,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :production_line_items
 
-  map.resources :inventories
+  map.resources :inventories, :collection => {:calculate_materials =>:get}
 
   map.resources :transfers
 
