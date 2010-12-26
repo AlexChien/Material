@@ -87,7 +87,9 @@ class CampaignsController < ApplicationController
     @cms = CatalogsMaterial.in_catalog(@campaign.campaign_catalog.id).all(:order=>"created_at DESC")
     @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
     @salesreps = Salesrep.in_state("activated").in_region(current_user.region).all(:order=>"created_at DESC")
-    @campaign_order = Order.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).first
+    order = Order.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id)
+    @campaign_order = order.first
+    @campaign_order_2 = order.not_in_order_status(2).first
   end
 
   def raw

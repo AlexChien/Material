@@ -17,19 +17,22 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :salesreps
 
   map.resources :order_line_item_raws
-  
+
   map.resources :order_line_item_adjusteds
 
-  map.resources :orders
-  
+  map.resources :orders,:member=>{:approve_fail_message=>:get,
+                                  :approve_fail=>:put,
+                                  :accept_fail_message=>:get,
+                                  :accept_fail=>:put}
+
   map.resources :productions
-  
+
   map.resources :production_line_items
-  
+
   map.resources :inventories
-  
+
   map.resources :transfers
-  
+
   map.resources :transfer_line_items
 
   map.resources :campaigns, :member => {:book => :get,:production=>:get},

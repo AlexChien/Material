@@ -1,12 +1,12 @@
 <% javascript_tag do %>
-	<%if @material%>
-		<%if @error_message%>
-			alert("<%=@error_message%>");
-		<%else%>
-			$("#num_"+<%=@material.id%>).attr("value","1");
-			$("#salesrep_"+<%=@material.id%>).attr("value","");
-		<%end%>
-	<%end%>
+    <%if @material%>
+        <%if @error_message%>
+            alert("<%=@error_message%>");
+        <%else%>
+            $("#num_"+<%=@material.id%>).attr("value","1");
+            $("#salesrep_"+<%=@material.id%>).attr("value","");
+        <%end%>
+    <%end%>
 <% end %>
 
 <%if @olirs.empty?%>
@@ -16,70 +16,70 @@
 <%form_for @order do |f|%>
 <div class="tab">
 <table cellspacing="1" cellpadding="0" border="0" width="786">
-	<tbody>
-		<tr>
-			<td colspan="9" id="tab_tit">订单详细</td>
-		</tr>
-		<tr>
-			<td class="f_tab">标识码</td>
-			<td class="f_tab">物料图片</td>
-			<td class="f_tab">物料名称</td>
-			<td class="f_tab">所属区</td>
-			<td class="f_tab">销售姓名</td>
-			<td class="f_tab">物料价格</td>
-			<td class="f_tab">预定数量</td>
-			<td class="f_tab">小计</td>
-			<td class="f_tab">操作</td>
-		</tr>
+    <tbody>
+        <tr>
+            <td colspan="9" id="tab_tit">订单详细<%=@campaign_order.nil? ? "" : "(#{@campaign_order.order_status.name})"%><%unless @campaign_order.nil?%><br/>原因：<%=@campaign_order.memo%><%end%></td>
+        </tr>
+        <tr>
+            <td class="f_tab">标识码</td>
+            <td class="f_tab">物料图片</td>
+            <td class="f_tab">物料名称</td>
+            <td class="f_tab">所属区</td>
+            <td class="f_tab">销售姓名</td>
+            <td class="f_tab">物料价格</td>
+            <td class="f_tab">预定数量</td>
+            <td class="f_tab">小计</td>
+            <td class="f_tab">操作</td>
+        </tr>
 
-		<%@olirs.each do |olir|%>
-		<tr>
-			<td><%=olir.material.itemno%></td>
-			<td><%=image_tag (olir.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
-			<td><%=olir.material.name%></td>
-			<td><%=olir.region.name%></td>
-			<td><%=olir.salesrep.name%></td>
-			<td><%=olir.unit_price%></td>
-			<td>
-				<input type="text" value="<%=olir.quantity%>" size="3" id="quantity_<%=olir.id%>">
-				<%= link_to_remote '<img src="/images/icons/tick.png" />',
-				:url => {:controller => :order_line_item_raws, :action => :update, :id => olir.id},
-				:with => "'campaign_id='+#{@campaign.id}+'&quantity='+$('#quantity_#{olir.id}').val()",
-				:method => :put,
-				:update => "order_list"%>
-			</td>
-			<td>￥<%=olir.subtotal%></td>
-			<td><%= link_to_remote '<img src="/images/icons/cross.png" />',
-			:url => {:controller => :order_line_item_raws, :action => :destroy, :id => olir.id},
-			:with => "'campaign_id='+#{@campaign.id}",
-			:method => :delete,
-			:update => "order_list"%>
-			</td>
-		</tr>
-		<%end%>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td>总计：￥<%=OrderLineItemRaw.raw_total(@campaign.campaign_catalog.id,current_user.region.id)%></td>
-			<td></td>
-		</tr>
+        <%@olirs.each do |olir|%>
+        <tr>
+            <td><%=olir.material.itemno%></td>
+            <td><%=image_tag (olir.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+            <td><%=olir.material.name%></td>
+            <td><%=olir.region.name%></td>
+            <td><%=olir.salesrep.name%></td>
+            <td><%=olir.unit_price%></td>
+            <td>
+                <input type="text" value="<%=olir.quantity%>" size="3" id="quantity_<%=olir.id%>">
+                <%= link_to_remote '<img src="/images/icons/tick.png" />',
+                :url => {:controller => :order_line_item_raws, :action => :update, :id => olir.id},
+                :with => "'campaign_id='+#{@campaign.id}+'&quantity='+$('#quantity_#{olir.id}').val()",
+                :method => :put,
+                :update => "order_list"%>
+            </td>
+            <td>￥<%=olir.subtotal%></td>
+            <td><%= link_to_remote '<img src="/images/icons/cross.png" />',
+            :url => {:controller => :order_line_item_raws, :action => :destroy, :id => olir.id},
+            :with => "'campaign_id='+#{@campaign.id}",
+            :method => :delete,
+            :update => "order_list"%>
+            </td>
+        </tr>
+        <%end%>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>总计：￥<%=OrderLineItemRaw.raw_total(@campaign.campaign_catalog.id,current_user.region.id)%></td>
+            <td></td>
+        </tr>
 
-		<tr>
-			<td colspan="9" id="tab_tit02"><font color="green">共有<%=@olirs.size%>条记录</font></td>
-		</tr>
-	</tbody>
+        <tr>
+            <td colspan="9" id="tab_tit02"><font color="green">共有<%=@olirs.size%>条记录</font></td>
+        </tr>
+    </tbody>
 </table>
 </div>
 
-	<%=f.hidden_field :catalog_id,:value=>"#{@campaign.campaign_catalog.id}"%>
-	<br/>
-	<div class="tab_btn">
-		<%= f.submit "提交",:class=>"button_btn",:confirm=>"提交后将不能修改订单！您确认此次提交吗？" %>
-	</div>
-	<%end%>
+    <%=f.hidden_field :catalog_id,:value=>"#{@campaign.campaign_catalog.id}"%>
+    <br/>
+    <div class="tab_btn">
+        <%= f.submit "提交",:class=>"button_btn",:confirm=>"提交后将不能修改订单！您确认此次提交吗？" %>
+    </div>
+    <%end%>
 <%end%>

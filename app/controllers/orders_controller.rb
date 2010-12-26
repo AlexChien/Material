@@ -7,28 +7,41 @@ class OrdersController < ApplicationController
       allow :rc
     end
     action :show do
-      allow :rc, :rm
+      allow :rc, :rm, :pm
     end
     action :index, :update do
+      allow :rm, :pm
+    end
+    action :approve_fail_message, :approve_fail do
       allow :rm
     end
+    action :accept_fail_message, :accept_fail do
+      allow :pm
+    end
   end
-  
+
   def index
     order = Order
-    order = order.in_region(current_user.region.id)
+    order = order.in_region(current_user.region.id) if current_user.has_role?("rm")
     @orders = order.paginate(:all,:per_page=>20,:page => params[:page], :order => 'orders.created_at DESC')
   end
 
   def create
-      @order = Order.new(params[:order])
-      @order.campaign = @campaign
+      order = Order.in_region(current_user.region.id).in_catalog(@catalog.id).first
+      if order.nil?
+        @order = Order.new(params[:order])
+        @order.campaign = @campaign
+        @order.region = current_user.region
+      else
+        @order = order
+        @order.memo = nil
+      end
       @order.order_status_id = 1
-      @order.region = current_user.region
       amount = @olirs.first(:select=>"sum(subtotal) as raw_total").raw_total.to_f
       @order.amount = amount
       Order.transaction do
         if @order.save
+          @order.order_line_item_adjusteds.destroy_all
           @olirs.all.each do |olir|
             olir.update_attribute(:order,@order)
             olia = OrderLineItemAdjusted.in_region(current_user.region.id).in_material(olir.material.id).in_order(@order.id).first
@@ -56,20 +69,28 @@ class OrdersController < ApplicationController
 
   def show
     @order = Order.find(params[:id])
-    if @order.region != current_user.region
-      flash[:error] = "不能查看他人订单"
-      redirect_to "/dashboard"
-      return
+    if current_user.has_role?("rc") || current_user.has_role?("rm")
+      if @order.region != current_user.region
+        flash[:error] = "不能查看他人订单"
+        redirect_to "/dashboard"
+        return
+      end
     end
     if current_user.has_role?("rc")
-      render :template => "/orders/rc_show"
+      if @order.order_status_id == 2
+        redirect_to "/campaigns/#{@order.campaign.id}/book"
+      else
+        render :template => "/orders/rc_show"
+      end
     elsif current_user.has_role?("rm")
-      if @order.campaign.campaign_status == 2 && @order.order_status_id ==1 
+      if @order.campaign.campaign_status == 2 && @order.order_status_id ==1
         flash[:error] = "活动已过期"
         redirect_to "/dashboard"
         return
       end
       render :template => "/orders/rm_show"
+    elsif current_user.has_role?("pm")
+      render :template => "/orders/pm_show"
     end
   end
 
@@ -79,13 +100,50 @@ class OrdersController < ApplicationController
     if amount > current_user.region.assigned_budget
       flash[:error] = "您的订单超过预算额度，请重新修改订单"
     else
-      if @order.order_status_id == 1
-        @order.update_attributes(:amount=>amount,:order_status_id=>2)
-        region = current_user.region
-        region.update_attribute(:assigned_budget,region.assigned_budget-amount)
-        flash[:notice] = "订单已提交总部，等待总部审核"
+      if current_user.has_role?("rm")
+        if @order.order_status_id == 1 || @order.order_status_id == 4
+          @order.update_attributes(:amount=>amount,:order_status_id=>3,:memo=>nil)
+          flash[:notice] = "订单已提交总部，等待总部审核"
+        end
+      elsif current_user.has_role?("pm")
+        if @order.order_status_id == 3
+          @order.update_attributes(:amount=>amount,:order_status_id=>5,:memo=>nil)
+          @order.region.update_attribute(:assigned_budget,@order.region.assigned_budget-amount)
+        end
+      end
+    end
+    redirect_to "/orders/#{@order.id}"
+  end
+
+  def approve_fail_message
+    @order = Order.find(params[:id])
+    render :partial => "approve_fail_message"
+  end
+
+  def approve_fail
+    @order = Order.find(params[:id])
+    if @order.order_status_id == 1
+      if @order.update_attributes(:memo=>params[:memo],:order_status_id=>2)
+        flash[:notice] = "订单审批未通过，等待大区协调员重新修改"
       else
-        flash[:error] = "订单已提交，不能重复修改"
+        flash[:error] = "发生未知错误"
+      end
+    end
+    redirect_to "/orders/#{@order.id}"
+  end
+
+  def accept_fail_message
+    @order = Order.find(params[:id])
+    render :partial => "accept_fail_message"
+  end
+
+  def accept_fail
+    @order = Order.find(params[:id])
+    if @order.order_status_id == 3
+      if @order.update_attributes(:memo=>params[:memo],:order_status_id=>4)
+        flash[:notice] = "总部拒绝订单，等待大区管理员重新修改"
+      else
+        flash[:error] = "发生未知错误"
       end
     end
     redirect_to "/orders/#{@order.id}"
@@ -99,12 +157,6 @@ protected
     if @olirs.empty?
       flash[:error] = "订单不能空"
       redirect_to "/campaigns/#{@campaign}/book"
-      return
-    end
-    order = Order.in_region(current_user.region.id).in_catalog(@catalog.id).first
-    if !order.nil?
-      flash[:error] = "订单不能重复提交"
-      redirect_to "/orders/#{order.id}"
       return
     end
     if @campaign.campaign_status != 1

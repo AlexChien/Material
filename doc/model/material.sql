@@ -628,9 +628,10 @@ COMMIT;
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
 INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('1', '待审批', '等待区域经理审批', NULL, NULL);
-INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('2', '已提交', '已提交总部，等待总部审核', NULL, NULL);
-INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('3', '预定接受', '总部接受订单', NULL, NULL);
+INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('2', '审批失败', '订单审批未通过', NULL, NULL);
+INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('3', '已提交', '已提交总部，等待总部审核', NULL, NULL);
 INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('4', '预定拒绝', '总部拒绝订单', NULL, NULL);
+INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('5', '预定接受', '总部接受订单', NULL, NULL);
 
 COMMIT;
 

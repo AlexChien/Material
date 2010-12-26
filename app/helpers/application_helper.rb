@@ -29,6 +29,13 @@ module ApplicationHelper
     if current_user.has_role?("admin")
       admin_manager = [
         {
+        :navleft_header_name => "订单管理",
+        :navleft_header_logo => "/images/icons/cart_edit.png",
+        :navleft => [
+            { :name => "所有订单", :path => "/orders", :id => "orders", :logo => "/images/icons/cart.png"},
+          ]
+        },
+        {
         :navleft_header_name => "活动管理",
         :navleft_header_logo => "/images/icons/date_edit.png",
         :navleft => [
@@ -64,6 +71,13 @@ module ApplicationHelper
     elsif current_user.has_role?("mm")
     elsif current_user.has_role?("pm")
       pm_manager = [
+        {
+        :navleft_header_name => "订单管理",
+        :navleft_header_logo => "/images/icons/cart_edit.png",
+        :navleft => [
+            { :name => "所有订单", :path => "/orders", :id => "orders", :logo => "/images/icons/cart.png"},
+          ]
+        },
         {
         :navleft_header_name => "活动管理",
         :navleft_header_logo => "/images/icons/date_edit.png",

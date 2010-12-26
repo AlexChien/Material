@@ -27,7 +27,7 @@ protected
       flash[:error] = "活动已结束，不能调整数量"
       redirect_to "/orders"
     end
-    if @olia.order.order_status_id != 1
+    if !(@olia.order.order_status_id == 1 || @olia.order.order_status_id == 4)
       flash[:error] = "订单已提交，不能调整数量"
       redirect_to "/orders"
     end

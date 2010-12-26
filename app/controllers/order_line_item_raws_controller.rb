@@ -38,8 +38,8 @@ protected
       flash[:error] = "活动已结束，预订不能修改"
       redirect_to "/campaigns"
     end
-    if !@olir.order.nil?
-      flash[:error] = "订单已生成，预订不能修改"
+    if !@olir.order.nil? && @olir.order.order_status_id != 2
+      flash[:error] = "预订不能修改"
       redirect_to "/campaigns"
     end
   end

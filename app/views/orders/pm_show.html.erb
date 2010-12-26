@@ -15,10 +15,10 @@
     <br/>
 
     <div class="tab" id="order_list">
-        <%if @order.order_status_id == 2%>
-            <font color="red">订单审批失败，等待大区协调员修改</font>
+        <%if @order.order_status_id == 4%>
+            <font color="red">总部拒绝订单，等待大区管理员修改</font>
         <%else%>
-            <%=render :partial=>"rm_order_list"%>
+            <%=render :partial=>"pm_order_list"%>
         <%end%>
     </div>
 </div>

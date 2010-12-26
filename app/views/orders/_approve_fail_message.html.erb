@@ -1,0 +1,32 @@
+<% form_for @order,:url=>{:action=>"approve_fail"},:html=>{:method=>:put,:onSubmit=>"return check_message();"} do |f| -%>
+<table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
+    <tbody>
+        <tr>
+            <td id="tab_tit" colspan="4">审批失败理由</td>
+        </tr>
+        <tr>
+            <td><%= label_tag :memo, "<em>*</em>请填写审批失败理由" %></td>
+            <td class="td_left">
+                <%= text_area_tag :memo %>
+            </td>
+        </tr>
+        <tr><td id="tab_tit" colspan="4"></td>
+        </tr>
+    </tbody>
+</table>
+<br/>
+<div class="tab_btn">
+    <%= f.submit "提交",:class=>"button_btn",:confirm=>"提交后将等待大区协调员修改订单！您确认此次提交吗？" %>
+    <input type="button" onclick="$('#approve_fail_message').html('');" class="button_btn" value="取消"></input>
+</div>
+<%end%>
+
+<%javascript_tag do%>
+    function check_message(){
+        var memo = $("#memo").val();
+        if(memo.length<=0){
+            alert("请输入审批失败理由");
+            return false;
+        }
+    }
+<%end%>
