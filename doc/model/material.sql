@@ -492,9 +492,9 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `transfers` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `from_region_id` INT NULL ,
-  `to_region_id` INT NOT NULL ,
+  `to_region_id` INT NULL ,
   `from_warehouse_id` INT NULL ,
-  `to_warehouse_id` INT NOT NULL ,
+  `to_warehouse_id` INT NULL ,
   `amount` DECIMAL(8,2) NOT NULL DEFAULT 0 ,
   `transfer_type_id` INT NOT NULL ,
   `memo` TEXT NULL ,

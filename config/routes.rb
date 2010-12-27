@@ -16,14 +16,15 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :salesreps
 
-  map.resources :order_line_item_raws,:member=>{:apply_update=>:put}
+  map.resources :order_line_item_raws,:member=>{:apply_update=>:put,:check_provide=>:get}
 
   map.resources :order_line_item_adjusteds
 
   map.resources :orders,:member=>{:approve_fail_message=>:get,
                                   :approve_fail=>:put,
                                   :accept_fail_message=>:get,
-                                  :accept_fail=>:put}
+                                  :accept_fail=>:put,
+                                  :provide=>:get}
 
   map.resources :productions
 

@@ -19,7 +19,7 @@ class InventoriesController < ApplicationController
     i_m_central = Inventory.in_warehouse(Warehouse.in_central(true).first.id).in_material(@material.id).first
     i_m = Inventory.in_warehouse(@region.warehouse.id).in_material(@material.id).first
     total = 0
-    order = Order.in_order_status(5).in_region(@region.id).first
+    order = Order.in_region(@region.id).first
     unless order.nil?
       olia = order.order_line_item_adjusteds.in_material(@material.id).first
       total = olia.nil? ? 0 : olia.quantity_total

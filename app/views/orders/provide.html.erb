@@ -1,0 +1,91 @@
+<% content_for :title, "查看订单" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "orders"} %>
+
+<div id="main">
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+    <%= render :partial => 'shared/s_path'%>
+    <%end%>
+
+    <div class="campaign_info">
+        <p>活动名称：<%=@order.campaign.name%></p>
+        <p>预定时间：<%=@order.campaign.catalog_startdate%> 至  <%=@order.campaign.catalog_enddate%> （<%=@order.campaign.show_status%>）</p>
+        <p>活动简介：<%=@order.campaign.description%></p>
+    </div>
+    <br/>
+<%form_for @order do |f|%>
+    <div class="tab">
+    <table cellspacing="1" cellpadding="0" border="0" width="786">
+        <tbody>
+            <tr>
+                <td colspan="12" id="tab_tit">订单详细<%=@order.nil? ? "" : "(#{@order.order_status.name})"%></td>
+            </tr>
+            <tr>
+                <td class="f_tab">标识码</td>
+                <td class="f_tab">物料图片</td>
+                <td class="f_tab">物料名称</td>
+                <td class="f_tab">所属区</td>
+                <td class="f_tab">销售姓名</td>
+                <td class="f_tab">物料价格</td>
+                <td class="f_tab">预定数量</td>
+                <td class="f_tab">小计</td>
+                <td class="f_tab">调整申请数量</td>
+                <td class="f_tab">申请总数</td>
+                <td class="f_tab">申请小计</td>
+                <td class="f_tab">
+                    发放数量
+                </td>
+            </tr>
+
+            <%@olirs.each do |olir|%>
+            <tr>
+                <td><%=olir.material.itemno%></td>
+                <td><%=image_tag (olir.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+                <td><%=olir.material.name%></td>
+                <td><%=olir.region.name%></td>
+                <td><%=olir.salesrep.name%></td>
+                <td><%=olir.unit_price%></td>
+                <td><%=olir.quantity%></td>
+                <td>￥<%=olir.subtotal%></td>
+                <td>
+                    <%=olir.apply_adjust%>
+                </td>
+                <td><%=olir.apply_quantity%></td>
+                <td>￥<%=olir.apply_subtotal%></td>
+                <td><input type='text' name='provide_<%=olir.id%>' style='width:30px;' value="<%=olir.apply_quantity%>" class='provide' id='provide_<%=olir.id%>'></td>
+            </tr>
+            <%end%>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>总计：￥<%=OrderLineItemRaw.raw_total(@campaign.campaign_catalog.id,current_user.region.id)%></td>
+                <td></td>
+                <td></td>
+                <td>申请总计：￥<%=OrderLineItemRaw.raw_total(@campaign.campaign_catalog.id,current_user.region.id)%></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td colspan="12" id="tab_tit02"><font color="green">共有<%=@olirs.size%>条记录</font></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <br/>
+    <div class="tab_btn">
+        <%= f.submit "确认发放",:class=>"button_btn",:confirm=>"您确认此次发放吗？" %>
+    </div>
+<%end%>
+</div>
+
+<div id="provide_message"></div>
+<%javascript_tag do%>
+    $(".provide").change(function(){
+$("#provide_message").load("/order_line_item_raws/"+this.name.replace("provide_","")+"/check_provide?quantity="+this.value);
+    })
+<%end%>

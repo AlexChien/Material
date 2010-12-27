@@ -1,9 +1,14 @@
 class OrderLineItemRawsController < ApplicationController
   before_filter :login_required
-  before_filter :check,:except=>["apply_update"]
+  before_filter :check,:except=>["apply_update","check_provide"]
 
   access_control do
-    allow :rc
+    action :update, :destroy, :apply_update do
+      allow :rc
+    end
+    action :check_provide do
+      allow :wa
+    end
   end
 
   def update
@@ -45,6 +50,17 @@ class OrderLineItemRawsController < ApplicationController
     @order = @olir.order
     @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
     render :partial => "orders/rc_apply_list"
+  end
+
+  def check_provide
+    @olir = OrderLineItemRaw.find(params[:id])
+    i = Inventory.in_material(@olir.material.id).in_region(@olir.region.id).first
+    if params[:quantity].to_i < 0
+      @error_message = "发放数量不能小于0"
+    elsif i.quantity < params[:quantity].to_i
+      @error_message = "仓库库存量不足"
+    end
+    render :partial=>"message"
   end
 
 protected

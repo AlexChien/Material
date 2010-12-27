@@ -6,6 +6,9 @@ class OrdersController < ApplicationController
     action :create do
       allow :rc
     end
+    action :index, :provide, :update do
+      allow :wa
+    end
     action :index, :show, :update do
       allow :rc, :rm, :pm
     end
@@ -21,6 +24,7 @@ class OrdersController < ApplicationController
     order = Order
     order = order.in_region(current_user.region.id) if current_user.has_role?("rm")
     order = order.in_region(current_user.region.id) if current_user.has_role?("rc")
+    order = order.in_region(current_user.region.id).in_order_status(8) if current_user.has_role?("wa")
     @orders = order.paginate(:all,:per_page=>20,:page => params[:page], :order => 'orders.created_at DESC')
   end
 
@@ -127,6 +131,27 @@ class OrdersController < ApplicationController
           @order.update_attributes(:order_status_id=>7,:memo=>nil)
           flash[:notice] = "申请已提交，等待区域经理审批"
         end
+      elsif current_user.has_role?("wa")
+        if @order.order_status_id == 8
+          @order.order_line_item_raws.each do |olir|
+            provide = params["provide_#{olir.id}".to_sym].to_i
+            params = {:from_region_id=>@order.region.id,
+                      :from_warehouse_id=>@order.region.warehouse.id,
+                      :transfer_type_id=>4,
+                      :transfer_line_items_attributes=>{"0"=>{"material_id"=>"#{olir.material.id}",
+                                                              "quantity"=>"-#{provide}",
+                                                              "unit_price"=>"#{olir.unit_price}",
+                                                              "subtotal"=>"-#{olir.unit_price*provide}",
+                                                              "region_id"=>"#{@order.region.id}",
+                                                              "warehouse_id"=>"#{@order.region.warehouse.id}"}}
+                      }
+            Transfer.new(params).save
+          end
+          @order.update_attributes(:order_status_id=>9,:memo=>nil)
+          flash[:notice] = "物料已发放"
+          redirect_to "/orders"
+          return
+        end
       end
     end
     redirect_to "/orders/#{@order.id}"
@@ -164,6 +189,12 @@ class OrdersController < ApplicationController
       end
     end
     redirect_to "/orders/#{@order.id}"
+  end
+
+  def provide
+    @order = Order.find(params[:id])
+    @campaign = @order.campaign
+    @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
   end
 
 protected

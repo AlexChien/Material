@@ -40,7 +40,11 @@
                             <%elsif order.order_status_id==2%>
                                 等待修改！
                             <%else%>
-                                <%= link_to "查看订单", order_url(order),:target=>"_blank"%>
+                                <%if current_user.has_role?("wa")%>
+                                    <%= link_to "物料发放", provide_order_url(order),:target=>"_blank"%>
+                                <%else%>
+                                    <%= link_to "查看订单", order_url(order),:target=>"_blank"%>
+                                <%end%>
                             <%end%>
                         </td>
                     </tr>

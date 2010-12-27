@@ -113,6 +113,13 @@ module ApplicationHelper
             { :name => "总仓库", :path => "/inventories?is_central=1", :id => "inventories_1", :logo => "/images/icons/package.png"},
             { :name => "其他仓库", :path => "/inventories?is_central=0", :id => "inventories_0", :logo => "/images/icons/package_go.png"},
           ]
+        },
+        {
+        :navleft_header_name => "物料发放",
+        :navleft_header_logo => "/images/icons/cart_edit.png",
+        :navleft => [
+            { :name => "已审批发放", :path => "/orders", :id => "orders", :logo => "/images/icons/cart.png"},
+          ]
         }
       ]
       navleft.concat(wa_manager)
