@@ -6,11 +6,8 @@ class OrdersController < ApplicationController
     action :create do
       allow :rc
     end
-    action :show do
+    action :index, :show, :update do
       allow :rc, :rm, :pm
-    end
-    action :index, :update do
-      allow :rm, :pm
     end
     action :approve_fail_message, :approve_fail do
       allow :rm
@@ -23,6 +20,7 @@ class OrdersController < ApplicationController
   def index
     order = Order
     order = order.in_region(current_user.region.id) if current_user.has_role?("rm")
+    order = order.in_region(current_user.region.id) if current_user.has_role?("rc")
     @orders = order.paginate(:all,:per_page=>20,:page => params[:page], :order => 'orders.created_at DESC')
   end
 
@@ -69,6 +67,7 @@ class OrdersController < ApplicationController
 
   def show
     @order = Order.find(params[:id])
+    @campaign = @order.campaign
     if current_user.has_role?("rc") || current_user.has_role?("rm")
       if @order.region != current_user.region
         flash[:error] = "不能查看他人订单"
@@ -79,6 +78,9 @@ class OrdersController < ApplicationController
     if current_user.has_role?("rc")
       if @order.order_status_id == 2
         redirect_to "/campaigns/#{@order.campaign.id}/book"
+      elsif @order.order_status_id == 6 || @order.order_status_id == 7
+        @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
+        render :template => "/orders/rc_apply"
       else
         render :template => "/orders/rc_show"
       end
@@ -88,7 +90,12 @@ class OrdersController < ApplicationController
         redirect_to "/dashboard"
         return
       end
-      render :template => "/orders/rm_show"
+      if @order.order_status_id == 7
+        @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
+        render :template => "/orders/rm_apply_show"
+      else
+        render :template => "/orders/rm_show"
+      end
     elsif current_user.has_role?("pm")
       render :template => "/orders/pm_show"
     end
@@ -105,10 +112,20 @@ class OrdersController < ApplicationController
           @order.update_attributes(:amount=>amount,:order_status_id=>3,:memo=>nil)
           flash[:notice] = "订单已提交总部，等待总部审核"
         end
+        if @order.order_status_id == 7
+          @order.update_attributes(:order_status_id=>8,:memo=>nil)
+          flash[:notice] = "申请已批准，等待仓库管理员发货"
+        end
       elsif current_user.has_role?("pm")
         if @order.order_status_id == 3
           @order.update_attributes(:amount=>amount,:order_status_id=>5,:memo=>nil)
           @order.region.update_attribute(:assigned_budget,@order.region.assigned_budget-amount)
+          flash[:notice] = "总部接受订单"
+        end
+      elsif current_user.has_role?("rc")
+        if @order.order_status_id == 6
+          @order.update_attributes(:order_status_id=>7,:memo=>nil)
+          flash[:notice] = "申请已提交，等待区域经理审批"
         end
       end
     end

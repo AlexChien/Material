@@ -56,6 +56,15 @@ class TransfersController < ApplicationController
                                                             "warehouse_id"=>"#{@transfer.from_warehouse_id}"}}
                     }
           Transfer.new(params).save#transfer创建一条相反的记录
+
+          #检查物料是否全部送达，来更新订单状态
+          olia = OrderLineItemAdjusted.in_material(@material.id).in_region(@transfer.to_region.id).is_arrived(0).first
+          unless olia.nil?
+            i = Inventory.in_region(@transfer.to_region.id).in_material(@material.id).first
+            olia.update_attribute(:arrived,1) if i.quantity >= olia.quantity_total
+            olia.order.update_attribute(:order_status_id,6) if OrderLineItemAdjusted.in_order(olia.order.id).is_arrived(0).empty?
+          end
+
           flash[:notice] = "物料#{@material.name}转移成功"
           redirect_to "/inventories?is_central=0"
         else

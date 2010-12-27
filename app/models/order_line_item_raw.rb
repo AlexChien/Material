@@ -26,4 +26,8 @@ class OrderLineItemRaw < ActiveRecord::Base
     self.in_catalog(catalog_id).in_region(region_id).first(:select=>"sum(subtotal) as raw_total").raw_total.to_f
   end
 
+  def self.apply_total(catalog_id,region_id)
+    self.in_catalog(catalog_id).in_region(region_id).first(:select=>"sum(apply_subtotal) as apply_total").apply_total.to_f
+  end
+
 end

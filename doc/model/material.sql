@@ -297,6 +297,9 @@ CREATE  TABLE IF NOT EXISTS `order_line_item_raws` (
   `quantity` INT NOT NULL DEFAULT 0 ,
   `unit_price` DECIMAL(8,2) NOT NULL DEFAULT 0 ,
   `subtotal` DECIMAL(8,2) NOT NULL DEFAULT 0 ,
+  `apply_adjust` INT NOT NULL DEFAULT 0 ,
+  `apply_quantity` INT NOT NULL DEFAULT 0 ,
+  `apply_subtotal` DECIMAL(8,2) NOT NULL DEFAULT 0 ,
   `created_at` DATETIME NULL ,
   `updated_at` DATETIME NULL ,
   INDEX `fk_materials_has_orders_orders1` (`order_id` ASC) ,
@@ -352,6 +355,7 @@ CREATE  TABLE IF NOT EXISTS `order_line_item_adjusteds` (
   `quantity_total` INT NOT NULL DEFAULT 0 COMMENT 'quantity_total = quantity_collected + quantity_adjust' ,
   `unit_price` DECIMAL(8,2) NOT NULL DEFAULT 0 ,
   `subtotal` DECIMAL(8,2) NOT NULL DEFAULT 0 ,
+  `arrived` INT NOT NULL DEFAULT 0 ,
   `created_at` DATETIME NULL ,
   `updated_at` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
@@ -632,6 +636,10 @@ INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_
 INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('3', '已提交', '已提交总部，等待总部审核', NULL, NULL);
 INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('4', '预定拒绝', '总部拒绝订单', NULL, NULL);
 INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('5', '预定接受', '总部接受订单', NULL, NULL);
+INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('6', '物料已送达', '物料已送达，大区可开始申领', NULL, NULL);
+INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('7', '物料申请中', '申请已提交，等待区域经理审批', NULL, NULL);
+INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('8', '申请审批', '审批已通过，等待仓库管理员发货', NULL, NULL);
+INSERT INTO order_statuses (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES ('9', '物料已发放', NULL, NULL, NULL);
 
 COMMIT;
 

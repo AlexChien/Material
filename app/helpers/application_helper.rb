@@ -137,6 +137,13 @@ module ApplicationHelper
           ]
         },
         {
+        :navleft_header_name => "我要申领",
+        :navleft_header_logo => "/images/icons/basket_edit.png",
+        :navleft => [
+            { :name => "物料申领", :path => "/orders", :id => "orders", :logo => "/images/icons/basket.png"},
+          ]
+        },
+        {
         :navleft_header_name => "销售代表",
         :navleft_header_logo => "/images/icons/user_edit.png",
         :navleft => [
