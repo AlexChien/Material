@@ -122,7 +122,10 @@ class CampaignsController < ApplicationController
     @catalog = @campaign.campaign_catalog
     @production = @catalog.production
     if @production.nil?
-      order_ids = @catalog.order_ids
+      order_ids = []
+      @catalog.orders.in_order_status(5).each do |order|
+        order_ids << order.id
+      end
       olias = OrderLineItemAdjusted.in_order(order_ids).all(:select=>"sum(quantity_total) as quantity_total,order_line_item_adjusteds.*",:group=>"material_id")
       Production.transaction do
         @production = Production.create(:campaign=>@campaign,:catalog=>@catalog)

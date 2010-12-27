@@ -69,11 +69,14 @@
 <%javascript_tag do%>
     $(function(){
         var material_id = $("#transfer_transfer_line_items_attributes_0_material_id").val();
-        $("#calculate_amount").load("/inventories/calculate_materials?material_id="+material_id);
+        var region_id = $("#transfer_to_region_id").val();
+        $("#calculate_amount").load("/inventories/calculate_materials?material_id="+material_id+"&region_id="+region_id);
     })
 
-    $("#transfer_transfer_line_items_attributes_0_material_id").change(function(){
-        $("#calculate_amount").load("/inventories/calculate_materials?material_id="+this.value);
+    $("#transfer_transfer_line_items_attributes_0_material_id,#transfer_to_region_id").change(function(){
+        var material_id = $("#transfer_transfer_line_items_attributes_0_material_id").val();
+        var region_id = $("#transfer_to_region_id").val();
+        $("#calculate_amount").load("/inventories/calculate_materials?material_id="+material_id+"&region_id="+region_id);
     })
 
     function check_quantity(){

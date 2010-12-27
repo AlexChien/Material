@@ -8,7 +8,7 @@ class Catalog < ActiveRecord::Base
 
   validates_presence_of :order_startdate,:order_enddate
   validate :start_date_check,:order_startdate
-  validate :end_date_check,:order_enddate
+  # validate :end_date_check,:order_enddate
 
 protected
   def start_date_check
@@ -18,7 +18,7 @@ protected
       end
     end
   end
-  
+
   def end_date_check
     if !self.order_startdate.nil? and !self.order_enddate.nil?
       if Date.today > self.order_enddate.to_date
