@@ -108,8 +108,8 @@ class OrdersController < ApplicationController
   def update
     @order = Order.find(params[:id])
     amount = @order.order_line_item_adjusteds.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f
-    if amount > current_user.region.assigned_budget
-      flash[:error] = "您的订单超过预算额度，请重新修改订单"
+    if amount > current_user.region.redeemable_budget
+      flash[:error] = "您的订单超过预算使用额度，请重新修改订单"
     else
       if current_user.has_role?("rm")
         if @order.order_status_id == 1 || @order.order_status_id == 4
@@ -123,7 +123,7 @@ class OrdersController < ApplicationController
       elsif current_user.has_role?("pm")
         if @order.order_status_id == 3
           @order.update_attributes(:amount=>amount,:order_status_id=>5,:memo=>nil)
-          @order.region.update_attribute(:assigned_budget,@order.region.assigned_budget-amount)
+          @order.region.update_attribute(:used_budget,@order.region.used_budget+amount)
           flash[:notice] = "总部接受订单"
         end
       elsif current_user.has_role?("rc")

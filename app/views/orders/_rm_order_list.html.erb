@@ -58,8 +58,8 @@
             <%if @order.order_status_id ==1 || @order.order_status_id ==4%>
             <td style="text-align:left;padding-left:5px;width:150px;">
                 预定总计：￥<%=order_amount%><br/>
-                大区预算：￥<%=current_user.region.assigned_budget%><br/>
-                预算剩余：￥<%=current_user.region.assigned_budget - order_amount%><br/>
+                可使用预算：￥<%=current_user.region.redeemable_budget%><br/>
+                将剩余预算：￥<%=current_user.region.redeemable_budget - order_amount%><br/>
             </td>
             <%else%>
             <td>总计：￥<%=order_amount%></td>
