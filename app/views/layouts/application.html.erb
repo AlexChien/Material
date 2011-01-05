@@ -4,22 +4,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="/stylesheets/powerposm/admin.css" rel="stylesheet" type="text/css" />
 <link href="/stylesheets/powerposm/ui-lightness/jquery-ui-1.8.7.custom.css" rel="stylesheet" type="text/css" />
-<%= javascript_include_tag 'powerposm/jquery-1.4.4.min.js','powerposm/jquery-ui-1.8.7.custom.min.js','powerposm/application'%>
+<%= javascript_include_tag 'powerposm/jquery-1.4.4.min.js','powerposm/jquery-ui-1.8.7.custom.min.js','powerposm/jquery.progressbar.min.js','powerposm/application'%>
 <title><%= yield_title yield(:title) %></title>
 </head>
 <body>
 <div id="container">
-	<%= render :partial => 'shared/header' %>
+    <%= render :partial => 'shared/header' %>
 
-	<div id="flash">
-		<%= flash_message %>
-	</div>
+    <div id="flash">
+        <%= flash_message %>
+    </div>
 
-	<div id="content">
-		<%= yield %>
-	</div>
+    <div id="content">
+        <%= yield %>
+    </div>
 
-	<%= render :partial => 'shared/footer' %>
+    <%= render :partial => 'shared/footer' %>
 </div>
 </body>
 </html>
