@@ -16,6 +16,12 @@
                     <td id="tab_tit" colspan="4">更新物料</td>
                 </tr>
                 <tr>
+                    <td><%= f.label :sku, "<em>*</em>sku" %></td>
+                    <td class="td_left">
+                        <%= f.text_field :sku %>
+                    </td>
+                </tr>
+                <tr>
                     <td><%= f.label :name, "<em>*</em>物料名称" %></td>
                     <td class="td_left">
                         <%= f.text_field :name %>
@@ -28,6 +34,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td><%= f.label :min_num, "最小起订量" %></td>
+                    <td class="td_left">
+                        <%= f.text_field :min_num %>
+                    </td>
+                </tr>
+                <tr>
                     <td>当前示意图</td>
                     <td class="td_left">
                         <%=image_tag (@material.uploaded_data.url)%>
@@ -37,6 +49,12 @@
                     <td><%= f.label :uploaded_data, "上传示意图" %></td>
                     <td class="td_left">
                         <%= f.file_field :uploaded_data%>
+                    </td>
+                </tr>
+                <tr>
+                    <td><%= f.label :pack_spec, "包装规格" %></td>
+                    <td class="td_left">
+                        <%= f.text_area :pack_spec %>
                     </td>
                 </tr>
                 <tr>

@@ -11,23 +11,29 @@
         <table width="786" cellspacing="1" cellpadding="0" border="0">
             <tbody>
                 <tr>
-                    <td id="tab_tit" colspan="8">所有物料</td>
+                    <td id="tab_tit" colspan="10">所有物料</td>
                 </tr>
                 <tr>
+                    <td class="f_tab">sku</td>
                     <td class="f_tab">物料标识码</td>
                     <td class="f_tab">物料示意图</td>
                     <td class="f_tab">物料名称</td>
                     <td class="f_tab">物料市场价</td>
-                    <td class="f_tab" width="200">使用指导</td>
-                    <td class="f_tab" width="200">详细描述</td>
+                    <td class="f_tab">最小起订量</td>
+                    <td class="f_tab" width="120">包装规格</td>
+                    <td class="f_tab" width="120">使用指导</td>
+                    <td class="f_tab" width="120">详细描述</td>
                     <td class="f_tab">操作</td>
                 </tr>
                 <%@materials.each do |material|%>
                     <tr>
+                        <td><%=material.sku%></td>
                         <td><%=material.itemno%></td>
                         <td><%=image_tag (material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
                         <td><%=material.name%></td>
                         <td><%=material.cost%></td>
+                        <td><%=material.min_num%></td>
+                        <td><%=material.pack_spec%></td>
                         <td><%=material.usage%></td>
                         <td><%=material.memo%></td>
                         <td>
@@ -37,7 +43,7 @@
                     </tr>
                 <%end%>
                 <tr>
-                    <td id="tab_tit02" colspan="8"><font color="green">共有<%=@materials.total_entries%>条记录</font></td>
+                    <td id="tab_tit02" colspan="10"><font color="green">共有<%=@materials.total_entries%>条记录</font></td>
                 </tr>
             </tbody>
         </table>

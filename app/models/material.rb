@@ -6,11 +6,12 @@ class Material < ActiveRecord::Base
   has_many :production_line_items
   has_many :inventories
   has_many :transfer_line_items
-  
-  validates_presence_of :name
-  validates_uniqueness_of :name
+
+  validates_presence_of :name,:sku
+  validates_uniqueness_of :name,:sku
   validates_numericality_of :cost,:greater_than_or_equal_to=>0
-  
+  validates_numericality_of :min_num,:greater_than_or_equal_to=>0
+
   has_attached_file :uploaded_data,
                     :default_url => "/images/powerposm/missing.jpg",
                     :url => "/images/assets/:attachment/:id/:style/:filename",
@@ -22,22 +23,22 @@ class Material < ActiveRecord::Base
   validates_attachment_size :uploaded_data,
     :less_than => 5.megabyte, #another option is :greater_than
     :message => "上传文件小于5M"
-  
+
   after_create :generate_item_no
-  
+
   named_scope :in_state, lambda {|state|
         {:conditions => ["materials.state = ?", state]}
   }
-  
+
   state_machine :initial => :activated do
     event :delete_material  do transition all => :deleted end
   end
-  
+
 protected
-  
-  def generate_item_no(prefix="jj")
+
+  def generate_item_no(prefix="powerposm")
     time = Time.now.to_i.to_s
     self.update_attribute(:itemno,prefix + "_" + time + "_" + self.id.to_s)
   end
-    
+
 end
