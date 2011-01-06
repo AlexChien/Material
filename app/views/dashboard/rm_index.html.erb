@@ -1,0 +1,38 @@
+<% content_for :title, "管理首页" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "dashboard"} %>
+
+<div id="main">
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+        <%= render :partial => 'shared/s_path'%>
+    <%end%>
+
+    <%@orders.each do |order|%>
+        <div class="info">
+            <div class="info_action">
+                <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
+            </div>
+            <div class="info_content">
+                <p class="single">
+                    <strong><%=order.region.name%>在活动<%=order.campaign.name%>中进行了预定.</strong>
+                    <a href="/orders/<%=order.id%>" target="_blank">去审批.</a>
+                </p>
+            </div>
+        </div>
+    <%end%>
+
+    <%@order4s.each do |order|%>
+        <div class="info">
+            <div class="info_action">
+                <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
+            </div>
+            <div class="info_content">
+                <p class="single">
+                    <strong>活动<%=order.campaign.name%>的预定审批失败.</strong>
+                    <a href="/orders/<%=order.id%>" target="_blank">去修改.</a>
+                </p>
+            </div>
+        </div>
+    <%end%>
+
+</div>

@@ -37,6 +37,20 @@
         <%end%>
     <%end%>
 
+    <%@orders.each do |order|%>
+        <div class="info">
+            <div class="info_action">
+                <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
+            </div>
+            <div class="info_content">
+                <p class="single">
+                    <strong><%=order.region.name%>在活动<%=order.campaign.name%>中进行了预定.</strong>
+                    <a href="/orders/<%=order.id%>" target="_blank">去审核.</a>
+                </p>
+            </div>
+        </div>
+    <%end%>
+
     <div class="tab">
         <table width="786" cellspacing="1" cellpadding="0" border="0">
             <tbody>

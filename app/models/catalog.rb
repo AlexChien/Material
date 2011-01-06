@@ -10,6 +10,12 @@ class Catalog < ActiveRecord::Base
   validate :start_date_check,:order_startdate
   # validate :end_date_check,:order_enddate
 
+  named_scope :starting, lambda {|boolean|
+    if boolean
+      {:conditions => ["'#{Date.today}' >= catalogs.order_startdate and '#{Date.today}' <= catalogs.order_enddate"]}
+    end
+  }
+
 protected
   def start_date_check
     if !self.order_startdate.nil? and !self.order_enddate.nil?

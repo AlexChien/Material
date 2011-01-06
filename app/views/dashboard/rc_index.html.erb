@@ -1,0 +1,41 @@
+<% content_for :title, "管理首页" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "dashboard"} %>
+
+<div id="main">
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+        <%= render :partial => 'shared/s_path'%>
+    <%end%>
+
+    <%@catalogs.each do |catalog|%>
+    <%o=Order.in_region(current_user.region).in_catalog(catalog).first%>
+        <%if o.nil?%>
+            <div class="info">
+                <div class="info_action">
+                    <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
+                </div>
+                <div class="info_content">
+                    <p class="single">
+                        <strong>活动<%=catalog.campaign.name%>正在进行中.</strong>
+                        <a href="/campaigns/<%=catalog.campaign.id%>/book" target="_blank">去预定.</a>
+                    </p>
+                </div>
+            </div>
+        <%end%>
+    <%end%>
+
+    <%@orders.each do |order|%>
+        <div class="info">
+            <div class="info_action">
+                <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
+            </div>
+            <div class="info_content">
+                <p class="single">
+                    <strong>活动<%=order.campaign.name%>的预定审批失败.</strong>
+                    <a href="/orders/<%=order.id%>" target="_blank">去修改.</a>
+                </p>
+            </div>
+        </div>
+    <%end%>
+
+</div>
