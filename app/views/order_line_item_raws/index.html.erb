@@ -11,7 +11,11 @@
         <table width="786" cellspacing="1" cellpadding="0" border="0">
             <tbody>
                 <tr>
-                    <td id="tab_tit" colspan="9">可申领物料</td>
+                    <td id="tab_tit" colspan="9">
+                        <%if current_user.has_role?("rc")%>可申领物料<%end%>
+                        <%if current_user.has_role?("rm")%>待审批物料<%end%>
+                        <%if current_user.has_role?("wa")%>等待发货<%end%>
+                    </td>
                 </tr>
                 <tr>
                     <td class="f_tab">标识码</td>
@@ -20,8 +24,7 @@
                     <td class="f_tab">所属活动</td>
                     <td class="f_tab">所属区</td>
                     <td class="f_tab">销售姓名</td>
-                    <td class="f_tab">物料价格</td>
-                    <td class="f_tab">预定数量</td>
+                    <td class="f_tab">当前状态</td>
                     <td class="f_tab">操作</td>
                 </tr>
                 <%@olirs.each do |olir|%>
@@ -32,9 +35,34 @@
                         <td><%=olir.campaign.name%></td>
                         <td><%=olir.region.name%></td>
                         <td><%=olir.salesrep.name%></td>
-                        <td><%=olir.unit_price%></td>
-                        <td><%=olir.quantity%></td>
-                        <td><%=link_to "我要申领", "/order_line_item_raws/#{olir.id}/apply",:target=>"_blank"%></td>
+                        <td><%=olir.show_status%></td>
+                        <td>
+                            <%if current_user.has_role?("rc")%>
+                                <%if olir.status == 1%>
+                                    <%=link_to "我要申领", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%elsif olir.status == 4%>
+                                    <%=link_to "确认收货", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%else%>
+                                    <%=link_to "查看详细", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%end%>
+                            <%end%>
+
+                            <%if current_user.has_role?("rm")%>
+                                <%if olir.status == 2%>
+                                    <%=link_to "我要审批", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%else%>
+                                    <%=link_to "查看详细", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%end%>
+                            <%end%>
+
+                            <%if current_user.has_role?("wa")%>
+                                <%if olir.status == 3%>
+                                    <%=link_to "我要发货", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%else%>
+                                    <%=link_to "查看详细", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%end%>
+                            <%end%>
+                        </td>
                     </tr>
                 <%end%>
                 <tr>

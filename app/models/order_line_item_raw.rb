@@ -38,4 +38,20 @@ class OrderLineItemRaw < ActiveRecord::Base
     self.in_catalog(catalog_id).in_region(region_id).first(:select=>"sum(apply_subtotal) as apply_total").apply_total.to_f
   end
 
+  def show_status
+    if self.status == 0
+      "物料未送达"
+    elsif self.status == 1
+      "物料待申领"
+    elsif self.status == 2
+      "申领审批中"
+    elsif self.status == 3
+      "等待发货"
+    elsif self.status == 4
+      "等待收货确认"
+    elsif self.status == 5
+      "确认已收货"
+    end
+  end
+
 end

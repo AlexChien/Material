@@ -1,10 +1,14 @@
 class OrderLineItemRawsController < ApplicationController
   before_filter :login_required
-  before_filter :check,:except=>["apply_update","check_provide","index","apply"]
+  before_filter :check,:only=>["update","destroy"]
 
   access_control do
-    action :index, :apply, :update, :destroy, :apply_update do
+
+    action :update, :destroy, :apply_update do
       allow :rc
+    end
+    action :index, :show, :update_status do
+      allow :rc, :rm, :wa
     end
     action :check_provide do
       allow :wa
@@ -13,7 +17,9 @@ class OrderLineItemRawsController < ApplicationController
 
   def index
     olir = OrderLineItemRaw
-    olir = olir.in_status(1).in_region(current_user.region)
+    olir = olir.in_status([1,2,3,4,5]).in_region(current_user.region) if current_user.has_role?("rc")
+    olir = olir.in_status([2,3,4,5]).in_region(current_user.region) if current_user.has_role?("rm")
+    olir = olir.in_status([3,4,5]).in_region(current_user.region) if current_user.has_role?("wa")
     @olirs = olir.paginate(:all,:include=>[:campaign,:material,:region,:salesrep],:per_page=>20,:page => params[:page], :order => 'order_line_item_raws.created_at DESC')
   end
 
@@ -41,19 +47,93 @@ class OrderLineItemRawsController < ApplicationController
     @olirs = olir.all(:order=>"created_at DESC")
   end
 
-  def apply
+  def show
     @olir = OrderLineItemRaw.find(params[:id])
-    if @olir.region != current_user.region
-      flash[:error] = "不能查看他人申请"
-      redirect_to "/order_line_items"
+
+    if @olir.status == 0
+      flash[:error] = "物料未送达"
+      redirect_to "/order_line_item_raws"
       return
     end
+
+    if current_user.has_role?("rc") || current_user.has_role?("rm")
+      if @olir.region != current_user.region
+        flash[:error] = "不能查看他人申请"
+        redirect_to "/order_line_item_raws"
+        return
+      end
+    end
+
+    if current_user.has_role?("rm")
+      if @olir.status == 1
+        flash[:error] = "物料申请中"
+        redirect_to "/order_line_item_raws"
+        return
+      end
+    end
+  end
+
+  def update_status
+    @olir = OrderLineItemRaw.find(params[:id])
+    if current_user.has_role?("rc")
+      if @olir.status == 1
+        @olir.status = 2
+        @olir.update_attributes(params[:order_line_item_raw])
+        flash[:notice] = "申请已提交，等待区域经理审批"
+      end
+
+      if @olir.status == 4
+        @olir.update_attribute(:status,5)
+        flash[:notice] = "确认已收货，申请完成"
+      end
+    end
+
+    if current_user.has_role?("rm")
+      if @olir.status == 2
+        @olir.update_attribute(:status,3)
+        flash[:notice] = "审批已通过，等待仓库管理员发货"
+      end
+    end
+
+    if current_user.has_role?("wa")
+      if @olir.status == 3
+        i = Inventory.in_region(@olir.region).in_material(@olir.material).first
+        if i.nil?
+          flash[:error] = "库存不足，不能发放"
+        else
+          if i.quantity < @olir.apply_quantity
+            flash[:error] = "库存不足，不能发放"
+          else
+            params = {:from_region_id=>@olir.order.region.id,
+                      :from_warehouse_id=>Warehouse.in_central(true).first.id,
+                      :amount=>"-#{@olir.unit_price*@olir.apply_quantity}",
+                      :transfer_type_id=>4,
+                      :transfer_line_items_attributes=>{"0"=>{"material_id"=>"#{@olir.material.id}",
+                                                              "quantity"=>"-#{@olir.apply_quantity}",
+                                                              "unit_price"=>"#{@olir.unit_price}",
+                                                              "subtotal"=>"-#{@olir.unit_price*@olir.apply_quantity}",
+                                                              "region_id"=>"#{@olir.order.region.id}",
+                                                              "salesrep_id"=>"#{@olir.salesrep.id}",
+                                                              "warehouse_id"=>"#{Warehouse.in_central(true).first.id}"}}
+                      }
+            Transfer.new(params).save
+            @olir.update_attribute(:status,4)
+            flash[:notice] = "货物已发放，等待大区管理员收货"
+          end
+        end
+      end
+    end
+
+    redirect_to "/order_line_item_raws/#{@olir.id}"
   end
 
   def apply_update
     quantity = params[:quantity].to_i
-    @campaign = Campaign.find(params[:campaign_id])
     @olir = OrderLineItemRaw.find(params[:id])
+    if @olir.status != 1
+      render :text => "不能修改申请总数"
+      return
+    end
     olia = OrderLineItemAdjusted.in_order(@olir.order.id).in_region(current_user.region.id).in_material(@olir.material.id).first
     if @olir.quantity+quantity < 0
       @error_message = "您的申请总数不能小于0"
@@ -62,9 +142,7 @@ class OrderLineItemRawsController < ApplicationController
     else
       @olir.update_attributes(:apply_adjust=>quantity,:apply_quantity=>@olir.quantity+quantity,:apply_subtotal=>@olir.unit_price*(@olir.quantity+quantity))
     end
-    @order = @olir.order
-    @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
-    render :partial => "orders/rc_apply_list"
+    render :partial => "rc_apply_list"
   end
 
   def check_provide

@@ -3,44 +3,46 @@
 <%= render :partial => 'shared/leftnav',:locals => { :highlight => "salesreps"} %>
 
 <div id="main">
-	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
-	<%= render :partial => 'shared/s_path'%>
-	<%end%>
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+    <%= render :partial => 'shared/s_path'%>
+    <%end%>
 
-	<div class="tab">
-		<table width="786" cellspacing="1" cellpadding="0" border="0">
-			<tbody>
-				<tr>
-					<td id="tab_tit" colspan="8">所有物料</td>
-				</tr>
-				<tr>
-					<td class="f_tab">销售姓名</td>
-					<td class="f_tab">销售邮箱</td>
-					<td class="f_tab">所属大区</td>
-					<td class="f_tab">手机号码</td>
-					<td class="f_tab">联系电话</td>
-					<td class="f_tab" width="200">详细描述</td>
-					<td class="f_tab">操作</td>
-				</tr>
-				<%@salesreps.each do |salesrep|%>
-					<tr>
-						<td><%=salesrep.name%></td>
-						<td><%=salesrep.email%></td>
-						<td><%=salesrep.region.nil? ? "无" : salesrep.region.name%></td>
-						<td><%=salesrep.phone%></td>
-						<td><%=salesrep.mobile%></td>
-						<td><%=salesrep.memo%></td>
-						<td>
-						<%= link_to image_tag("/images/icons/database_edit.png", {:alt => "修改", :title => "修改", :border => 0}), edit_salesrep_url(salesrep)%>
-						<%= link_to image_tag("/images/icons/database_delete.png", {:alt => "删除", :title => "删除", :border => 0}), salesrep_url(salesrep), :method => :delete, :confirm => "确认要删除这个销售吗?"%>
-						</td>
-					</tr>
-				<%end%>
-				<tr>
-					<td id="tab_tit02" colspan="8"><font color="green">共有<%=@salesreps.total_entries%>条记录</font></td>
-				</tr>
-			</tbody>
-		</table>
-		<%=will_paginate @salesreps%>
-	</div>
+    <div class="tab">
+        <table width="786" cellspacing="1" cellpadding="0" border="0">
+            <tbody>
+                <tr>
+                    <td id="tab_tit" colspan="8">所有物料</td>
+                </tr>
+                <tr>
+                    <td class="f_tab">销售姓名</td>
+                    <td class="f_tab">销售邮箱</td>
+                    <td class="f_tab">所属大区</td>
+                    <td class="f_tab">手机号码</td>
+                    <td class="f_tab">联系电话</td>
+                    <td class="f_tab">地址</td>
+                    <td class="f_tab" width="200">详细描述</td>
+                    <td class="f_tab">操作</td>
+                </tr>
+                <%@salesreps.each do |salesrep|%>
+                    <tr>
+                        <td><%=salesrep.name%></td>
+                        <td><%=salesrep.email%></td>
+                        <td><%=salesrep.region.nil? ? "无" : salesrep.region.name%></td>
+                        <td><%=salesrep.phone%></td>
+                        <td><%=salesrep.mobile%></td>
+                        <td><%=salesrep.address%></td>
+                        <td><%=salesrep.memo%></td>
+                        <td>
+                        <%= link_to image_tag("/images/icons/database_edit.png", {:alt => "修改", :title => "修改", :border => 0}), edit_salesrep_url(salesrep)%>
+                        <%= link_to image_tag("/images/icons/database_delete.png", {:alt => "删除", :title => "删除", :border => 0}), salesrep_url(salesrep), :method => :delete, :confirm => "确认要删除这个销售吗?"%>
+                        </td>
+                    </tr>
+                <%end%>
+                <tr>
+                    <td id="tab_tit02" colspan="8"><font color="green">共有<%=@salesreps.total_entries%>条记录</font></td>
+                </tr>
+            </tbody>
+        </table>
+        <%=will_paginate @salesreps%>
+    </div>
 </div>
