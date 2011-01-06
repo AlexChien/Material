@@ -308,7 +308,7 @@ background-color: transparent;
 /* Info */
 .info {
     -moz-border-radius:5px 5px 5px 5px;
-    background:url("/images/powerposm/alert-note.png") no-repeat scroll 5px 2px #FFFFFF;
+    background:url("/images/powerposm/alert-note.gif") no-repeat scroll 5px 2px #FFFFFF;
     border:3px solid #F29DBC;
     margin:0 0 1em;
     font-size:13px;
