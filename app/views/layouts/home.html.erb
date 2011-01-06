@@ -11,10 +11,23 @@
 	.title {position:absolute;left:360px;top:232px;}
 	.hlf { width:419px; position:absolute;left:360px;top:284px; }
 	.hlf input { padding:5px; }
+	.flash {width:419px;}
 	#wrapper {
-		width: 1003px;
+		width: 1003px; 
 		margin: 0 auto;
 		position:relative;
+	}
+	#notice{
+		border: 2px solid #FDEEF3;
+	    color: green; background-color:transparent;
+	    margin-bottom: 5px;
+	    padding: 1em;
+	}
+	#error {
+	    border: 2px solid #FDEEF3;
+	    color: red; background-color:transparent;
+	    margin-bottom: 5px;
+	    padding: 1em;
 	}
 </style>
 </head>
@@ -22,7 +35,10 @@
 <div id="wrapper" >
 	<span class="logo"></span>
 	
-	<div class="title"><img src="/images/cover-title.jpg" width="419" height="42" /></div>
+	<div class="title">
+		<img src="/images/cover-title.jpg" width="419" height="42" />
+	</div>
+	
     <div id="content">
         <%= yield %>
     </div>
