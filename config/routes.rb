@@ -16,7 +16,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :salesreps
 
-  map.resources :order_line_item_raws,:member=>{:apply_update=>:put,:check_provide=>:get}
+  map.resources :order_line_item_raws,:member=>{:apply_update=>:put,
+                                                :check_provide=>:get,
+                                                :apply=>:get}
 
   map.resources :order_line_item_adjusteds
 

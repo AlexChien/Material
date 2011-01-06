@@ -1,14 +1,20 @@
 class OrderLineItemRawsController < ApplicationController
   before_filter :login_required
-  before_filter :check,:except=>["apply_update","check_provide"]
+  before_filter :check,:except=>["apply_update","check_provide","index","apply"]
 
   access_control do
-    action :update, :destroy, :apply_update do
+    action :index, :apply, :update, :destroy, :apply_update do
       allow :rc
     end
     action :check_provide do
       allow :wa
     end
+  end
+
+  def index
+    olir = OrderLineItemRaw
+    olir = olir.in_status(1).in_region(current_user.region)
+    @olirs = olir.paginate(:all,:include=>[:campaign,:material,:region,:salesrep],:per_page=>20,:page => params[:page], :order => 'order_line_item_raws.created_at DESC')
   end
 
   def update
@@ -33,6 +39,15 @@ class OrderLineItemRawsController < ApplicationController
     olir = OrderLineItemRaw
     olir = olir.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id)
     @olirs = olir.all(:order=>"created_at DESC")
+  end
+
+  def apply
+    @olir = OrderLineItemRaw.find(params[:id])
+    if @olir.region != current_user.region
+      flash[:error] = "不能查看他人申请"
+      redirect_to "/order_line_items"
+      return
+    end
   end
 
   def apply_update

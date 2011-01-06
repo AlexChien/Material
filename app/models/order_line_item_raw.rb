@@ -26,6 +26,10 @@ class OrderLineItemRaw < ActiveRecord::Base
         {:conditions => ["order_line_item_raws.order_id in (?)", order_id]}
   }
 
+  named_scope :in_status, lambda {|status|
+        {:conditions => ["order_line_item_raws.status in (?)", status]}
+  }
+
   def self.raw_total(catalog_id,region_id)
     self.in_catalog(catalog_id).in_region(region_id).first(:select=>"sum(subtotal) as raw_total").raw_total.to_f
   end

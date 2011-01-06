@@ -1,0 +1,79 @@
+<% javascript_tag do %>
+    <%unless @olir.nil?%>
+        <%if @error_message%>
+            alert("<%=@error_message%>");
+        <%else%>
+            $("#quantity_"+<%=@olir.id%>).attr("value","<%=@olir.apply_adjust%>");
+        <%end%>
+    <%end%>
+<% end %>
+
+<%form_for @olir。order do |f|%>
+<div class="tab">
+<table cellspacing="1" cellpadding="0" border="0" width="786">
+    <tbody>
+        <tr>
+            <td colspan="11" id="tab_tit">申领详细</td>
+        </tr>
+        <tr>
+            <td class="f_tab">标识码</td>
+            <td class="f_tab">物料图片</td>
+            <td class="f_tab">物料名称</td>
+            <td class="f_tab">所属区</td>
+            <td class="f_tab">销售姓名</td>
+            <td class="f_tab">物料价格</td>
+            <td class="f_tab">预定数量</td>
+            <td class="f_tab">小计</td>
+            <td class="f_tab">调整申请数量</td>
+            <td class="f_tab">申请总数</td>
+            <td class="f_tab">申请小计</td>
+        </tr>
+
+        <tr>
+            <td><%=@olir.material.itemno%></td>
+            <td><%=image_tag (@olir.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+            <td><%=@olir.material.name%></td>
+            <td><%=@olir.region.name%></td>
+            <td><%=@olir.salesrep.name%></td>
+            <td><%=@olir.unit_price%></td>
+            <td><%=@olir.quantity%></td>
+            <td>￥<%=@olir.subtotal%></td>
+            <td>
+                <input type="text" value="<%=olir.apply_adjust%>" size="3" id="quantity_<%=@olir.id%>">
+                <%= link_to_remote '<img src="/images/icons/tick.png" />',
+                :url => {:controller => :order_line_item_raws, :action => :apply_update, :id => olir.id},
+                :with => "'campaign_id='+#{@olir。campaign.id}+'&quantity='+$('#quantity_#{@olir.id}').val()",
+                :method => :put,
+                :update => "order_list"%>
+            </td>
+            <td><%=olir.apply_quantity%></td>
+            <td>￥<%=olir.apply_subtotal%></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>总计：￥<%=OrderLineItemRaw.raw_total(@campaign.campaign_catalog.id,current_user.region.id)%></td>
+            <td></td>
+            <td></td>
+            <td>申请总计：￥<%=OrderLineItemRaw.raw_total(@campaign.campaign_catalog.id,current_user.region.id)%></td>
+        </tr>
+
+        <tr>
+            <td colspan="11" id="tab_tit02"><font color="green">共有<%=@olirs.size%>条记录</font></td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+    <%=f.hidden_field :catalog_id,:value=>"#{@campaign.campaign_catalog.id}"%>
+    <br/>
+    <div class="tab_btn">
+        <%= f.submit "提交申请",:class=>"button_btn",:confirm=>"提交后将不能修改申请！您确认此次提交吗？" %>
+    </div>
+    <%end%>
+<%end%>
