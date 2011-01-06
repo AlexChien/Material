@@ -18,14 +18,58 @@
         <%if @cms.empty?%>
             <font color="red">此活动当前暂无任何可预订物料</font>
         <%else%>
+        <div class="tab">
+        <table cellspacing="1" cellpadding="0" border="0" width="786">
+            <tbody>
+                <tr>
+                    <td colspan="9" id="tab_tit">可预定物料</td>
+                </tr>
+                <tr>
+                    <td class="f_tab">sku</td>
+                    <td class="f_tab">物料图片</td>
+                    <td class="f_tab">预定数量</td>
+                    <td class="f_tab">销售代表</td>
+                    <td class="f_tab">价格</td>
+                    <td class="f_tab">加入购物车</td>
+                </tr>
+
+                <%@cms.each do |cm|%>
+                <tr>
+                    <td><%=cm.material.sku%></td>
+                    <td><%=image_tag (cm.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+                    <td><input type="text" value="1" size="4" name="nums" id="num_<%=cm.material.id%>"></td>
+                    <td>
+                        <select name="salesrep" id="salesrep_<%=cm.material.id%>">
+                            <option value="">请选择</option>
+                            <%@salesreps.each do |salesrep|%>
+                            <option value="<%=salesrep.id%>"><%=salesrep.name%></option>
+                            <%end%>
+                        </select>
+                    </td>
+                    <td><b style="color:red;">价格：￥<%=cm.price%></b></td>
+                    <td><%= link_to_function "<img src='/images/icons/cart_add.png' />", "order(#{cm.material.id})" %></td>
+                </tr>
+                <%end%>
+
+                <tr>
+                    <td colspan="9" id="tab_tit02"><font color="green">共有<%=@cms.size%>条记录</font></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+        <%if false%>
         <%@cms.each do |cm|%>
             <div class="book_info">
-                <div class="good_image"><%=image_tag (cm.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></div>
+                <div class="good_image">
+                    <%=image_tag (cm.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%>
+                </div>
                 <div class="good_info">
                     <p>sku：<%=cm.material.sku%></p>
                     <p>物料名称：<%=cm.material.name%></p>
                     <p>预定数量：<input type="text" value="1" size="4" name="nums" id="num_<%=cm.material.id%>"></p>
-                    <p>销售代表：<select name="salesrep" id="salesrep_<%=cm.material.id%>">
+                    <p>
+                        销售代表：<select name="salesrep" id="salesrep_<%=cm.material.id%>">
                             <option value="">请选择</option>
                             <%@salesreps.each do |salesrep|%>
                                 <option value="<%=salesrep.id%>"><%=salesrep.name%></option>
@@ -41,6 +85,9 @@
                 </div>
             </div>
         <%end%>
+        <%end%>
+
+
     <%end%>
 
     <div class="clear"></div>
