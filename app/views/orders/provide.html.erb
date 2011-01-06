@@ -21,7 +21,7 @@
                 <td colspan="12" id="tab_tit">订单详细<%=@order.nil? ? "" : "(#{@order.order_status.name})"%></td>
             </tr>
             <tr>
-                <td class="f_tab">标识码</td>
+                <td class="f_tab">sku</td>
                 <td class="f_tab">物料图片</td>
                 <td class="f_tab">物料名称</td>
                 <td class="f_tab">所属区</td>
@@ -39,7 +39,7 @@
 
             <%@olirs.each do |olir|%>
             <tr>
-                <td><%=olir.material.itemno%></td>
+                <td><%=olir.material.sku%></td>
                 <td><%=image_tag (olir.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
                 <td><%=olir.material.name%></td>
                 <td><%=olir.region.name%></td>

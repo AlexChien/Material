@@ -22,7 +22,7 @@
             <div class="book_info">
                 <div class="good_image"><%=image_tag (cm.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></div>
                 <div class="good_info">
-                    <p>标识码：<%=cm.material.itemno%></p>
+                    <p>sku：<%=cm.material.sku%></p>
                     <p>物料名称：<%=cm.material.name%></p>
                     <p>预定数量：<input type="text" value="1" size="4" name="nums" id="num_<%=cm.material.id%>"></p>
                     <p>销售代表：<select name="salesrep" id="salesrep_<%=cm.material.id%>">

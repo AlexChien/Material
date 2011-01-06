@@ -18,7 +18,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="f_tab">标识码</td>
+                    <td class="f_tab">sku</td>
                     <td class="f_tab">物料图片</td>
                     <td class="f_tab">物料名称</td>
                     <td class="f_tab">所属活动</td>
@@ -29,7 +29,7 @@
                 </tr>
                 <%@olirs.each do |olir|%>
                     <tr>
-                        <td><%=olir.material.itemno%></td>
+                        <td><%=olir.material.sku%></td>
                         <td><%=image_tag (olir.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
                         <td><%=olir.material.name%></td>
                         <td><%=olir.campaign.name%></td>
