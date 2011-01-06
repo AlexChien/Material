@@ -29,6 +29,14 @@ module ApplicationHelper
     if current_user.has_role?("admin")
       admin_manager = [
         {
+        :navleft_header_name => "仓库管理",
+        :navleft_header_logo => "/images/icons/package_green.png",
+        :navleft => [
+            { :name => "总仓库", :path => "/inventories?is_central=1", :id => "inventories_1", :logo => "/images/icons/package.png"},
+            { :name => "其他仓库", :path => "/inventories?is_central=0", :id => "inventories_0", :logo => "/images/icons/package_go.png"},
+          ]
+        },
+        {
         :navleft_header_name => "订单管理",
         :navleft_header_logo => "/images/icons/cart_edit.png",
         :navleft => [
@@ -71,6 +79,14 @@ module ApplicationHelper
     elsif current_user.has_role?("mm")
     elsif current_user.has_role?("pm")
       pm_manager = [
+        {
+        :navleft_header_name => "仓库管理",
+        :navleft_header_logo => "/images/icons/package_green.png",
+        :navleft => [
+            { :name => "总仓库", :path => "/inventories?is_central=1", :id => "inventories_1", :logo => "/images/icons/package.png"},
+            { :name => "其他仓库", :path => "/inventories?is_central=0", :id => "inventories_0", :logo => "/images/icons/package_go.png"},
+          ]
+        },
         {
         :navleft_header_name => "订单管理",
         :navleft_header_logo => "/images/icons/cart_edit.png",

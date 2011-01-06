@@ -18,7 +18,7 @@
                 <tr>
                     <td><%= f.label :transfer_type_id, "<em>*</em>转移类型" %></td>
                     <td class="td_left">
-                        <%= f.select :transfer_type_id,TransferType.in_id([2]).all.collect{|p| [p.name, p.id]} %>
+                        <%= f.select :transfer_type_id,TransferType.in_id([3]).all.collect{|p| [p.name, p.id]} %>
                     </td>
                 </tr>
                 <tr>
