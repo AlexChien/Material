@@ -35,4 +35,19 @@
         </div>
     <%end%>
 
+    <%@olirs.each do |olir|%>
+        <div class="info">
+            <div class="info_action">
+                <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
+            </div>
+            <div class="info_content">
+                <p class="single">
+                    <strong>销售<%=olir.salesrep.name%>在活动<%=olir.campaign.name%>中发起申请物料<%=olir.material.name%>.</strong>
+                    <a href="/order_line_item_raws/<%=olir.id%>" target="_blank">去审批.</a>
+                </p>
+            </div>
+        </div>
+    <%end%>
+
+
 </div>

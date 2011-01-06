@@ -24,16 +24,19 @@ class DashboardController < ApplicationController
     @catalogs = Catalog.starting(true).all
     @orders = Order.in_region(current_user.region).in_order_status(2).all
     @olirs = OrderLineItemRaw.in_region(current_user.region).in_status(1).all
+    @olir4s = OrderLineItemRaw.in_region(current_user.region).in_status(4).all
     render :template => "dashboard/rc_index"
   end
 
   def rm_dashboard
     @orders = Order.in_region(current_user.region).in_order_status(1).all
     @order4s = Order.in_region(current_user.region).in_order_status(4).all
+    @olirs = OrderLineItemRaw.in_region(current_user.region).in_status(2).all
     render :template => "dashboard/rm_index"
   end
 
   def wa_dashboard
+    @olirs = OrderLineItemRaw.in_region(current_user.region).in_status(3).all
     render :template => "dashboard/wa_index"
   end
 

@@ -6,4 +6,18 @@
     <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
         <%= render :partial => 'shared/s_path'%>
     <%end%>
+
+    <%@olirs.each do |olir|%>
+        <div class="info">
+            <div class="info_action">
+                <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
+            </div>
+            <div class="info_content">
+                <p class="single">
+                    <strong>销售<%=olir.salesrep.name%>在活动<%=olir.campaign.name%>中申请的物料<%=olir.material.name%>已通过审批.</strong>
+                    <a href="/order_line_item_raws/<%=olir.id%>" target="_blank">去发货.</a>
+                </p>
+            </div>
+        </div>
+    <%end%>
 </div>
