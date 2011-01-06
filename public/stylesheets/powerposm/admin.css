@@ -4,7 +4,8 @@
 	border:0;
 }
 body {
-	font-family: "宋体", Geneva, Arial, Helvetica, sans-serif;
+	background:#fff url(/images/bg.jpg) repeat-x 0 0;
+	font-family: "黑体","宋体", Geneva, Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	background-color:#fff;
 }
@@ -22,30 +23,41 @@ a:hover {
 .fLeft {float:left;}
 .fRight {float:right;}
 .clear {clear:both;}
+#topper {
+	width: 1003px; margin:0 auto;
+}
 #container {
+	clear:both;
 	width: 1003px;
 	margin: 0 auto;
+	background-color:#fff;
+	-moz-border-radius: 4px 4px 4px 4px;
+	border-color: #E5E5E5 #DBDBDB #D2D2D2;
+	    border-style: solid;
+	    border-width: 1px;
+	 -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	    background: none repeat scroll 0 0 #FFFFFF;
 }
 #header {
-	background-image: url('/images/powerposm/head.gif');
-	background-repeat: no-repeat;
+	background:#fff url('/images/head-bg.jpg') repeat-x;
 	width:1003px;
 	height: 60px;
 }
 #profile {
-	padding:8px 10px;
+	padding:10px 20px;
 }
 
 #content {
 	width:1003px;
-	min-height:400px;
-	_height:400px;
+	min-height:500px;
+	height:500px;
 }
 #menu {
 /*	background-color: #EDF4FE;
 	height: 600px;*/
-	width: 200px;
-	margin-right: 13px;
+	width: 180px;
+	margin-left:10px;
+	margin-right: 15px;
 	float: left;
 }
 #main {
@@ -53,23 +65,29 @@ a:hover {
 	width: 786px;
 }
 #footer{
-	color: #999999;
+	clear:both;
+	padding:10px; margin-top:2em; background-color:#eee;
+	color: #000000;
 	text-align: center;
 }
 #footer a{
 	color: #999999;
 }
+
+.logo {width:200px;height:184px;background:transparent url(/images/logo.jpg) no-repeat;display:block;}
+.logo-small {width:100px;height:92px;background:transparent url(/images/logo-small.jpg) no-repeat;display:block;}
+.title {float:right;line-height:100px;font-size:30px;color:white;}
 .leftnav_header{
-	background-image: url("/images/powerposm/leftnav_header_btn.gif");
+	background-image: url("/images/leftnav_header_btn_pink.gif");
 	background-repeat: no-repeat;
-	width: 200px;
-	height: 30px;
-	padding: 2px;
+	width: 180px;
+	height: 30px;	font-weight:bold;
+	padding: 2px;    cursor: pointer;
 }
 .leftnav li{
-	background-image: url("/images/powerposm/leftnav_btn.gif");
+	background-image: url("/images/leftnav_btn_pink.gif");
 	background-repeat: no-repeat;
-	width: 200px;
+	width: 180px;
 	height: 30px;
 	padding: 2px;
 }
@@ -87,37 +105,36 @@ a:hover {
 .leftnav_title{
 	float: left;
 	font-size: 16px;
-	font-weight: bold;
 	padding: 4px;
 }
 #s_path {
 	padding:10px 0 10px 15px;
 	margin-bottom:10px;
-	border-bottom: 1px solid #429ed1;
+	border-bottom: 1px solid #FDEEF3;
 }
 .query {
 	padding:10px 0 10px 15px;
 	margin-bottom:10px;
-	background-color: #c8e8f3;
-	border: 1px solid #429ed1;
+	background-color: #F29DBC;
+	border: 1px solid #FDEEF3;
 }
 .query td{
 	height:30px;
 }
 .query input {
 	width:200px;
-	border: 1px solid #429ed1;
+	border: 1px solid #FDEEF3;
 }
 .query select {
 	width:200px;
 	height:20px;
-	border: 1px solid #429ed1;
+	border: 1px solid #FDEEF3;
 }
 .txt01 {
 	padding-top:5px;
 }
 .button_btn {
-	background-image: url(/images/powerposm/button_btn.gif);
+	background-image: url(/images/button_btn_pink.gif);
 	background-repeat: no-repeat;
 	background-position: left top;
 	height: 25px;
@@ -139,19 +156,19 @@ a:hover {
 	height:18px;
 	padding-top:5px;
 	background-color:#fffacd;
-	border: 1px solid #429ed1;
+	border: 1px solid #FDEEF3;
 }
 .tab01 select {
 	width:200px;
 	height:20px;
 	background-color:#fffacd;
-	border: 1px solid #429ed1;
+	border: 1px solid #FDEEF3;
 }
 .tab01 textarea {
 	width:250px;
 	height:100px;
 	background-color:#fffacd;
-	border: 1px solid #429ed1;
+	border: 1px solid #FDEEF3;
 }
 .tab {
 	margin-bottom:10px;
@@ -161,10 +178,10 @@ a:hover {
 	padding-right:5px;
 }
 .tab table {
-	background-color:#429ed1;
+	background-color:#FDEEF3;
 }
 #tab_table{
-	background-color:#429ed1;
+	background-color:#FDEEF3;
 	table-layout: fixed;
 	word-wrap:break-word;
 }
@@ -197,14 +214,14 @@ a:hover {
 }
 
 #tab_tit {
-	background-color:#c8e8f3;
+	background-color:#F29DBC;
 	font-size: 14px;
-	font-weight: bold;
+	font-weight: bold;color:#fff;
 }
 #tab_tit02 {
-	background-color:#c8e8f3;
+	background-color:#F29DBC;
 	font-size: 12px;
-	font-weight: normal;
+	font-weight: normal;color:#fff;
 }
 .tab .f_tab {
 	font-size: 12px;
@@ -216,8 +233,8 @@ a:hover {
 
 
 #login-form table {
-    background-color: #C8E8F3;
-    border: 2px solid #429ED1;
+    background-color: #F29DBC;
+    border: 2px solid #FDEEF3;
     margin-left: auto;
     margin-right: auto;
     margin-top: 5em;
@@ -232,7 +249,7 @@ a:hover {
 #login-form input#login,#login-form input#password{
     width: 250px;
     height: 20px;
-    border: 1px solid #429ed1;
+    border: 1px solid #FDEEF3;
 }
 
 #flash {
@@ -242,8 +259,8 @@ a:hover {
 }
 
 #flash{font-weight:bold;text-align:center;}
-#notice {border:2px solid #429ED1;background-color:#C8E8F3;padding:1em;color:green;}
-#error {border:2px solid #429ED1;background-color:#C8E8F3;padding:1em;color:red;}
+#notice {border:2px solid #FDEEF3;background-color:#F29DBC;padding:1em;color:green;}
+#error {border:2px solid #FDEEF3;background-color:#F29DBC;padding:1em;color:red;}
 a.selected {color:green;}
 
 /* error_messages */
@@ -283,8 +300,8 @@ background-color: transparent;
 /* Pagination */
 .pagination {padding: 5px; margin: 5px; text-align:center}
 .pagination a {padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #ccc; text-decoration: none;}
-.pagination a:hover, .pagination a:active {border: 1px solid #429ED1; background-color: #C8E8F3;}
-.pagination span.current {padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #429ED1; font-weight: bold; background-color: #C8E8F3;}
+.pagination a:hover, .pagination a:active {border: 1px solid #FDEEF3; background-color: #F29DBC;}
+.pagination span.current {padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #FDEEF3; font-weight: bold; background-color: #F29DBC;}
 .pagination span.disabled {padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #eee; color: #ddd}
 /* Pagination */
 
@@ -346,3 +363,4 @@ background-color: transparent;
 .book_info .good_info input,.book_info .good_info select{
 	border:1px solid #BBBBBB;
 }
+.div0{clear:both;height:20px;}

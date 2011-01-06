@@ -3,6 +3,7 @@ class SessionsController < ApplicationController
 
   # render new.rhtml
   def new
+    render :layout => "home"
   end
 
   def create

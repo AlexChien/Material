@@ -1,24 +1,11 @@
 <% form_tag session_path do -%>
-<div id="login-form">
-	<table>
+<div class="hlf">
+	<table cellpadding="10" width="100%" height="100%">
 		<tbody>
+			
 			<tr>
-				<td><h2>用户登陆</h2></td>
-			</tr>
-
-			<tr>
-				<td><%= label_tag '用户名：' %></td>
-				<td><%= text_field_tag 'login', @login %></td>
-			</tr>
-
-			<tr>
-				<td><%= label_tag '密码：' %></td>
-				<td><%= password_field_tag 'password', nil %></td>
-			</tr>
-
-			<tr>
-				<td><%= label_tag '记住我：' %></td>
-				<td><%= check_box_tag 'remember_me', '1', @remember_me %></td>
+				<td><%= label_tag '用户名：' %><%= text_field_tag 'login', @login %></td>
+				<td align="right"><%= label_tag '密码：' %><%= password_field_tag 'password', nil %></td>
 			</tr>
 
 			<tr>
