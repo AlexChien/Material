@@ -14,7 +14,7 @@
                     <td id="tab_tit" colspan="9">所有物料</td>
                 </tr>
                 <tr>
-                    <td class="f_tab">物料标识码</td>
+                    <td class="f_tab">sku</td>
                     <td class="f_tab">物料示意图</td>
                     <td class="f_tab">物料名称</td>
                     <td class="f_tab">所属大区</td>
@@ -26,7 +26,7 @@
                 </tr>
                 <%@inventories.each do |inventory|%>
                     <tr>
-                        <td><%=inventory.material.itemno%></td>
+                        <td><%=inventory.material.sku%></td>
                         <td><%=image_tag (inventory.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
                         <td><%=inventory.material.name%></td>
                         <td><%=inventory.region.name%></td>

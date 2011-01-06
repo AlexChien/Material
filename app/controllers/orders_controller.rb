@@ -10,13 +10,13 @@ class OrdersController < ApplicationController
       allow :wa
     end
     action :index, :show, :update do
-      allow :rc, :rm, :pm
+      allow :rc, :rm, :pm, :admin
     end
     action :approve_fail_message, :approve_fail do
       allow :rm
     end
     action :accept_fail_message, :accept_fail do
-      allow :pm
+      allow :pm, :admin
     end
   end
 
@@ -100,7 +100,7 @@ class OrdersController < ApplicationController
       else
         render :template => "/orders/rm_show"
       end
-    elsif current_user.has_role?("pm")
+    elsif current_user.has_role?("pm") || current_user.has_role?("admin")
       render :template => "/orders/pm_show"
     end
   end
@@ -113,7 +113,7 @@ class OrdersController < ApplicationController
         @min_num_error = "物料未达到最小起订量，请调整数量或返回RC重新预定"
       end
     end
-    if amount > current_user.region.redeemable_budget
+    if amount > @order.region.redeemable_budget
       flash[:error] = "您的订单超过预算使用额度，请重新修改订单"
     elsif @min_num_error
       flash[:error] = @min_num_error
@@ -127,7 +127,7 @@ class OrdersController < ApplicationController
           @order.update_attributes(:order_status_id=>8,:memo=>nil)
           flash[:notice] = "申请已批准，等待仓库管理员发货"
         end
-      elsif current_user.has_role?("pm")
+      elsif current_user.has_role?("pm") || current_user.has_role?("admin")
         if @order.order_status_id == 3
           @order.update_attributes(:amount=>amount,:order_status_id=>5,:memo=>nil)
           @order.region.update_attribute(:used_budget,@order.region.used_budget+amount)

@@ -5,7 +5,7 @@
             <td colspan="9" id="tab_tit">订单详细（<%=@order.order_status.name%>）</td>
         </tr>
         <tr>
-            <td class="f_tab">标识码</td>
+            <td class="f_tab">sku</td>
             <td class="f_tab">物料图片</td>
             <td class="f_tab">物料名称</td>
             <td class="f_tab">所属区</td>
@@ -18,7 +18,7 @@
         <%order_amount=@order.order_line_item_adjusteds.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f%>
         <%@order.order_line_item_adjusteds.each do |olia|%>
         <tr>
-            <td><%=olia.material.itemno%></td>
+            <td><%=olia.material.sku%></td>
             <td><%=image_tag (olia.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
             <td><%=olia.material.name%></td>
             <td><%=olia.region.name%></td>

@@ -49,6 +49,7 @@ class TransfersController < ApplicationController
                     :from_warehouse_id=>@transfer.to_warehouse_id,
                     :to_warehouse_id=>@transfer.from_warehouse_id,
                     :transfer_type_id=>@transfer.transfer_type_id,
+                    :amount=>"-#{tli.subtotal}",
                     :memo=>@transfer.memo,
                     :transfer_line_items_attributes=>{"0"=>{"material_id"=>"#{@material.id}",
                                                             "quantity"=>"-#{tli.quantity}",

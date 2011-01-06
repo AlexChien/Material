@@ -1,0 +1,75 @@
+<% content_for :title, "物料申领" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "order_line_item_raws"} %>
+
+<div id="main">
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+    <%= render :partial => 'shared/s_path'%>
+    <%end%>
+
+    <div class="tab">
+        <table width="786" cellspacing="1" cellpadding="0" border="0">
+            <tbody>
+                <tr>
+                    <td id="tab_tit" colspan="9">
+                        <%if current_user.has_role?("rc")%>可申领物料<%end%>
+                        <%if current_user.has_role?("rm")%>待审批物料<%end%>
+                        <%if current_user.has_role?("wa")%>等待发货<%end%>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="f_tab">sku</td>
+                    <td class="f_tab">物料图片</td>
+                    <td class="f_tab">物料名称</td>
+                    <td class="f_tab">所属活动</td>
+                    <td class="f_tab">所属区</td>
+                    <td class="f_tab">销售姓名</td>
+                    <td class="f_tab">当前状态</td>
+                    <td class="f_tab">操作</td>
+                </tr>
+                <%@olirs.each do |olir|%>
+                    <tr>
+                        <td><%=olir.material.sku%></td>
+                        <td><%=image_tag (olir.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+                        <td><%=olir.material.name%></td>
+                        <td><%=olir.campaign.name%></td>
+                        <td><%=olir.region.name%></td>
+                        <td><%=olir.salesrep.name%></td>
+                        <td><%=olir.show_status%></td>
+                        <td>
+                            <%if current_user.has_role?("rc")%>
+                                <%if olir.status == 1%>
+                                    <%=link_to "我要申领", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%elsif olir.status == 4%>
+                                    <%=link_to "确认收货", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%else%>
+                                    <%=link_to "查看详细", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%end%>
+                            <%end%>
+
+                            <%if current_user.has_role?("rm")%>
+                                <%if olir.status == 2%>
+                                    <%=link_to "我要审批", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%else%>
+                                    <%=link_to "查看详细", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%end%>
+                            <%end%>
+
+                            <%if current_user.has_role?("wa")%>
+                                <%if olir.status == 3%>
+                                    <%=link_to "我要发货", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%else%>
+                                    <%=link_to "查看详细", "/order_line_item_raws/#{olir.id}",:target=>"_blank"%>
+                                <%end%>
+                            <%end%>
+                        </td>
+                    </tr>
+                <%end%>
+                <tr>
+                    <td id="tab_tit02" colspan="9"><font color="green">共有<%=@olirs.total_entries%>条记录</font></td>
+                </tr>
+            </tbody>
+        </table>
+        <%=will_paginate @olirs%>
+    </div>
+</div>

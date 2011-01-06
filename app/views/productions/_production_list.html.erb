@@ -1,45 +1,45 @@
 <% javascript_tag do %>
-	<%if @error_message%>
-		alert("<%=@error_message%>");
-	<%end%>
+    <%if @error_message%>
+        alert("<%=@error_message%>");
+    <%end%>
 <% end %>
 
 <% form_for @production do |f| -%>
 <table cellspacing="1" cellpadding="0" border="0" width="786">
-	<tbody>
-		<tr>
-			<td colspan="9" id="tab_tit">生产单详细（<%=@production.show_status%>）</td>
-		</tr>
-		<tr>
-			<td class="f_tab">标识码</td>
-			<td class="f_tab">物料图片</td>
-			<td class="f_tab">物料名称</td>
-			<td class="f_tab">预定数量</td>
-			<td class="f_tab">调整数量</td>
-			<td class="f_tab">预定总数</td>
-		</tr>
+    <tbody>
+        <tr>
+            <td colspan="9" id="tab_tit">生产单详细（<%=@production.show_status%>）</td>
+        </tr>
+        <tr>
+            <td class="f_tab">sku</td>
+            <td class="f_tab">物料图片</td>
+            <td class="f_tab">物料名称</td>
+            <td class="f_tab">预定数量</td>
+            <td class="f_tab">调整数量</td>
+            <td class="f_tab">预定总数</td>
+        </tr>
 
-		<%@production.production_line_items.each do |pli|%>
-		<tr>
-			<td><%=pli.material.itemno%></td>
-			<td><%=image_tag (pli.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
-			<td><%=pli.material.name%></td>
-			<td><%=pli.quantity_collected%></td>
-			<td>
-				<%if @production.locked %>
-					<%=pli.quantity_adjusted%>
-				<%else%>
-					<input type="text" value="<%=pli.quantity_adjusted%>" size="3" id="quantity_adjusted_<%=pli.id%>">
-					<%= link_to_remote '<img src="/images/icons/tick.png" />',
-		:url => {:controller => :production_line_items, :action => :update, :id => pli.id},
-		:with => "'production_id='+#{@production.id}+'&quantity_adjusted='+$('#quantity_adjusted_#{pli.id}').val()",
-		:method => :put,
-		:update => "production_list"%>
-				<%end%>
-			</td>
-			<td><%=pli.quantity_total%></td>
-		</tr>
-		<%end%>
+        <%@production.production_line_items.each do |pli|%>
+        <tr>
+            <td><%=pli.material.sku%></td>
+            <td><%=image_tag (pli.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+            <td><%=pli.material.name%></td>
+            <td><%=pli.quantity_collected%></td>
+            <td>
+                <%if @production.locked %>
+                    <%=pli.quantity_adjusted%>
+                <%else%>
+                    <input type="text" value="<%=pli.quantity_adjusted%>" size="3" id="quantity_adjusted_<%=pli.id%>">
+                    <%= link_to_remote '<img src="/images/icons/tick.png" />',
+        :url => {:controller => :production_line_items, :action => :update, :id => pli.id},
+        :with => "'production_id='+#{@production.id}+'&quantity_adjusted='+$('#quantity_adjusted_#{pli.id}').val()",
+        :method => :put,
+        :update => "production_list"%>
+                <%end%>
+            </td>
+            <td><%=pli.quantity_total%></td>
+        </tr>
+        <%end%>
 
 		<tr>
 			<td colspan="9" id="tab_tit02"><font >共有<%=@production.production_line_items.size%>条记录</font></td>
@@ -50,7 +50,7 @@
 <%unless @production.locked %>
 <br/>
 <div class="tab_btn">
-	<%= f.submit "锁定",:class=>"button_btn",:confirm=>"锁定生产单后将不能修改！您确认要锁定吗？" %>
+    <%= f.submit "锁定",:class=>"button_btn",:confirm=>"锁定生产单后将不能修改！您确认要锁定吗？" %>
 </div>
 <%end%>
 <%end%>

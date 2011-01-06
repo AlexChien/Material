@@ -11,6 +11,8 @@ CREATE  TABLE IF NOT EXISTS `regions` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
   `assigned_budget` DECIMAL(8,2) NULL DEFAULT 0 ,
+  `used_budget` DECIMAL(8,2) NULL DEFAULT 0 ,
+  `redeemable_budget` DECIMAL(8,2) NULL DEFAULT 0 ,
   `is_central` TINYINT(1)  NULL DEFAULT false ,
   `phone` VARCHAR(45) NULL ,
   `city` VARCHAR(45) NULL ,
@@ -157,11 +159,13 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `materials` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `sku` VARCHAR(45) NOT NULL ,
   `name` VARCHAR(45) NOT NULL ,
   `cost` DECIMAL(8,2) NULL DEFAULT 0 COMMENT 'production cost\n' ,
+  `min_num` INT NULL DEFAULT 0 ,
   `itemno` VARCHAR(45) NULL COMMENT '物料编号' ,
   `description` VARCHAR(45) NULL ,
-  `spec` VARCHAR(45) NULL COMMENT '规格' ,
+  `pack_spec` TEXT NULL COMMENT '规格' ,
   `usage` TEXT NULL COMMENT '物料使用方法' ,
   `memo` TEXT NULL ,
   `state` VARCHAR(45) NULL ,
@@ -174,7 +178,8 @@ CREATE  TABLE IF NOT EXISTS `materials` (
   `created_at` DATETIME NULL ,
   `updated_at` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
+  UNIQUE INDEX `sku_UNIQUE` (`sku` ASC) )
 ENGINE = InnoDB;
 
 
@@ -210,6 +215,7 @@ CREATE  TABLE IF NOT EXISTS `salesreps` (
   `region_id` INT NOT NULL ,
   `name` VARCHAR(45) NOT NULL ,
   `email` VARCHAR(45) NULL ,
+  `address` VARCHAR(45) NULL ,
   `state` VARCHAR(45) NULL ,
   `mobile` VARCHAR(45) NULL ,
   `phone` VARCHAR(45) NULL ,
@@ -294,12 +300,15 @@ CREATE  TABLE IF NOT EXISTS `order_line_item_raws` (
   `material_id` INT NOT NULL ,
   `region_id` INT NOT NULL ,
   `salesrep_id` INT NOT NULL ,
+  `status` INT NULL DEFAULT 0 ,
   `quantity` INT NOT NULL DEFAULT 0 ,
   `unit_price` DECIMAL(8,2) NOT NULL DEFAULT 0 ,
   `subtotal` DECIMAL(8,2) NOT NULL DEFAULT 0 ,
   `apply_adjust` INT NOT NULL DEFAULT 0 ,
   `apply_quantity` INT NOT NULL DEFAULT 0 ,
   `apply_subtotal` DECIMAL(8,2) NOT NULL DEFAULT 0 ,
+  `address` VARCHAR(45) NULL ,
+  `memo` TEXT NULL ,
   `created_at` DATETIME NULL ,
   `updated_at` DATETIME NULL ,
   INDEX `fk_materials_has_orders_orders1` (`order_id` ASC) ,
@@ -594,11 +603,11 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- Data for table `regions`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('1', '总部', '0', '1', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('2', '北京大区', '0', '0', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('3', '上海大区', '0', '0', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('4', '广州大区', '0', '0', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO regions (`id`, `name`, `assigned_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('5', '市场部', '0', '0', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `used_budget`, `redeemable_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('1', '总部', '0', '0', '0', '1', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `used_budget`, `redeemable_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('2', '北京大区', '0', '0', '0', '0', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `used_budget`, `redeemable_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('3', '上海大区', '0', '0', '0', '0', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `used_budget`, `redeemable_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('4', '广州大区', '0', '0', '0', '0', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO regions (`id`, `name`, `assigned_budget`, `used_budget`, `redeemable_budget`, `is_central`, `phone`, `city`, `address`, `zip`, `created_at`, `updated_at`) VALUES ('5', '市场部', '0', '0', '0', '0', NULL, NULL, NULL, NULL, NULL, NULL);
 
 COMMIT;
 

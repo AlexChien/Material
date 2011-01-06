@@ -26,12 +26,32 @@ class OrderLineItemRaw < ActiveRecord::Base
         {:conditions => ["order_line_item_raws.order_id in (?)", order_id]}
   }
 
+  named_scope :in_status, lambda {|status|
+        {:conditions => ["order_line_item_raws.status in (?)", status]}
+  }
+
   def self.raw_total(catalog_id,region_id)
     self.in_catalog(catalog_id).in_region(region_id).first(:select=>"sum(subtotal) as raw_total").raw_total.to_f
   end
 
   def self.apply_total(catalog_id,region_id)
     self.in_catalog(catalog_id).in_region(region_id).first(:select=>"sum(apply_subtotal) as apply_total").apply_total.to_f
+  end
+
+  def show_status
+    if self.status == 0
+      "物料未送达"
+    elsif self.status == 1
+      "物料待申领"
+    elsif self.status == 2
+      "申领审批中"
+    elsif self.status == 3
+      "等待发货"
+    elsif self.status == 4
+      "等待收货确认"
+    elsif self.status == 5
+      "确认已收货"
+    end
   end
 
 end
