@@ -8,12 +8,12 @@
 <title><%= yield_title yield(:title) %></title>
 <style type="text/css" media="screen">
 	body {background:#fff url(/images/bg.jpg) repeat-x 0 0;}
-	.title {position:absolute;left:360px;top:232px;}
-	.hlf { width:419px; position:absolute;left:360px;top:284px; }
+	.title {position:absolute;left:360px;top:232px;height:42px;float:none;}
+	.hlf { width:419px; position:absolute;left:360px;top:284px;clear:both; }
 	.hlf input { padding:5px; }
 	.flash {width:419px;}
 	#wrapper {
-		width: 1003px; 
+		width: 1003px; min-height:460px;
 		margin: 0 auto;
 		position:relative;
 	}
@@ -34,16 +34,10 @@
 <body>
 <div id="wrapper" >
 	<span class="logo"></span>
-	
-	<div class="title">
-		<img src="/images/cover-title.jpg" width="419" height="42" />
-	</div>
-	
-    <div id="content">
+    <div>
         <%= yield %>
     </div>
-
-    <%= render :partial => 'shared/footer' %>
+	<div class="div0"></div>
 </div>
 </body>
 </html>

@@ -1,23 +1,26 @@
 
 
 <% form_tag session_path do -%>
+
+<img class="title" src="/images/cover-title.jpg" width="419" height="42" />
+
 <div class="hlf">
 <%= flash_message %>
-	<table cellpadding="10" width="100%" height="100%">
-		<tbody>
-			
-			<tr>
-				<td><%= label_tag '用户名：' %><%= text_field_tag 'login', @login %></td>
-				<td align="right"><%= label_tag '密码：' %><%= password_field_tag 'password', nil %></td>
-			</tr>
+<table cellpadding="10" width="100%" height="100%">
+	<tbody>
 
-			<tr>
-				<td></td>
-				<td align="right">
-					<%= submit_tag '登陆',:class=>"button_btn" %>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+		<tr>
+			<td><%= label_tag '用户名：' %><%= text_field_tag 'login', @login %></td>
+			<td align="right"><%= label_tag '密码：' %><%= password_field_tag 'password', nil %></td>
+		</tr>
+
+		<tr>
+			<td></td>
+			<td align="right">
+				<%= submit_tag '登陆',:class=>"button_btn" %>
+			</td>
+		</tr>
+	</tbody>
+</table>
 </div>
 <% end %>
