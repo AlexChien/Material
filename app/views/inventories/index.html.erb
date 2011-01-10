@@ -20,6 +20,9 @@
                     <td class="f_tab">所属大区</td>
                     <td class="f_tab">所在仓库</td>
                     <td class="f_tab">库存量</td>
+                    <%if current_user.has_role?("wa") && params[:is_central] == "1"%>
+                        <td class="f_tab">物理库存量</td>
+                    <%end%>
                     <%if (current_user.has_role?("admin") || current_user.has_role?("pm")) && params[:is_central] == "1"%>
                         <td class="f_tab">操作</td>
                     <%end%>
@@ -32,6 +35,9 @@
                         <td><%=inventory.region.name%></td>
                         <td><%=inventory.warehouse.name%></td>
                         <td><%=inventory.quantity%></td>
+                        <%if current_user.has_role?("wa") && params[:is_central] == "1"%>
+                            <td><%=Inventory.in_warehouse(Warehouse.in_central(true).first.id).in_material(inventory.material.id).first(:select=>"sum(quantity) as quantity").quantity.to_i%></td>
+                        <%end%>
                         <td>
                             <%if (current_user.has_role?("admin") || current_user.has_role?("pm")) && params[:is_central] == "1"%>
                                 <%=link_to "库存转移","/transfers/new?type=2_3&material_id=#{inventory.material.id}"%>
