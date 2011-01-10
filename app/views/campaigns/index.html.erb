@@ -46,13 +46,13 @@
                                 <%if campaign_order.nil?%>
                                     <%= link_to "我要预定", book_campaign_url(campaign)%>
                                 <%else%>
-                                    <%= link_to "查看预定", order_url(campaign_order),:target=>"_blank"%>
+                                    <%= link_to "查看预定", order_url(campaign_order)%>
                                 <%end%>
                             <%else%>
                                 <%if campaign_order.nil?%>
                                     此活动您没预订！
                                 <%else%>
-                                    <%= link_to "查看预定", order_url(campaign_order),:target=>"_blank"%>
+                                    <%= link_to "查看预定", order_url(campaign_order)%>
                                 <%end%>
                             <%end%>
                         <%end%>

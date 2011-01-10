@@ -15,7 +15,7 @@
             <div class="info_content">
                 <p class="single">
                     <strong><%=order.region.name%>在活动<%=order.campaign.name%>中进行了预定.</strong>
-                    <a href="/orders/<%=order.id%>" target="_blank">去审批.</a>
+                    <a href="/orders/<%=order.id%>">去审批.</a>
                 </p>
             </div>
         </div>
@@ -29,7 +29,7 @@
             <div class="info_content">
                 <p class="single">
                     <strong>活动<%=order.campaign.name%>的预定审批失败.</strong>
-                    <a href="/orders/<%=order.id%>" target="_blank">去修改.</a>
+                    <a href="/orders/<%=order.id%>">去修改.</a>
                 </p>
             </div>
         </div>
@@ -43,7 +43,7 @@
             <div class="info_content">
                 <p class="single">
                     <strong>销售<%=olir.salesrep.name%>在活动<%=olir.campaign.name%>中发起申请物料<%=olir.material.name%>.</strong>
-                    <a href="/order_line_item_raws/<%=olir.id%>" target="_blank">去审批.</a>
+                    <a href="/order_line_item_raws/<%=olir.id%>">去审批.</a>
                 </p>
             </div>
         </div>
