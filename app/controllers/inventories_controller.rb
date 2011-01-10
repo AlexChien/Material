@@ -2,14 +2,20 @@ class InventoriesController < ApplicationController
   before_filter :login_required
 
   access_control do
-    allow :wa, :pm, :admin
+    allow :wa, :pm, :admin, :rc, :rm
   end
 
   def index
-    if params[:is_central] == "1"
+    if current_user.has_role?("wa")
       @inventories = Inventory.in_region(Region.in_central(true).first).paginate(:all,:per_page=>20,:page => params[:page], :order => 'inventories.created_at DESC')
-    else
-      @inventories = Inventory.in_region(Region.in_central(false).all).paginate(:all,:per_page=>20,:page => params[:page], :order => 'inventories.created_at DESC')
+    elsif current_user.has_role?("rc") || current_user.has_role?("rm")
+      @inventories = Inventory.in_region(current_user.region).paginate(:all,:per_page=>20,:page => params[:page], :order => 'inventories.created_at DESC')
+    elsif current_user.has_role?("pm") || current_user.has_role?("admin")
+      if params[:is_central] == "1"
+        @inventories = Inventory.in_region(Region.in_central(true).first).paginate(:all,:per_page=>20,:page => params[:page], :order => 'inventories.created_at DESC')
+      else
+        @inventories = Inventory.in_region(Region.in_central(false).all).paginate(:all,:per_page=>20,:page => params[:page], :order => 'inventories.created_at DESC')
+      end
     end
   end
 

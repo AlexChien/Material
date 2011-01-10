@@ -1,4 +1,4 @@
-<% content_for :title, "总仓库" %>
+<% content_for :title, "仓库管理" %>
 
 <%= render :partial => 'shared/leftnav',:locals => { :highlight => "inventories_#{params[:is_central]=='1' ? 1 : 0}"} %>
 
@@ -20,7 +20,7 @@
                     <td class="f_tab">所属大区</td>
                     <td class="f_tab">所在仓库</td>
                     <td class="f_tab">库存量</td>
-                    <%if current_user.has_role?("wa") && params[:is_central] == "1"%>
+                    <%if current_user.has_role?("wa")%>
                         <td class="f_tab">物理库存量</td>
                     <%end%>
                     <%if (current_user.has_role?("admin") || current_user.has_role?("pm")) && params[:is_central] == "1"%>
@@ -35,7 +35,7 @@
                         <td><%=inventory.region.name%></td>
                         <td><%=inventory.warehouse.name%></td>
                         <td><%=inventory.quantity%></td>
-                        <%if current_user.has_role?("wa") && params[:is_central] == "1"%>
+                        <%if current_user.has_role?("wa")%>
                             <td><%=Inventory.in_warehouse(Warehouse.in_central(true).first.id).in_material(inventory.material.id).first(:select=>"sum(quantity) as quantity").quantity.to_i%></td>
                         <%end%>
                         <td>

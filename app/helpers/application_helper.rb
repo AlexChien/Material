@@ -33,7 +33,7 @@ module ApplicationHelper
         :navleft_header_logo => "/images/icons/package_green.png",
         :navleft => [
             { :name => "总仓库", :path => "/inventories?is_central=1", :id => "inventories_1", :logo => "/images/icons/package.png"},
-            { :name => "其他仓库", :path => "/inventories?is_central=0", :id => "inventories_0", :logo => "/images/icons/package_go.png"},
+            { :name => "大区仓库", :path => "/inventories?is_central=0", :id => "inventories_0", :logo => "/images/icons/package_go.png"},
           ]
         },
         {
@@ -84,7 +84,7 @@ module ApplicationHelper
         :navleft_header_logo => "/images/icons/package_green.png",
         :navleft => [
             { :name => "总仓库", :path => "/inventories?is_central=1", :id => "inventories_1", :logo => "/images/icons/package.png"},
-            { :name => "其他仓库", :path => "/inventories?is_central=0", :id => "inventories_0", :logo => "/images/icons/package_go.png"},
+            { :name => "大区仓库", :path => "/inventories?is_central=0", :id => "inventories_0", :logo => "/images/icons/package_go.png"},
           ]
         },
         {
@@ -127,7 +127,6 @@ module ApplicationHelper
         :navleft => [
             { :name => "物料入库", :path => "/transfers/new?type=1", :id => "transfers_new", :logo => "/images/icons/package_add.png"},
             { :name => "总仓库", :path => "/inventories?is_central=1", :id => "inventories_1", :logo => "/images/icons/package.png"},
-            { :name => "其他仓库", :path => "/inventories?is_central=0", :id => "inventories_0", :logo => "/images/icons/package_go.png"},
           ]
         },
         {
@@ -154,6 +153,13 @@ module ApplicationHelper
         :navleft => [
             { :name => "审核申领", :path => "/order_line_item_raws", :id => "order_line_item_raws", :logo => "/images/icons/basket.png"},
           ]
+        },
+        {
+        :navleft_header_name => "库存管理",
+        :navleft_header_logo => "/images/icons/package_green.png",
+        :navleft => [
+            { :name => "大区仓库", :path => "/inventories?is_central=0", :id => "inventories_0", :logo => "/images/icons/package_go.png"},
+          ]
         }
       ]
       navleft.concat(rm_manager)
@@ -179,6 +185,13 @@ module ApplicationHelper
         :navleft => [
             { :name => "添加销售", :path => "/salesreps/new", :id => "salesreps_new", :logo => "/images/icons/user_add.png"},
             { :name => "所有销售", :path => "/salesreps", :id => "salesreps", :logo => "/images/icons/user.png"},
+          ]
+        },
+        {
+        :navleft_header_name => "库存管理",
+        :navleft_header_logo => "/images/icons/package_green.png",
+        :navleft => [
+            { :name => "大区仓库", :path => "/inventories?is_central=0", :id => "inventories_0", :logo => "/images/icons/package_go.png"},
           ]
         }
       ]
