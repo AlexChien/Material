@@ -12,6 +12,14 @@ class Campaign < ActiveRecord::Base
         {:conditions => ["campaigns.state = ?", state]}
   }
 
+  named_scope :no_order, lambda {|boolean|
+    if boolean
+      {:include=>[:orders],:conditions => ["orders.campaign_id is null"]}
+    else
+      {:include=>[:orders],:conditions => ["orders.campaign_id is not null"]}
+    end
+  }
+
   state_machine :initial => :activated do
     event :delete_campaign  do transition all => :deleted end
   end
@@ -39,7 +47,7 @@ class Campaign < ActiveRecord::Base
     end
     list
   end
-  
+
   def campaign_status
     if Date.today < catalog_startdate
       0#未开始
@@ -49,7 +57,7 @@ class Campaign < ActiveRecord::Base
       2#已结束
     end
   end
-  
+
   def show_status
     status = campaign_status
     if campaign_status == 0
@@ -60,7 +68,7 @@ class Campaign < ActiveRecord::Base
       "<font color='red'>已结束</font>"
     end
   end
-  
+
   def cms
     self.catalogs.first.catalogs_materials
   end

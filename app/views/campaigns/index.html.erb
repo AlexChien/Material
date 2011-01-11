@@ -39,21 +39,12 @@
                         <%end%>
 
                         <%if current_user.has_role?("rc")%>
-                            <%campaign_order = Order.in_catalog(campaign.campaign_catalog.id).in_region(current_user.region.id).first%>
                             <%if campaign.campaign_status == 0%>
                                 预定未开始！
                             <%elsif campaign.campaign_status == 1%>
-                                <%if campaign_order.nil?%>
-                                    <%= link_to "我要预定", book_campaign_url(campaign)%>
-                                <%else%>
-                                    <%= link_to "查看预定", order_url(campaign_order)%>
-                                <%end%>
+                                <%= link_to "我要预定", book_campaign_url(campaign)%>
                             <%else%>
-                                <%if campaign_order.nil?%>
-                                    此活动您没预订！
-                                <%else%>
-                                    <%= link_to "查看预定", order_url(campaign_order)%>
-                                <%end%>
+                                此活动您没预订！
                             <%end%>
                         <%end%>
                         </td>

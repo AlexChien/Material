@@ -1,6 +1,6 @@
 <% content_for :title, "查看订单" %>
 
-<%= render :partial => 'shared/leftnav',:locals => { :highlight => "campaigns"} %>
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "orders"} %>
 
 <div id="main">
     <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
@@ -61,10 +61,10 @@
             <td></td>
         </tr>
 
-		<tr>
-			<td colspan="9" id="tab_tit02"><font >共有<%=@order.order_line_item_raws.size%>条记录</font></td>
-		</tr>
-	</tbody>
+        <tr>
+            <td colspan="9" id="tab_tit02"><font >共有<%=@order.order_line_item_raws.size%>条记录</font></td>
+        </tr>
+    </tbody>
 </table>
 </div>
 </div>

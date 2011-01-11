@@ -18,12 +18,12 @@
         <%if @cms.empty?%>
             <font color="red">此活动当前暂无任何可预订物料</font>
         <%else%>
-        <div class="tab">
-        <table cellspacing="1" cellpadding="0" border="0" width="786">
+        <style>
+            .book_tab td{background:#EBEBEB;}
+        </style>
+        <div class="tab book_tab" style="border:2px solid #E1E1E1;">
+        <table cellspacing="1" cellpadding="0" border="0" width="782">
             <tbody>
-                <tr>
-                    <td colspan="9" id="tab_tit">可预定物料</td>
-                </tr>
                 <tr>
                     <td class="f_tab">sku</td>
                     <td class="f_tab">物料图片</td>
@@ -51,9 +51,6 @@
                 </tr>
                 <%end%>
 
-                <tr>
-                    <td colspan="9" id="tab_tit02"><font color="green">共有<%=@cms.size%>条记录</font></td>
-                </tr>
             </tbody>
         </table>
         </div>

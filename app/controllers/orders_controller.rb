@@ -6,9 +6,9 @@ class OrdersController < ApplicationController
     action :create do
       allow :rc
     end
-    action :index, :provide, :update do
-      allow :wa
-    end
+    # action :index,:provide, :update do
+    #   allow :wa
+    # end
     action :index, :show, :update do
       allow :rc, :rm, :pm, :admin
     end

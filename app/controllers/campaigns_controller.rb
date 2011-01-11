@@ -18,6 +18,9 @@ class CampaignsController < ApplicationController
   def index
     campaign = Campaign
     campaign = campaign.in_state("activated")
+    if current_user.has_role?("rc")
+      campaign = campaign.no_order(true)
+    end
     @campaigns = campaign.paginate(:all,:include=>[:catalogs],:per_page=>20,:page => params[:page], :order => 'campaigns.created_at DESC')
   end
 

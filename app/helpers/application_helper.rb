@@ -173,7 +173,8 @@ module ApplicationHelper
         :navleft_header_name => "我要预定",
         :navleft_header_logo => "/images/icons/cart_edit.png",
         :navleft => [
-            { :name => "物料预定", :path => "/campaigns", :id => "campaigns", :logo => "/images/icons/cart.png"},
+            { :name => "物料预定", :path => "/campaigns", :id => "campaigns", :logo => "/images/icons/cart_add.png"},
+            { :name => "所有订单", :path => "/orders", :id => "orders", :logo => "/images/icons/cart.png"},
           ]
         },
         {
