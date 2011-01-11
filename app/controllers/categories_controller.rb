@@ -55,7 +55,7 @@ class CategoriesController < ApplicationController
     text = ""
     unless params[:cid].blank?
       @category = Category.find(params[:cid])
-      text = "sku：#{@category.cid}#{Material.next_id}"
+      text = "sku：#{@category.cid}#{@category.next_sku}"
     end
     render :text => text
   end

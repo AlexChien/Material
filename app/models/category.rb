@@ -12,4 +12,8 @@ class Category < ActiveRecord::Base
     event :delete_category  do transition all => :deleted end
   end
 
+  def next_sku(regular="%03d")
+    regular % (self.materials_count + 1)
+  end
+
 end

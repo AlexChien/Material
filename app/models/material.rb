@@ -6,7 +6,7 @@ class Material < ActiveRecord::Base
   has_many :production_line_items
   has_many :inventories
   has_many :transfer_line_items
-  belongs_to :category
+  belongs_to :category, :counter_cache => true
 
   validates_presence_of :name,:category_id
   validates_uniqueness_of :name
@@ -38,14 +38,9 @@ class Material < ActiveRecord::Base
     event :delete_material  do transition all => :deleted end
   end
 
-  def self.next_id(regular="%03d")
-    last_id = self.last.nil? ? 0 : self.last.id
-    regular % (last_id + 1)
-  end
-
 protected
   def generate_sku
-    self.sku = "#{self.category.cid}#{Material.next_id}"
+    self.sku = "#{self.category.cid}#{self.category.next_sku}"
   end
 
   def check_min_num
