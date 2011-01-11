@@ -56,7 +56,9 @@ module ApplicationHelper
         :navleft_header_logo => "/images/icons/brick_edit.png",
         :navleft => [
             { :name => "添加物料", :path => "/materials/new", :id => "materials_new", :logo => "/images/icons/brick_add.png"},
-            { :name => "所有物料", :path => "/materials", :id => "materials", :logo => "/images/icons/brick.png"}
+            { :name => "所有物料", :path => "/materials", :id => "materials", :logo => "/images/icons/brick.png"},
+            { :name => "添加分类", :path => "/categories/new", :id => "categories_new", :logo => "/images/icons/folder_brick.png"},
+            { :name => "所有分类", :path => "/categories", :id => "categories", :logo => "/images/icons/folder.png"}
           ]
         },
         {
@@ -107,7 +109,9 @@ module ApplicationHelper
         :navleft_header_logo => "/images/icons/brick_edit.png",
         :navleft => [
             { :name => "添加物料", :path => "/materials/new", :id => "materials_new", :logo => "/images/icons/brick_add.png"},
-            { :name => "所有物料", :path => "/materials", :id => "materials", :logo => "/images/icons/brick.png"}
+            { :name => "所有物料", :path => "/materials", :id => "materials", :logo => "/images/icons/brick.png"},
+            { :name => "添加分类", :path => "/categories/new", :id => "categories_new", :logo => "/images/icons/folder_brick.png"},
+            { :name => "所有分类", :path => "/categories", :id => "categories", :logo => "/images/icons/folder.png"}
           ]
         },
         {

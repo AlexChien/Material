@@ -16,19 +16,13 @@
                     <td id="tab_tit" colspan="4">更新物料</td>
                 </tr>
                 <tr>
-                    <td><%= f.label :sku, "<em>*</em>sku" %></td>
-                    <td class="td_left">
-                        <%= f.text_field :sku %>
-                    </td>
-                </tr>
-                <tr>
                     <td><%= f.label :name, "<em>*</em>物料名称" %></td>
                     <td class="td_left">
                         <%= f.text_field :name %>
                     </td>
                 </tr>
                 <tr>
-                    <td><%= f.label :cost, "物料市场价" %></td>
+                    <td><%= f.label :cost, "物料采购价" %></td>
                     <td class="td_left">
                         <%= f.text_field :cost %>
                     </td>
@@ -37,6 +31,12 @@
                     <td><%= f.label :min_num, "最小起订量" %></td>
                     <td class="td_left">
                         <%= f.text_field :min_num %>
+                    </td>
+                </tr>
+                <tr>
+                    <td><%= f.label :max_num, "最大起订量" %></td>
+                    <td class="td_left">
+                        <%= f.text_field :max_num %>
                     </td>
                 </tr>
                 <tr>

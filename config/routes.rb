@@ -12,6 +12,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :materials
 
+  map.resources :categories,:collection =>{:sku=>:get}
+
   map.resources :regions
 
   map.resources :salesreps

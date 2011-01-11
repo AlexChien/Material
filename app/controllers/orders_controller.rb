@@ -110,13 +110,15 @@ class OrdersController < ApplicationController
     amount = @order.order_line_item_adjusteds.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f
     @order.order_line_item_adjusteds.each do |olia|
       if olia.material.min_num > olia.quantity_total
-        @min_num_error = "物料未达到最小起订量，请调整数量或返回RC重新预定"
+        @num_error = "物料未达到最小起订量，请调整数量或返回RC重新预定"
+      elsif olia.material.max_num < olia.quantity_total
+        @num_error = "物料超过最大起订量，请调整数量或返回RC重新预定"
       end
     end
     if amount > @order.region.redeemable_budget
       flash[:error] = "您的订单超过预算使用额度，请重新修改订单"
-    elsif @min_num_error
-      flash[:error] = @min_num_error
+    elsif @num_error
+      flash[:error] = @num_error
     else
       if current_user.has_role?("rm")
         if @order.order_status_id == 1 || @order.order_status_id == 4

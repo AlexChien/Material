@@ -6,11 +6,14 @@ class Material < ActiveRecord::Base
   has_many :production_line_items
   has_many :inventories
   has_many :transfer_line_items
+  belongs_to :category
 
-  validates_presence_of :name,:sku
-  validates_uniqueness_of :name,:sku
+  validates_presence_of :name,:category_id
+  validates_uniqueness_of :name
   validates_numericality_of :cost,:greater_than_or_equal_to=>0
   validates_numericality_of :min_num,:greater_than_or_equal_to=>0
+  validates_numericality_of :max_num,:greater_than_or_equal_to=>0
+  validate :min_num,:check_min_num
 
   has_attached_file :uploaded_data,
                     :default_url => "/images/powerposm/missing.jpg",
@@ -24,7 +27,8 @@ class Material < ActiveRecord::Base
     :less_than => 5.megabyte, #another option is :greater_than
     :message => "上传文件小于5M"
 
-  after_create :generate_item_no
+  # after_create :generate_item_no
+  before_create :generate_sku
 
   named_scope :in_state, lambda {|state|
         {:conditions => ["materials.state = ?", state]}
@@ -34,7 +38,23 @@ class Material < ActiveRecord::Base
     event :delete_material  do transition all => :deleted end
   end
 
+  def self.next_id(regular="%03d")
+    last_id = self.last.nil? ? 0 : self.last.id
+    regular % (last_id + 1)
+  end
+
 protected
+  def generate_sku
+    self.sku = "#{self.category.cid}#{Material.next_id}"
+  end
+
+  def check_min_num
+    if !self.min_num.nil? and !self.max_num.nil?
+      if self.min_num > self.max_num
+        errors.add(:min_num, '不能大于最大起订量')
+      end
+    end
+  end
 
   def generate_item_no(prefix="powerposm")
     time = Time.now.to_i.to_s

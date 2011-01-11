@@ -3,98 +3,98 @@
 <%= render :partial => 'shared/leftnav',:locals => { :highlight => "campaigns_new"} %>
 
 <div id="main">
-	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
-	<%= render :partial => 'shared/s_path'%>
-	<%end%>
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+    <%= render :partial => 'shared/s_path'%>
+    <%end%>
 
-	<div class="tab">
-		<% form_for(@campaign, :url => campaigns_path,:html=>{:onSubmit=>"return check_price();"}) do |f| -%>
-		<%=f.error_messages%>
-		<table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
-			<tbody>
-				<tr>
-					<td id="tab_tit" colspan="4">发起活动</td>
-				</tr>
-				<tr>
-					<td><%= f.label :name, "<em>*</em>活动名称" %></td>
-					<td class="td_left">
-						<%= f.text_field :name %>
-					</td>
-				</tr>
-				<% f.fields_for :catalogs do |catalog| %>
-				<tr>
-					<td><%= catalog.label :order_startdate, "<em>*</em>预定开始时间" %></td>
-					<td class="td_left">
-						<%= catalog.text_field :order_startdate %>
-					</td>
-				</tr>
-				<tr>
-					<td><%= catalog.label :order_enddate, "<em>*</em>预定结束时间" %></td>
-					<td class="td_left">
-						<%= catalog.text_field :order_enddate %>
-					</td>
-				</tr>
-				<% end %>
-				<tr>
-					<td><%= label_tag :catalogs_materials, "物料目录" %></td>
-					<td class="td_left">
-						<ul>
-							<%Material.in_state("activated").all.each do |material|%>
-							<li>
-								<span><input type="checkbox" value="<%=material.id%>" name="material_ids[]" style="width:auto;" onclick="replace_html(this)"></span>
-								<span style="width:200px;"><%=material.name%></span>
-								<span id="material_price_<%=material.id%>">
-				                </span>
-							</li>
-							<%end%>
-						</ul>
-					</td>
-				</tr>
-				<tr>
-					<td><%= f.label :description, "活动简介" %></td>
-					<td class="td_left">
-						<%= f.text_area :description %>
-					</td>
-				</tr>
-				<tr><td id="tab_tit" colspan="4"></td>
-				</tr>
-			</tbody>
-		</table>
-		<br/>
-		<div class="tab_btn">
-			<%= f.submit "保存",:class=>"button_btn" %>
-		</div>
-		<%end%>
-	</div>
+    <div class="tab">
+        <% form_for(@campaign, :url => campaigns_path,:html=>{:onSubmit=>"return check_price();"}) do |f| -%>
+        <%=f.error_messages%>
+        <table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
+            <tbody>
+                <tr>
+                    <td id="tab_tit" colspan="4">发起活动</td>
+                </tr>
+                <tr>
+                    <td><%= f.label :name, "<em>*</em>活动名称" %></td>
+                    <td class="td_left">
+                        <%= f.text_field :name %>
+                    </td>
+                </tr>
+                <% f.fields_for :catalogs do |catalog| %>
+                <tr>
+                    <td><%= catalog.label :order_startdate, "<em>*</em>预定开始时间" %></td>
+                    <td class="td_left">
+                        <%= catalog.text_field :order_startdate %>
+                    </td>
+                </tr>
+                <tr>
+                    <td><%= catalog.label :order_enddate, "<em>*</em>预定结束时间" %></td>
+                    <td class="td_left">
+                        <%= catalog.text_field :order_enddate %>
+                    </td>
+                </tr>
+                <% end %>
+                <tr>
+                    <td><%= label_tag :catalogs_materials, "物料目录" %></td>
+                    <td class="td_left">
+                        <ul>
+                            <%Material.in_state("activated").all.each do |material|%>
+                            <li>
+                                <span><input type="checkbox" value="<%=material.id%>" name="material_ids[]" style="width:auto;" onclick="replace_html(this,'<%=material.cost%>')"></span>
+                                <span style="width:200px;"><%=material.name%></span>
+                                <span id="material_price_<%=material.id%>">
+                                </span>
+                            </li>
+                            <%end%>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td><%= f.label :description, "活动简介" %></td>
+                    <td class="td_left">
+                        <%= f.text_area :description %>
+                    </td>
+                </tr>
+                <tr><td id="tab_tit" colspan="4"></td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <div class="tab_btn">
+            <%= f.submit "保存",:class=>"button_btn" %>
+        </div>
+        <%end%>
+    </div>
 </div>
 
 <%javascript_tag do%>
-	function check_price(){
-		var return_boolean = true;
-		$("input[name='material_ids[]']").each(function() {
-		    if (this.checked) {
-			  price = $("#price_"+this.value).val();
-		      if( price < 0){alert("内部采购价不能为"+price);return_boolean = false;}
-		    }
-		})
-		if(!return_boolean){return false;}
-	}
+    function check_price(){
+        var return_boolean = true;
+        $("input[name='material_ids[]']").each(function() {
+            if (this.checked) {
+              price = $("#price_"+this.value).val();
+              if( price < 0){alert("内部采购价不能为"+price);return_boolean = false;}
+            }
+        })
+        if(!return_boolean){return false;}
+    }
 
-	$(function() {
-			$("#campaign_catalogs_attributes_0_order_startdate").datepicker({showOn: 'button', buttonImage: '/images/icons/calendar.png', showOn:'both' ,dateFormat: 'yy-mm-dd'});
+    $(function() {
+            $("#campaign_catalogs_attributes_0_order_startdate").datepicker({showOn: 'button', buttonImage: '/images/icons/calendar.png', showOn:'both' ,dateFormat: 'yy-mm-dd'});
 
-			$("#campaign_catalogs_attributes_0_order_enddate").datepicker({showOn: 'button', buttonImage: '/images/icons/calendar.png', showOn:'both' ,dateFormat: 'yy-mm-dd'});
-	});
+            $("#campaign_catalogs_attributes_0_order_enddate").datepicker({showOn: 'button', buttonImage: '/images/icons/calendar.png', showOn:'both' ,dateFormat: 'yy-mm-dd'});
+    });
 
-	function replace_html(box){
-		var id = box.value;
-		var replace_id = $("#material_price_"+id)
-		if(box.checked){
-			html = "<font>内部采购价：</font><input type='text' value='0.00' style='width: 50px; height: 100%;' name='price_"+id+"' id='price_"+id+"'>";
-			replace_id.html(html);
-		}else{
-			html = "";
-			replace_id.html(html);
-		}
-	}
+    function replace_html(box,cost){
+        var id = box.value;
+        var replace_id = $("#material_price_"+id)
+        if(box.checked){
+            html = "<font>内部采购价：</font><input type='text' value='"+cost+"' style='width: 50px; height: 100%;' name='price_"+id+"' id='price_"+id+"'>";
+            replace_id.html(html);
+        }else{
+            html = "";
+            replace_id.html(html);
+        }
+    }
 <%end%>

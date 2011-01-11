@@ -16,9 +16,12 @@
                     <td id="tab_tit" colspan="4">添加物料</td>
                 </tr>
                 <tr>
-                    <td><%= f.label :sku, "<em>*</em>sku" %></td>
+                    <td><%= f.label :category_id, "<em>*</em>物料分类" %></td>
                     <td class="td_left">
-                        <%= f.text_field :sku %>
+                        <%= f.select :category_id,Category.in_state("activated").all.collect{|p| [p.name, p.id]},{:include_blank=>"请选择物料分类"} %>
+                        <br/>
+                        <b id="sku" style="color:red;">
+                        </b>
                     </td>
                 </tr>
                 <tr>
@@ -28,7 +31,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><%= f.label :cost, "物料市场价" %></td>
+                    <td><%= f.label :cost, "物料采购价" %></td>
                     <td class="td_left">
                         <%= f.text_field :cost %>
                     </td>
@@ -37,6 +40,12 @@
                     <td><%= f.label :min_num, "最小起订量" %></td>
                     <td class="td_left">
                         <%= f.text_field :min_num %>
+                    </td>
+                </tr>
+                <tr>
+                    <td><%= f.label :max_num, "最大起订量" %></td>
+                    <td class="td_left">
+                        <%= f.text_field :max_num %>
                     </td>
                 </tr>
                 <tr>
@@ -74,3 +83,17 @@
         <%end%>
     </div>
 </div>
+<%javascript_tag do%>
+    $(function(){
+        load_sku();
+    })
+
+    $("#material_category_id").change(function(){
+        load_sku();
+    })
+
+    function load_sku(){
+        var cid = $("#material_category_id").val();
+        $("#sku").load("/categories/sku?cid="+cid);
+    }
+<%end%>
