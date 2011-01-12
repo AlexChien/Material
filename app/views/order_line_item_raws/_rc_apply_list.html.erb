@@ -11,7 +11,12 @@
 <table cellspacing="1" cellpadding="0" border="0" width="786">
     <tbody>
         <tr>
-            <td colspan="11" id="tab_tit">物料明细（<%=@olir.show_status%>）</td>
+            <td colspan="11" id="tab_tit">
+                物料明细（<%=@olir.show_status%>）
+                <%if @olir.status == 3 || @olir.status == 4%>
+                   <a href="/order_line_item_raws/<%=@olir.id%>/print"><img src="/images/icons/printer.png" /></a>
+                <%end%>
+            </td>
         </tr>
         <tr>
             <td class="f_tab">sku</td>

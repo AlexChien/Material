@@ -16,4 +16,13 @@ class ProductionsController < ApplicationController
     redirect_to "/productions/#{@production.id}"
   end
 
+  def print
+    @production = Production.find(params[:id])
+    if @production.locked
+      render :layout => "print"
+    else
+      render :text => "该生产单不能打印"
+    end
+  end
+
 end

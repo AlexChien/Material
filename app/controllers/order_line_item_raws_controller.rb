@@ -10,7 +10,7 @@ class OrderLineItemRawsController < ApplicationController
     action :index, :show, :update_status do
       allow :rc, :rm, :wa
     end
-    action :check_provide do
+    action :check_provide,:print do
       allow :wa
     end
   end
@@ -154,6 +154,15 @@ class OrderLineItemRawsController < ApplicationController
       @error_message = "仓库库存量不足"
     end
     render :partial=>"message"
+  end
+
+  def print
+    @olir = OrderLineItemRaw.find(params[:id])
+    if @olir.status == 3 || @olir.status == 4
+      render :layout => "print"
+    else
+      render :text => "该送货单不能打印"
+    end
   end
 
 protected

@@ -208,7 +208,11 @@ class OrdersController < ApplicationController
 
   def print
     @order = Order.find(params[:id])
-    render :layout => "print"
+    if @order.order_status_id == 5
+      render :layout => "print"
+    else
+      render :text => "该预定单不能打印"
+    end
   end
 
 protected

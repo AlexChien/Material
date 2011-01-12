@@ -20,7 +20,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :order_line_item_raws,:member=>{:apply_update=>:put,
                                                 :check_provide=>:get,
-                                                :update_status=>:put}
+                                                :update_status=>:put,
+                                                :print=>:get}
 
   map.resources :order_line_item_adjusteds
 
@@ -31,7 +32,7 @@ ActionController::Routing::Routes.draw do |map|
                                   :provide=>:get,
                                   :print=>:get}
 
-  map.resources :productions
+  map.resources :productions,:member=>{:print=>:get}
 
   map.resources :production_line_items
 

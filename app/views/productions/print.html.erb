@@ -1,0 +1,32 @@
+<div class="tab">
+    <table cellspacing="1" cellpadding="0" border="0" width="980">
+        <tbody>
+            <tr>
+                <td colspan="9" id="tab_tit">生产单（ID:<%=@production.id%>）</td>
+            </tr>
+            <tr>
+                <td class="f_tab">sku</td>
+                <td class="f_tab">物料图片</td>
+                <td class="f_tab">物料名称</td>
+                <td class="f_tab">预定数量</td>
+                <td class="f_tab">调整数量</td>
+                <td class="f_tab">预定总数</td>
+            </tr>
+
+            <%@production.production_line_items.each do |pli|%>
+            <tr>
+                <td><%=pli.material.sku%></td>
+                <td><%=image_tag (pli.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+                <td><%=pli.material.name%></td>
+                <td><%=pli.quantity_collected%></td>
+                <td><%=pli.quantity_adjusted%></td>
+                <td><%=pli.quantity_total%></td>
+            </tr>
+            <%end%>
+
+            <tr>
+                <td colspan="9" id="tab_tit02"><font >共有<%=@production.production_line_items.size%>条记录</font></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
