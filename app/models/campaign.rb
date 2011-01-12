@@ -12,12 +12,8 @@ class Campaign < ActiveRecord::Base
         {:conditions => ["campaigns.state = ?", state]}
   }
 
-  named_scope :no_order, lambda {|boolean|
-    if boolean
-      {:include=>[:orders],:conditions => ["orders.campaign_id is null"]}
-    else
-      {:include=>[:orders],:conditions => ["orders.campaign_id is not null"]}
-    end
+  named_scope :not_in_id, lambda {|ids|
+        {:conditions => ["campaigns.id not in (?)", ids]}
   }
 
   state_machine :initial => :activated do

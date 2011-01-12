@@ -19,7 +19,11 @@ class CampaignsController < ApplicationController
     campaign = Campaign
     campaign = campaign.in_state("activated")
     if current_user.has_role?("rc")
-      campaign = campaign.no_order(true)
+      campaign_ids = []
+      Order.in_region(current_user.region).each do |order|
+        campaign_ids << order.campaign_id
+      end
+      campaign = campaign.not_in_id(campaign_ids) unless campaign_ids.empty?
     end
     @campaigns = campaign.paginate(:all,:include=>[:catalogs],:per_page=>20,:page => params[:page], :order => 'campaigns.created_at DESC')
   end

@@ -1,0 +1,51 @@
+#container {
+    clear:both;
+    width: 980px;
+    margin: 0 auto;
+}
+
+/*tab*/
+.tab {
+    margin-bottom:10px;
+}
+.tab em{
+    color:red;
+    padding-right:5px;
+}
+.tab table {
+    background-color:#aaa;
+}
+.tab td {
+    background-color:#fff;
+    text-align:center;
+    height:35px;
+}
+.tab .td_left {
+    width:500px;
+    padding:5px;
+    text-align:left;
+}
+.tab .td_left ul li {
+    width:500px;
+    float:left;
+}
+.tab .td_left ul li span {
+    font-size:14px;
+    padding:3px;
+    float:left;
+}
+
+#tab_tit {
+    font-weight: bold;
+}
+#tab_tit02 {
+    font-size: 12px;
+    font-weight: normal;
+}
+.tab .f_tab {
+    font-size: 12px;
+    font-weight: bold;
+    text-align:center;
+    background-color: #d3d3d3;
+}
+/*tab*/

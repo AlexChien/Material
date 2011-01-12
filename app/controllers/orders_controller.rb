@@ -15,7 +15,7 @@ class OrdersController < ApplicationController
     action :approve_fail_message, :approve_fail do
       allow :rm
     end
-    action :accept_fail_message, :accept_fail do
+    action :accept_fail_message, :accept_fail, :print do
       allow :pm, :admin
     end
   end
@@ -204,6 +204,11 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     @campaign = @order.campaign
     @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
+  end
+
+  def print
+    @order = Order.find(params[:id])
+    render :layout => "print"
   end
 
 protected

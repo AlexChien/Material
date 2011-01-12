@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/stylesheets/powerposm/print.css" rel="stylesheet" type="text/css" />
+<%= javascript_include_tag 'powerposm/application'%>
+<title><%= yield_title yield(:title) %></title>
+<script language="javascript" type="text/javascript">
+    window.onload = function() {
+        window.print();
+    }
+</script>
+</head>
+<body>
+<div id="container">
+    <%= yield %>
+</div>
+</body>
+</html>

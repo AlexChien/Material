@@ -28,7 +28,8 @@ ActionController::Routing::Routes.draw do |map|
                                   :approve_fail=>:put,
                                   :accept_fail_message=>:get,
                                   :accept_fail=>:put,
-                                  :provide=>:get}
+                                  :provide=>:get,
+                                  :print=>:get}
 
   map.resources :productions
 

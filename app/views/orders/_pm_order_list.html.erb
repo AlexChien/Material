@@ -2,7 +2,11 @@
 <table cellspacing="1" cellpadding="0" border="0" width="786">
     <tbody>
         <tr>
-            <td colspan="9" id="tab_tit">订单详细（<%=@order.order_status.name%>）</td>
+            <td colspan="9" id="tab_tit">订单详细（<%=@order.order_status.name%>）
+            <%if @order.order_status_id ==5%>
+               <a href="/orders/<%=@order.id%>/print"><img src="/images/icons/printer.png" /></a>
+            <%end%>
+            </td>
         </tr>
         <tr>
             <td class="f_tab">sku</td>
