@@ -3,6 +3,9 @@ class MaterialsController < ApplicationController
 
   access_control do
     allow :pm,:admin
+    action :iframe_show do
+      allow all
+    end
   end
 
   def index
@@ -49,6 +52,11 @@ class MaterialsController < ApplicationController
       flash[:error] = "发生未知错误，请联系管理员"
     end
     redirect_to "/materials"
+  end
+
+  def iframe_show
+    @material = Material.find(params[:id])
+    render :layout => false
   end
 
 end

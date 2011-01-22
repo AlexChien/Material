@@ -3,18 +3,25 @@
 <%= render :partial => 'shared/leftnav',:locals => { :highlight => "campaigns"} %>
 
 <div id="main">
-	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
-	<%= render :partial => 'shared/s_path'%>
-	<%end%>
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+    <%= render :partial => 'shared/s_path'%>
+    <%end%>
 
-	<div class="campaign_info">
-		<p>活动名称：<%=@production.campaign.name%></p>
-		<p>预定时间：<%=@production.campaign.catalog_startdate%> 至  <%=@production.campaign.catalog_enddate%> （<%=@production.campaign.show_status%>）</p>
-		<p>活动简介：<%=@production.campaign.description%></p>
-	</div>
-	<br/>
+    <div class="campaign_info">
+        <p>活动名称：<%=@production.campaign.name%></p>
+        <p>预定时间：<%=@production.campaign.catalog_startdate%> 至  <%=@production.campaign.catalog_enddate%> （<%=@production.campaign.show_status%>）</p>
+        <p>活动简介：<%=@production.campaign.description%></p>
+    </div>
+    <br/>
 
-<div class="tab" id="production_list">
-	<%=render :partial=> "production_list"%>
-</div>
+    <%if false%>
+        <div class="tab" id="production_list">
+            <%=render :partial=> "production_list"%>
+        </div>
+    <%else%>
+        <div id="production_list">
+            <%=render :partial=> "ext_list"%>
+        </div>
+    <%end%>
+
 </div>

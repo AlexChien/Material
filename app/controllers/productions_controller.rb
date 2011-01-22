@@ -25,4 +25,23 @@ class ProductionsController < ApplicationController
     end
   end
 
+  def load_data
+    @production = Production.find(params[:id])
+    # params[:filter].each do |index,f|
+    #   puts params[:filter][index.to_s]["field"]
+    #   puts params[:filter][index.to_s]["data"]["value"]
+    # end
+    @plis = @production.production_line_items.all(:include=>[:material])
+    return_data = Hash.new()
+    return_data[:size] = @plis.size
+    return_data[:Plis] = @plis.collect{|p| {:id=>p.id,
+                                            :sku=>p.material.sku,
+                                            :name=>p.material.name,
+                                            :quantity_collected=>p.quantity_collected,
+                                            :quantity_adjusted=>p.quantity_adjusted,
+                                            :quantity_total=>p.quantity_total
+                                            }}
+    render :text=>return_data.to_json, :layout=>false
+  end
+
 end

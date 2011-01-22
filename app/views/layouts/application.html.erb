@@ -5,12 +5,35 @@
 <link href="/stylesheets/powerposm/admin.css" rel="stylesheet" type="text/css" />
 <link href="/stylesheets/powerposm/ui-lightness/jquery-ui-1.8.7.custom.css" rel="stylesheet" type="text/css" />
 <%= javascript_include_tag 'powerposm/jquery-1.4.4.min.js','powerposm/jquery-ui-1.8.7.custom.min.js','powerposm/jquery.progressbar.min.js','powerposm/application'%>
+
+<%= javascript_include_tag "/ext-3.3.1/adapter/ext/ext-base","/ext-3.3.1/ext-all","powerposm/powerposm_ext.js"%>
+<%= stylesheet_link_tag "/ext-3.3.1/resources/css/ext-all"%>
+
+<!-- overrides to base library -->
+<link rel="stylesheet" type="text/css" href="/ext-3.3.1/examples/ux/gridfilters/css/GridFilters.css" />
+<link rel="stylesheet" type="text/css" href="/ext-3.3.1/examples/ux/gridfilters/css/RangeMenu.css" />
+
+<!-- extensions -->
+<script type="text/javascript" src="/ext-3.3.1/examples/ux/gridfilters/menu/RangeMenu.js"></script>
+
+<script type="text/javascript" src="/ext-3.3.1/examples/ux/gridfilters/menu/ListMenu.js"></script>
+
+<script type="text/javascript" src="/ext-3.3.1/examples/ux/gridfilters/GridFilters.js"></script>
+<script type="text/javascript" src="/ext-3.3.1/examples/ux/gridfilters/filter/Filter.js"></script>
+<script type="text/javascript" src="/ext-3.3.1/examples/ux/gridfilters/filter/StringFilter.js"></script>
+<script type="text/javascript" src="/ext-3.3.1/examples/ux/gridfilters/filter/DateFilter.js"></script>
+<script type="text/javascript" src="/ext-3.3.1/examples/ux/gridfilters/filter/ListFilter.js"></script>
+
+<script type="text/javascript" src="/ext-3.3.1/examples/ux/gridfilters/filter/NumericFilter.js"></script>
+<script type="text/javascript" src="/ext-3.3.1/examples/ux/gridfilters/filter/BooleanFilter.js"></script>
+<!-- extensions -->
+
 <title><%= yield_title yield(:title) %></title>
 </head>
 <body>
 <div id="topper">
-	<div class="title">达能物料管理系统</div>
-	<div class="logo-small"></div>
+    <div class="title">达能物料管理系统</div>
+    <div class="logo-small"></div>
 </div>
 <div id="container">
     <%= render :partial => 'shared/header' %>

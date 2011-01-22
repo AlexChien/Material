@@ -1,0 +1,9 @@
+<%= javascript_include_tag 'powerposm/jquery-1.4.4.min.js','powerposm/jquery-ui-1.8.7.custom.min.js','powerposm/jquery.progressbar.min.js','powerposm/application'%>
+<div style="padding:10px;">
+<p><%=image_tag (@material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></p>
+<p>sku：<%=@material.sku%></p>
+<p>物料名称：<%=@material.name%></p>
+<p>包装规格：<%=@material.pack_spec%></p>
+<p>使用指导：<%=@material.usage%></p>
+<p>详细描述：<%=@material.memo%></p>
+</div>

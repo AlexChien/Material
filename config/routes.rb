@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.dashboard '/dashboard',:controller => 'dashboard', :action => 'index'
 
-  map.resources :materials
+  map.resources :materials,:member => {:iframe_show=>:get}
 
   map.resources :categories,:collection =>{:sku=>:get}
 
@@ -32,7 +32,7 @@ ActionController::Routing::Routes.draw do |map|
                                   :provide=>:get,
                                   :print=>:get}
 
-  map.resources :productions,:member=>{:print=>:get}
+  map.resources :productions,:member=>{:print=>:get,:load_data=>:post}
 
   map.resources :production_line_items
 
