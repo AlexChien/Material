@@ -39,7 +39,8 @@ class ProductionsController < ApplicationController
                                             :name=>p.material.name,
                                             :quantity_collected=>p.quantity_collected,
                                             :quantity_adjusted=>p.quantity_adjusted,
-                                            :quantity_total=>p.quantity_total
+                                            :quantity_total=>p.quantity_total,
+                                            :material_id=>p.material_id,
                                             }}
     render :text=>return_data.to_json, :layout=>false
   end

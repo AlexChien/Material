@@ -32,9 +32,9 @@ ActionController::Routing::Routes.draw do |map|
                                   :provide=>:get,
                                   :print=>:get}
 
-  map.resources :productions,:member=>{:print=>:get,:load_data=>:post}
+  map.resources :productions,:member=>{:print=>:get,:load_data=>:get}
 
-  map.resources :production_line_items
+  map.resources :production_line_items, :collection=>{:ext_update=>:put}
 
   map.resources :inventories, :collection => {:calculate_materials =>:get}
 

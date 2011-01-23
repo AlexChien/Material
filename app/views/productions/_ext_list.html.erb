@@ -1,3 +1,4 @@
+<div id="plis_list">
 <script type="text/javascript" charset="utf-8">
     var grid;
     var ds;
@@ -5,31 +6,45 @@
       init_grid();
     });
     function init_grid() {
-        ds = new Ext.data.GroupingStore({
-            proxy: new Ext.data.HttpProxy(
-            {
-                url: '/productions/<%=@production.id%>/load_data'
-            }),
+        var App = new Ext.App({});
 
+        var editor = new Ext.ux.grid.RowEditor({
+            saveText: '调整',
+            cancelText: "取消"
+        });
+
+        var writer = new Ext.data.JsonWriter({
+            encode: false
+        });
+
+        ds = new Ext.data.GroupingStore({
+            proxy: new Ext.data.HttpProxy({
+                api: {
+                        read: '/productions/<%=@production.id%>/load_data',
+                        update: {url: '/production_line_items/ext_update', method: 'put'}
+                     }
+            }),
             reader: new Ext.data.JsonReader({
                     root: 'Plis',
                     totalProperty: 'size',
-                    id: 'id'
+                    messageProperty: 'message'
                 },
                 [
-                    {name: 'id', mapping: 'id'},
+                    {name: 'material_id', mapping: 'material_id'},
                     {name: 'sku', mapping: 'sku'},
                     {name: 'name', mapping: 'name'},
                     {name: 'quantity_collected', mapping: 'quantity_collected'},
                     {name: 'quantity_adjusted', mapping: 'quantity_adjusted'},
                     {name: 'quantity_total', mapping: 'quantity_total'}
                 ]),
+            // restful: true,
+            writer: writer
         });
         var cm = new Ext.grid.ColumnModel([
             {id: 'sku', header: "sku", dataIndex: 'sku',sortable:true,width:150},
             {id: 'name', header: "物料名称", dataIndex: 'name',sortable:true,width:186},
             {id: 'quantity_collected', header: "预定数量", dataIndex: 'quantity_collected',sortable:true,width:150},
-            {id: 'quantity_adjusted', header: "调整数量", dataIndex: 'quantity_adjusted',sortable:true,width:150},
+            {id: 'quantity_adjusted', header: "调整数量", dataIndex: 'quantity_adjusted',sortable:true,width:150,editor: new Ext.form.TextField({})},
             {id: 'quantity_total', header: "预定总数", dataIndex: 'quantity_total',sortable:true,width:150}
         ]);
 
@@ -55,14 +70,22 @@
         ]
     });
 
+    var plugins = [];
+    <%if @production.locked%>
+        plugins.push(filters);
+    <%else%>
+        plugins.push(filters);
+        plugins.push(editor);
+    <%end%>
 
     grid = new Ext.grid.GridPanel({
-        autoHeight: true,
+        // autoHeight: true,
+        height: 300,
         autoWidth: true,
         ds: ds,
         cm: cm,
         sm: new Ext.grid.RowSelectionModel({ singleSelect: true }),
-        plugins: [filters],
+        plugins: plugins,
         view: new Ext.grid.GroupingView({
             forceFit:true,
             groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
@@ -70,8 +93,8 @@
         title: '<center>生产单详细（<%=@production.show_status%>）<%if @production.locked%><a href="/productions/<%=@production.id%>/print"><img src="/images/icons/printer.png" /></a><%end%></center>'
     });
 
-    grid.render('production_list');
-    ds.load({params:{start:0}});
+    grid.render('plis_list');
+    ds.load();//{params:{start:0}}
     grid.on("rowcontextmenu",function(grid,rowIndex,e){
         if(rowIndex<0){return;}
         e.preventDefault();
@@ -85,7 +108,7 @@
                 handler:function(){
                     var selections = grid.getSelectionModel().getSelections();
                     for (var i = 0; i < selections.length; i++) {
-                        parent.addwindow("/materials/"+selections[i].get('id')+"/iframe_show","物料详情",400,300);
+                        parent.addwindow("/materials/"+selections[i].get('material_id')+"/iframe_show","物料详情",400,300);
                     }
 
                 }
@@ -93,5 +116,33 @@
         ]);
         treeMenu.showAt(e.getPoint());
     });
+
+    Ext.data.DataProxy.addListener('beforewrite', function(proxy, action) {
+        App.setAlert(App.STATUS_NOTICE, "正在调整中...");
+    });
+
+    Ext.data.DataProxy.addListener('write', function(proxy, action, result, res, rs) {
+        App.setAlert(true, res.message);
+    });
+
+    Ext.data.DataProxy.addListener('exception', function(proxy, type, action, options, res) {
+        // App.setAlert(false, "Something bad happend while executing " + action);
+        Ext.Msg.show({
+            title: '发生错误',
+            msg: res.message,
+            icon: Ext.MessageBox.ERROR
+        });
+    });
+
     }
 </script>
+</div>
+
+<% unless @production.locked %>
+    <br/>
+    <% form_for @production do |f| -%>
+    <div class="tab_btn">
+        <%= f.submit "锁定",:class=>"button_btn",:confirm=>"锁定生产单后将不能修改！您确认要锁定吗？" %>
+    </div>
+    <% end %>
+<% end %>
