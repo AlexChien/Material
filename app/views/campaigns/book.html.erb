@@ -91,7 +91,11 @@
     <br/>
 
     <div id="order_list">
-        <%=render :partial=> "order_list"%>
+        <%if false%>
+            <%=render :partial=> "order_list"%>
+        <%else%>
+            <%=render :partial=> "ext_order_list"%>
+        <%end%>
     </div>
     <%end%>
 

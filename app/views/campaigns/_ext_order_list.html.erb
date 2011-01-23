@@ -1,0 +1,192 @@
+<%if @olirs.empty?%>
+    <font color="red">您在此活动中无任何预订记录</font>
+<%else%>
+    <div id="olir_list">
+    <script type="text/javascript" charset="utf-8">
+        var grid;
+        var ds;
+        $(function(){
+            init_grid();
+            init_listener();
+        });
+
+        function init_grid() {
+            var editor = new Ext.ux.grid.RowEditor({
+                saveText: '调整',
+                cancelText: "取消"
+            });
+
+            var writer = new Ext.data.JsonWriter({
+                encode: false
+            });
+
+            ds = new Ext.data.GroupingStore({
+                proxy: new Ext.data.HttpProxy({
+                    api: {
+                            read: '/order_line_item_raws/load_data?campaign_id=<%=@campaign.id%>',
+                            update: {url: '/order_line_item_raws/ext_update', method: 'put'},
+                            destroy: {url: '/order_line_item_raws/ext_destroy', method: 'delete'}
+                         }
+                }),
+                reader: new Ext.data.JsonReader({
+                        root: 'Olirs',
+                        totalProperty: 'size',
+                        messageProperty: "message"
+                    },
+                    [
+                        {name: 'id', mapping: 'id'},
+                        {name: 'material_id', mapping: 'material_id'},
+                        {name: 'sku', mapping: 'sku'},
+                        {name: 'name', mapping: 'name'},
+                        {name: 'region', mapping: 'region'},
+                        {name: 'salesrep', mapping: 'salesrep'},
+                        {name: 'unit_price', mapping: 'unit_price'},
+                        {name: 'quantity', mapping: 'quantity'},
+                        {name: 'subtotal', mapping: 'subtotal'}
+                    ]),
+                // restful: true,
+                writer: writer
+            });
+            var cm = new Ext.grid.ColumnModel([
+                {id: 'sku', header: "sku", dataIndex: 'sku',sortable:true,width:100},
+                {id: 'name', header: "物料名称", dataIndex: 'name',sortable:true,width:186},
+                {id: 'region', header: "所属区", dataIndex: 'region',sortable:true,width:100},
+                {id: 'salesrep', header: "销售姓名", dataIndex: 'salesrep',sortable:true,width:100},
+                {id: 'unit_price', header: "物料价格", dataIndex: 'unit_price',sortable:true,width:100},
+                {id: 'quantity', header: "预定数量", dataIndex: 'quantity',sortable:true,width:100,editor: new Ext.form.TextField({})},
+                {id: 'subtotal', header: "小计", dataIndex: 'subtotal',sortable:true,width:100,summaryType: 'sum'},
+                {xtype: 'actioncolumn',
+                 width: 50,
+                 items: [{
+                    icon: '/ext-3.3.1/examples/shared/icons/fam/delete.gif',
+                    tooltip: '删除',
+                    handler: function(grid, rowIndex, colIndex) {
+                        var rec = ds.getAt(rowIndex);
+                        grid.store.remove(rec);
+                        }
+                    }]
+                }
+            ]);
+
+        var filters = new Ext.ux.grid.GridFilters({
+            local: true,   // defaults to false (remote filtering)
+            filters: [
+            {
+                type: 'string',
+                dataIndex: 'sku'
+            }, {
+                type: 'string',
+                dataIndex: 'name',
+            },  {
+                type: 'string',
+                dataIndex: 'region'
+            }, {
+                type: 'string',
+                dataIndex: 'salesrep',
+            },{
+                type: 'numeric',
+                dataIndex: 'unit_price'
+            }, {
+                type: 'numeric',
+                dataIndex: 'quantity'
+            }, {
+                type: 'numeric',
+                dataIndex: 'subtotal'
+                }
+            ]
+        });
+
+        // utilize custom extension for Hybrid Summary
+        var summary = new Ext.ux.grid.HybridSummary();
+
+        grid = new Ext.grid.GridPanel({
+            // autoHeight: true,
+            height: 300,
+            autoWidth: true,
+            ds: ds,
+            cm: cm,
+            sm: new Ext.grid.RowSelectionModel({ singleSelect: true }),
+            plugins: [filters,editor,summary],
+            view: new Ext.grid.GroupingView({
+                forceFit:true,
+                groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+            }),
+            title: '<center>订单详细<%=@campaign_order.nil? ? "" : "(#{@campaign_order.order_status.name})"%><%unless @campaign_order.nil?%><br/>原因：<%=@campaign_order.memo%><%end%>'
+        });
+
+        grid.render('olir_list');
+        ds.load();//{params:{start:0}}
+
+        grid.on("rowcontextmenu",function(grid,rowIndex,e){
+            if(rowIndex<0){return;}
+            e.preventDefault();
+            grid.getSelectionModel().selectRow(rowIndex);
+            var treeMenu = new Ext.menu.Menu([
+                {
+                    xtype:"",
+                    text:"显示详情",
+                    icon:"/images/icons/database.png",
+                    pressed:true,
+                    handler:function(){
+                        var selections = grid.getSelectionModel().getSelections();
+                        for (var i = 0; i < selections.length; i++) {
+    parent.addwindow("/materials/"+selections[i].get('material_id')+"/iframe_show","物料详情",400,300);
+                        }
+                    }
+                }
+            ]);
+            treeMenu.showAt(e.getPoint());
+        });
+        }
+
+        function init_listener(){
+            var App = new Ext.App({});
+            Ext.data.DataProxy.addListener('beforewrite', function(proxy, action) {
+                App.setAlert(App.STATUS_NOTICE, "操作中...");
+            });
+
+            Ext.data.DataProxy.addListener('write', function(proxy, action, result, res, rs) {
+                $("#olir_total").html("总计：￥"+res.message.olir_total);
+                if(res.message.olir_total <= 0){
+                    $("#order_list").html('<font color="red">您在此活动中无任何预订记录</font>');
+                }
+                App.setAlert(true, res.message.notice);
+            });
+
+            Ext.data.DataProxy.addListener('exception', function(proxy, type, action, options, res) {
+                // App.setAlert(false, "Something bad happend while executing " + action);
+                Ext.Msg.show({
+                    title: '发生错误',
+                    msg: res.message,
+                    icon: Ext.MessageBox.ERROR
+                });
+            });
+        }
+    </script>
+    </div>
+
+    <div style="padding:10px 50px 0px 0px;float:right" id="olir_total">
+        总计：￥<%=OrderLineItemRaw.raw_total(@campaign.campaign_catalog.id,current_user.region.id)%>
+    </div>
+    <div class="clear"></div>
+
+    <%@order = Order.new%>
+    <%form_for @order do |f|%>
+    <%=f.hidden_field :catalog_id,:value=>"#{@campaign.campaign_catalog.id}"%>
+    <br/>
+    <div class="tab_btn">
+        <%= f.submit "提交",:class=>"button_btn",:confirm=>"提交后将不能修改订单！您确认此次提交吗？" %>
+    </div>
+    <%end%>
+<%end%>
+
+<% javascript_tag do %>
+    <%if @material%>
+        <%if @error_message%>
+            alert("<%=@error_message%>");
+        <%else%>
+            $("#num_"+<%=@material.id%>).attr("value","1");
+            $("#salesrep_"+<%=@material.id%>).attr("value","");
+        <%end%>
+    <%end%>
+<% end %>

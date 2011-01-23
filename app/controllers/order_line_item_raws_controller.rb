@@ -3,8 +3,7 @@ class OrderLineItemRawsController < ApplicationController
   before_filter :check,:only=>["update","destroy"]
 
   access_control do
-
-    action :update, :destroy, :apply_update do
+    action :update, :destroy, :apply_update, :ext_update, :ext_destroy do
       allow :rc
     end
     action :index, :show, :update_status do
@@ -12,6 +11,9 @@ class OrderLineItemRawsController < ApplicationController
     end
     action :check_provide,:print do
       allow :wa
+    end
+    action :load_data do
+      allow all
     end
   end
 
@@ -163,6 +165,87 @@ class OrderLineItemRawsController < ApplicationController
     else
       render :text => "该送货单不能打印"
     end
+  end
+
+  def load_data
+    @campaign = Campaign.find(params[:campaign_id])
+    @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
+    return_data = Hash.new()
+    return_data[:size] = @olirs.size
+    return_data[:Olirs] = @olirs.collect{|p| {:id=>p.id,
+                                              :sku=>p.material.sku,
+                                              :name=>p.material.name,
+                                              :region=>p.region.name,
+                                              :salesrep=>p.salesrep.name,
+                                              :unit_price=>p.unit_price,
+                                              :quantity=>p.quantity,
+                                              :subtotal=>p.subtotal,
+                                              :material_id=>p.material_id
+                                              }}
+    render :text=>return_data.to_json, :layout=>false
+  end
+
+  def ext_update
+    @olir = OrderLineItemRaw.find(params[:Olirs][:id])
+    @campaign = @olir.campaign
+    quantity = params[:Olirs][:quantity].to_i
+    error_message = ""
+    return_data = Hash.new()
+    if quantity <= 0
+      error_message = "请正确填写预定数量"
+    end
+    if @campaign.campaign_status != 1
+      error_message = "活动已结束，预订不能修改"
+    end
+    if !@olir.order.nil? && @olir.order.order_status_id != 2
+      error_message = "预订不能修改"
+    end
+    if error_message.blank?
+      @olir.update_attributes(:quantity=>quantity,:subtotal=>@olir.unit_price*quantity,:apply_quantity=>quantity,:apply_subtotal=>@olir.unit_price*quantity)
+      @olir_total = OrderLineItemRaw.raw_total(@olir.campaign.campaign_catalog.id,current_user.region.id)
+      return_data[:success] = true
+      success_message = {:notice=>"物料#{@olir.material.name}预定数量为#{@olir.quantity}",
+                         :olir_total=>@olir_total}
+      return_data[:message] = success_message
+      return_data[:Olirs] = {:id=>@olir.id,
+                             :sku=>@olir.material.sku,
+                             :name=>@olir.material.name,
+                             :region=>@olir.region.name,
+                             :salesrep=>@olir.salesrep.name,
+                             :unit_price=>@olir.unit_price,
+                             :quantity=>@olir.quantity,
+                             :subtotal=>@olir.subtotal,
+                             :material_id=>@olir.material_id,
+                             }
+    else
+      return_data[:success] = false
+      return_data[:message] = error_message
+    end
+    render :text=>return_data.to_json
+  end
+
+  def ext_destroy
+    @olir = OrderLineItemRaw.find(params[:Olirs])
+    @campaign = @olir.campaign
+    return_data = Hash.new()
+    if @campaign.campaign_status != 1
+      error_message = "活动已结束，预订不能修改"
+    end
+    if !@olir.order.nil? && @olir.order.order_status_id != 2
+      error_message = "预订不能修改"
+    end
+    if error_message.blank?
+      @olir.destroy
+      @olir_total = OrderLineItemRaw.raw_total(@olir.campaign.campaign_catalog.id,current_user.region.id)
+      return_data[:success] = true
+      success_message = {:notice=>"物料#{@olir.material.name}预定已删除",
+                         :olir_total=>@olir_total}
+      return_data[:message] = success_message
+    else
+      return_data[:success] = false
+      return_data[:message] = error_message
+    end
+    render :text=>return_data.to_json
   end
 
 protected

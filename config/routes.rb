@@ -21,7 +21,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :order_line_item_raws,:member=>{:apply_update=>:put,
                                                 :check_provide=>:get,
                                                 :update_status=>:put,
-                                                :print=>:get}
+                                                :print=>:get},
+                                      :collection=>{:load_data=>:get,
+                                                    :ext_update=>:put,
+                                                    :ext_destroy=>:delete}
 
   map.resources :order_line_item_adjusteds
 

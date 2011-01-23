@@ -123,7 +123,11 @@ class CampaignsController < ApplicationController
       end
     end
     @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
-    render :partial => "order_list"
+    if false
+      render :partial => "order_list"
+    else
+      render :partial => "ext_order_list"
+    end
   end
 
   def production

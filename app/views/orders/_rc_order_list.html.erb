@@ -1,0 +1,51 @@
+<table cellspacing="1" cellpadding="0" border="0" width="786">
+    <tbody>
+        <tr>
+            <td colspan="9" id="tab_tit">订单详细（<%=@order.order_status.name%>）</td>
+        </tr>
+        <tr>
+            <td class="f_tab">sku</td>
+            <td class="f_tab">物料图片</td>
+            <td class="f_tab">物料名称</td>
+            <td class="f_tab">所属区</td>
+            <td class="f_tab">销售姓名</td>
+            <td class="f_tab">物料价格</td>
+            <td class="f_tab">预定数量</td>
+            <td class="f_tab">小计</td>
+        </tr>
+
+        <%order_amount=@order.order_line_item_raws.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f%>
+        <%@order.order_line_item_raws.each do |olir|%>
+        <tr>
+            <td><%=olir.material.sku%></td>
+            <td><%=image_tag (olir.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+            <td><%=olir.material.name%></td>
+            <td><%=olir.region.name%></td>
+            <td><%=olir.salesrep.name%></td>
+            <td><%=olir.unit_price%></td>
+            <td><%=olir.quantity%></td>
+            <td>￥<%=olir.subtotal%></td>
+        </tr>
+        <%end%>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                预定总计：￥<%=order_amount%><br/>
+                <%if @order.order_status_id != 1%>
+                    审批总计：￥<%=@order.amount%><br/>
+                <%end%>
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td colspan="9" id="tab_tit02"><font >共有<%=@order.order_line_item_raws.size%>条记录</font></td>
+        </tr>
+    </tbody>
+</table>
