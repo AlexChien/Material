@@ -26,7 +26,8 @@ ActionController::Routing::Routes.draw do |map|
                                                     :ext_update=>:put,
                                                     :ext_destroy=>:delete}
 
-  map.resources :order_line_item_adjusteds
+  map.resources :order_line_item_adjusteds,:collection=>{:load_data=>:get,
+                                                         :ext_update=>:put}
 
   map.resources :orders,:member=>{:approve_fail_message=>:get,
                                   :approve_fail=>:put,

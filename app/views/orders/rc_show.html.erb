@@ -14,7 +14,15 @@
     </div>
     <br/>
 
-    <div class="tab">
-        <%=render :partial=>"rc_order_list"%>
-    </div>
+    <%if false%>
+        <div class="tab">
+            <%=render :partial=>"orders/list/rc_order_list"%>
+        </div>
+    <%else%>
+        <div id="rc_ext_order_list">
+            <%=render :partial=> "orders/ext_list/rc_ext_order_list"%>
+        </div>
+    <%end%>
+
+
 </div>

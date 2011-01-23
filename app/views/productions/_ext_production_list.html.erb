@@ -70,11 +70,10 @@
         ]
     });
 
-    var plugins = [];
-    <%if @production.locked%>
-        plugins.push(filters);
-    <%else%>
-        plugins.push(filters);
+    var summary = new Ext.ux.grid.HybridSummary();
+
+    var plugins = [filters,summary];
+    <%unless @production.locked%>
         plugins.push(editor);
     <%end%>
 

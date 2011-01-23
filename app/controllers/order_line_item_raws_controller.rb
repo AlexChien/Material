@@ -6,14 +6,11 @@ class OrderLineItemRawsController < ApplicationController
     action :update, :destroy, :apply_update, :ext_update, :ext_destroy do
       allow :rc
     end
-    action :index, :show, :update_status do
+    action :index, :show, :update_status, :load_data do
       allow :rc, :rm, :wa
     end
     action :check_provide,:print do
       allow :wa
-    end
-    action :load_data do
-      allow all
     end
   end
 

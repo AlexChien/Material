@@ -14,11 +14,23 @@
     </div>
     <br/>
 
-    <div class="tab" id="order_list">
-        <%if @order.order_status_id == 4%>
-            <font color="red">总部拒绝订单，等待大区管理员修改</font>
-        <%else%>
-            <%=render :partial=>"pm_order_list"%>
-        <%end%>
-    </div>
+    <%if false%>
+        <div class="tab" id="order_list">
+            <%if @order.order_status_id == 4%>
+                <font color="red">总部拒绝订单，等待大区管理员修改</font>
+            <%else%>
+                <%=render :partial=>"orders/list/pm_order_list"%>
+            <%end%>
+        </div>
+    <%else%>
+        <div id="order_list">
+            <%if @order.order_status_id == 4%>
+                <font color="red">总部拒绝订单，等待大区管理员修改</font>
+            <%else%>
+                <%=render :partial=>"orders/ext_list/pm_ext_order_list"%>
+            <%end%>
+        </div>
+    <%end%>
+
+
 </div>

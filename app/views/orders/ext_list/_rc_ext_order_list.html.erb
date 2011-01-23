@@ -1,0 +1,121 @@
+<div id="olir_list">
+<script type="text/javascript" charset="utf-8">
+    var grid;
+    var ds;
+    Ext.onReady(function(){
+      init_grid();
+    });
+    function init_grid() {
+        ds = new Ext.data.GroupingStore({
+            proxy: new Ext.data.HttpProxy({
+                api: {
+                        read: '/order_line_item_raws/load_data?campaign_id=<%=@campaign.id%>'
+                     }
+            }),
+            reader: new Ext.data.JsonReader({
+                    root: 'Olirs',
+                    totalProperty: 'size',
+                    messageProperty: 'message'
+                },
+                [
+                    {name: 'id', mapping: 'id'},
+                    {name: 'material_id', mapping: 'material_id'},
+                    {name: 'sku', mapping: 'sku'},
+                    {name: 'name', mapping: 'name'},
+                    {name: 'region', mapping: 'region'},
+                    {name: 'salesrep', mapping: 'salesrep'},
+                    {name: 'unit_price', mapping: 'unit_price'},
+                    {name: 'quantity', mapping: 'quantity'},
+                    {name: 'subtotal', mapping: 'subtotal'}
+                ])
+        });
+        var cm = new Ext.grid.ColumnModel([
+            {id: 'sku', header: "sku", dataIndex: 'sku',sortable:true,width:100},
+            {id: 'name', header: "物料名称", dataIndex: 'name',sortable:true,width:186},
+            {id: 'region', header: "所属区", dataIndex: 'region',sortable:true,width:100},
+            {id: 'salesrep', header: "销售姓名", dataIndex: 'salesrep',sortable:true,width:100},
+            {id: 'unit_price', header: "物料价格", dataIndex: 'unit_price',sortable:true,width:100},
+            {id: 'quantity', header: "预定数量", dataIndex: 'quantity',sortable:true,width:100},
+            {id: 'subtotal', header: "小计", dataIndex: 'subtotal',sortable:true,width:100,summaryType: 'sum'}
+        ]);
+
+    var filters = new Ext.ux.grid.GridFilters({
+        local: true,   // defaults to false (remote filtering)
+        filters: [
+        {
+            type: 'string',
+            dataIndex: 'sku'
+        }, {
+            type: 'string',
+            dataIndex: 'name',
+        },  {
+            type: 'string',
+            dataIndex: 'region'
+        }, {
+            type: 'string',
+            dataIndex: 'salesrep',
+        },{
+            type: 'numeric',
+            dataIndex: 'unit_price'
+        }, {
+            type: 'numeric',
+            dataIndex: 'quantity'
+        }, {
+            type: 'numeric',
+            dataIndex: 'subtotal'
+            }
+        ]
+    });
+
+    var summary = new Ext.ux.grid.HybridSummary();
+
+    grid = new Ext.grid.GridPanel({
+        // autoHeight: true,
+        height: 300,
+        autoWidth: true,
+        ds: ds,
+        cm: cm,
+        sm: new Ext.grid.RowSelectionModel({ singleSelect: true }),
+        plugins: [filters,summary],
+        view: new Ext.grid.GroupingView({
+            forceFit:true,
+            groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+        }),
+        title: '<center>订单详细（<%=@order.order_status.name%>）</center>'
+    });
+
+    grid.render('olir_list');
+    ds.load();//{params:{start:0}}
+    grid.on("rowcontextmenu",function(grid,rowIndex,e){
+        if(rowIndex<0){return;}
+        e.preventDefault();
+        grid.getSelectionModel().selectRow(rowIndex);
+        var treeMenu = new Ext.menu.Menu([
+            {
+                xtype:"",
+                text:"显示详情",
+                icon:"/images/icons/database.png",
+                pressed:true,
+                handler:function(){
+                    var selections = grid.getSelectionModel().getSelections();
+                    for (var i = 0; i < selections.length; i++) {
+                        parent.addwindow("/materials/"+selections[i].get('material_id')+"/iframe_show","物料详情",400,300);
+                    }
+
+                }
+            }
+        ]);
+        treeMenu.showAt(e.getPoint());
+    });
+
+    }
+</script>
+</div>
+
+<%order_amount=@order.order_line_item_raws.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f%>
+<div style="padding:10px 50px 0px 0px;float:right" id="olir_total">
+    预定总计：￥<%=order_amount%><br/>
+    <%if @order.order_status_id != 1%>
+        审批总计：￥<%=@order.amount%><br/>
+    <%end%>
+</div>
