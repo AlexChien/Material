@@ -9,7 +9,7 @@ class OrdersController < ApplicationController
     # action :index,:provide, :update do
     #   allow :wa
     # end
-    action :index, :show, :update do
+    action :index, :show, :update, :ext_index do
       allow :rc, :rm, :pm, :admin
     end
     action :approve_fail_message, :approve_fail do
@@ -26,6 +26,24 @@ class OrdersController < ApplicationController
     order = order.in_region(current_user.region.id) if current_user.has_role?("rc")
     order = order.in_region(current_user.region.id).in_order_status(8) if current_user.has_role?("wa")
     @orders = order.paginate(:all,:per_page=>20,:page => params[:page], :order => 'orders.created_at DESC')
+  end
+
+  def ext_index
+    order = Order
+    @orders = order.all(:order => 'orders.created_at DESC')
+    return_data = Hash.new()
+    return_data[:size] = @orders.size
+    return_data[:Orders] = @orders.collect{|p| {:id=>p.id,
+                                                :order_status=>p.order_status.name,
+                                                :amount=>p.amount,
+                                                :region=>p.region.name,
+                                                :campaign=>p.campaign.name,
+                                                :catalog_startdate=>p.campaign.catalog_startdate,
+                                                :catalog_enddate=>p.campaign.catalog_enddate,
+                                                :show_status=>p.campaign.show_status,
+                                                :link=>"<a href='/orders/#{p.id}'>#{p.order_status_id == 3 ? '接受订单' : '查看订单'}</a>"
+                                                }}
+    render :text=>return_data.to_json, :layout=>false
   end
 
   def create

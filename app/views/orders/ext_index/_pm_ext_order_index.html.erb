@@ -1,0 +1,100 @@
+<div id="data_list">
+<script type="text/javascript" charset="utf-8">
+    var grid;
+    var ds;
+    $(function(){
+        init_grid();
+    });
+
+    function init_grid() {
+        ds = new Ext.data.GroupingStore({
+            proxy: new Ext.data.HttpProxy({
+                api: {
+                        read: '/orders/ext_index'
+                     }
+            }),
+            reader: new Ext.data.JsonReader({
+                    root: 'Orders',
+                    totalProperty: 'size',
+                    messageProperty: "message"
+                },
+                [
+                    {name: 'id', mapping: 'id'},
+                    {name: 'order_status', mapping: 'order_status'},
+                    {name: 'amount', mapping: 'amount'},
+                    {name: 'region', mapping: 'region'},
+                    {name: 'campaign', mapping: 'campaign'},
+                    {name: 'catalog_startdate', mapping: 'catalog_startdate'},
+                    {name: 'catalog_enddate', mapping: 'catalog_enddate'},
+                    {name: 'show_status', mapping: 'show_status'},
+                    {name: 'link', mapping: 'link'}
+                ])
+        });
+        var cm = new Ext.grid.ColumnModel([
+            {id: 'id', header: "订单ID", dataIndex: 'id',sortable:true,width:80},
+            {id: 'order_status', header: "订单状态", dataIndex: 'order_status',sortable:true,width:80},
+            {id: 'amount', header: "订单总计", dataIndex: 'amount',sortable:true,width:80},
+            {id: 'region', header: "所属区", dataIndex: 'region',sortable:true,width:80},
+            {id: 'campaign', header: "相关活动", dataIndex: 'campaign',sortable:true,width:146},
+            {id: 'catalog_startdate', header: "预定开始", dataIndex: 'catalog_startdate',sortable:true,width:80},
+            {id: 'catalog_enddate', header: "结束时间", dataIndex: 'catalog_enddate',sortable:true,width:80},
+            {id: 'show_status', header: "活动状态", dataIndex: 'show_status',sortable:true,width:80},
+            {id: 'link', header: "操作", dataIndex: 'link',sortable:true,width:80}
+        ]);
+
+    var filters = new Ext.ux.grid.GridFilters({
+        local: true,   // defaults to false (remote filtering)
+        filters: [
+        {
+            type: 'numeric',
+            dataIndex: 'id'
+        }, {
+            type: 'string',
+            dataIndex: 'order_status'
+        }, {
+            type: 'numeric',
+            dataIndex: 'amount'
+        }, {
+            type: 'string',
+            dataIndex: 'region'
+        }, {
+            type: 'string',
+            dataIndex: 'campaign'
+        }, {
+            type: 'date',
+            dataIndex: 'catalog_startdate'
+        }, {
+            type: 'date',
+            dataIndex: 'catalog_enddate'
+        }, {
+            type: 'string',
+            dataIndex: 'show_status'
+        }, {
+            type: 'string',
+            dataIndex: 'link'
+        }]
+    });
+
+    // utilize custom extension for Hybrid Summary
+    var summary = new Ext.ux.grid.HybridSummary();
+
+    grid = new Ext.grid.GridPanel({
+        // autoHeight: true,
+        height: 300,
+        autoWidth: true,
+        ds: ds,
+        cm: cm,
+        sm: new Ext.grid.RowSelectionModel({ singleSelect: true }),
+        plugins: [filters,summary],
+        view: new Ext.grid.GroupingView({
+            forceFit:true,
+            groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+        }),
+        title: '<center>所有订单</center>'
+    });
+
+    grid.render('data_list');
+    ds.load();//{params:{start:0}}
+    }
+</script>
+</div>

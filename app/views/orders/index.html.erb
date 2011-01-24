@@ -7,65 +7,69 @@
     <%= render :partial => 'shared/s_path'%>
     <%end%>
 
-    <div class="tab">
-        <table width="786" cellspacing="1" cellpadding="0" border="0">
-            <tbody>
-                <tr>
-                    <td id="tab_tit" colspan="9">所有订单</td>
-                </tr>
-                <tr>
-                    <td class="f_tab">订单ID</td>
-                    <td class="f_tab">订单状态</td>
-                    <td class="f_tab">订单总计</td>
-                    <td class="f_tab">所属区</td>
-                    <td class="f_tab">相关活动</td>
-                    <td class="f_tab">预定开始 - 结束时间</td>
-                    <td class="f_tab">活动状态</td>
-                    <td class="f_tab">操作</td>
-                </tr>
-                <%@orders.each do |order|%>
+    <%if current_user.has_role?("pm") || current_user.has_role?("admin")%>
+        <%= render :partial => "orders/ext_index/pm_ext_order_index"%>
+    <%else%>
+        <div class="tab">
+            <table width="786" cellspacing="1" cellpadding="0" border="0">
+                <tbody>
                     <tr>
-                        <td><%=order.id%></td>
-                        <td><%=order.order_status.name%></td>
-                        <td>￥<%=order.amount%></td>
-                        <td><%=order.region.name%></td>
-                        <td><%=order.campaign.name%></td>
-                        <td><%=order.campaign.catalog_startdate%> - <%=order.campaign.catalog_enddate%></td>
-                        <td><%=order.campaign.show_status%></td>
-                        <td>
-                            <%if current_user.has_role?("rc")%>
-                                <%if order.order_status_id == 2%>
-                                    <%= link_to "修改预定", order_url(order)%>
-                                <%else%>
-                                    <%= link_to "查看订单", order_url(order)%>
-                                <%end%>
-                            <%end%>
-
-                            <%if current_user.has_role?("rm")%>
-                                <%if order.order_status_id == 1%>
-                                    <%= link_to "审核订单", order_url(order)%>
-                                <%elsif order.order_status_id == 4%>
-                                    <%= link_to "修改预定", order_url(order)%>
-                                <%else%>
-                                    <%= link_to "查看订单", order_url(order)%>
-                                <%end%>
-                            <%end%>
-
-                            <%if current_user.has_role?("pm") || current_user.has_role?("admin")%>
-                                <%if order.order_status_id == 3%>
-                                    <%= link_to "接受订单", order_url(order)%>
-                                <%else%>
-                                    <%= link_to "查看订单", order_url(order)%>
-                                <%end%>
-                            <%end%>
-                        </td>
+                        <td id="tab_tit" colspan="9">所有订单</td>
                     </tr>
-                <%end%>
-                <tr>
-                    <td id="tab_tit02" colspan="9"><font >共有<%=@orders.total_entries%>条记录</font></td>
-                </tr>
-            </tbody>
-        </table>
-        <%=will_paginate @orders%>
-    </div>
+                    <tr>
+                        <td class="f_tab">订单ID</td>
+                        <td class="f_tab">订单状态</td>
+                        <td class="f_tab">订单总计</td>
+                        <td class="f_tab">所属区</td>
+                        <td class="f_tab">相关活动</td>
+                        <td class="f_tab">预定开始 - 结束时间</td>
+                        <td class="f_tab">活动状态</td>
+                        <td class="f_tab">操作</td>
+                    </tr>
+                    <%@orders.each do |order|%>
+                        <tr>
+                            <td><%=order.id%></td>
+                            <td><%=order.order_status.name%></td>
+                            <td>￥<%=order.amount%></td>
+                            <td><%=order.region.name%></td>
+                            <td><%=order.campaign.name%></td>
+                            <td><%=order.campaign.catalog_startdate%> - <%=order.campaign.catalog_enddate%></td>
+                            <td><%=order.campaign.show_status%></td>
+                            <td>
+                                <%if current_user.has_role?("rc")%>
+                                    <%if order.order_status_id == 2%>
+                                        <%= link_to "修改预定", order_url(order)%>
+                                    <%else%>
+                                        <%= link_to "查看订单", order_url(order)%>
+                                    <%end%>
+                                <%end%>
+
+                                <%if current_user.has_role?("rm")%>
+                                    <%if order.order_status_id == 1%>
+                                        <%= link_to "审核订单", order_url(order)%>
+                                    <%elsif order.order_status_id == 4%>
+                                        <%= link_to "修改预定", order_url(order)%>
+                                    <%else%>
+                                        <%= link_to "查看订单", order_url(order)%>
+                                    <%end%>
+                                <%end%>
+
+                                <%if current_user.has_role?("pm") || current_user.has_role?("admin")%>
+                                    <%if order.order_status_id == 3%>
+                                        <%= link_to "接受订单", order_url(order)%>
+                                    <%else%>
+                                        <%= link_to "查看订单", order_url(order)%>
+                                    <%end%>
+                                <%end%>
+                            </td>
+                        </tr>
+                    <%end%>
+                    <tr>
+                        <td id="tab_tit02" colspan="9"><font >共有<%=@orders.total_entries%>条记录</font></td>
+                    </tr>
+                </tbody>
+            </table>
+            <%=will_paginate @orders%>
+        </div>
+    <%end%>
 </div>
