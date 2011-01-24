@@ -25,7 +25,7 @@
                     api: {
                             read: '/order_line_item_raws/load_data?campaign_id=<%=@campaign.id%>',
                             update: {url: '/order_line_item_raws/ext_update', method: 'put'},
-                            destroy: {url: '/order_line_item_raws/ext_destroy', method: 'delete'}
+                            destroy: {url: '/order_line_item_raws/ext_destroy', method: 'post'}
                          }
                 }),
                 reader: new Ext.data.JsonReader({
@@ -76,13 +76,13 @@
                 dataIndex: 'sku'
             }, {
                 type: 'string',
-                dataIndex: 'name',
-            },  {
+                dataIndex: 'name'
+            }, {
                 type: 'string',
                 dataIndex: 'region'
             }, {
                 type: 'string',
-                dataIndex: 'salesrep',
+                dataIndex: 'salesrep'
             },{
                 type: 'numeric',
                 dataIndex: 'unit_price'
