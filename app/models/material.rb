@@ -46,7 +46,7 @@ protected
   def check_min_num
     if !self.min_num.nil? and !self.max_num.nil?
       if self.min_num > self.max_num
-        errors.add(:min_num, '不能大于最大起订量')
+        errors.add(:min_num, '不能大于最大订货量')
       end
     end
   end

@@ -130,7 +130,7 @@ class OrdersController < ApplicationController
       if olia.material.min_num > olia.quantity_total
         @num_error = "物料未达到最小起订量，请调整数量或返回RC重新预定"
       elsif olia.material.max_num < olia.quantity_total
-        @num_error = "物料超过最大起订量，请调整数量或返回RC重新预定"
+        @num_error = "物料超过最大订货量，请调整数量或返回RC重新预定"
       end
     end
     if amount > @order.region.redeemable_budget

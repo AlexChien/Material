@@ -120,7 +120,15 @@ module ApplicationHelper
         :navleft => [
             { :name => "所有大区", :path => "/regions", :id => "regions", :logo => "/images/icons/world.png"}
           ]
-        }
+        }  ,
+          {
+          :navleft_header_name => "用户管理",
+          :navleft_header_logo => "/images/icons/user_edit.png",
+          :navleft => [
+              { :name => "所有用户", :path => "/users", :id => "users", :logo => "/images/icons/user.png"},
+              { :name => "添加用户", :path => "/users/new", :id => "users_new", :logo => "/images/icons/user_add.png"}
+            ]
+          }
       ]
       navleft.concat(pm_manager)
     elsif current_user.has_role?("wa")
