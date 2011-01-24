@@ -47,18 +47,18 @@ module ApplicationHelper
         :navleft_header_name => "活动管理",
         :navleft_header_logo => "/images/icons/date_edit.png",
         :navleft => [
-            { :name => "发起活动", :path => "/campaigns/new", :id => "campaigns_new", :logo => "/images/icons/date_add.png"},
-            { :name => "所有活动", :path => "/campaigns", :id => "campaigns", :logo => "/images/icons/date.png"}
+            { :name => "所有活动", :path => "/campaigns", :id => "campaigns", :logo => "/images/icons/date.png"}，
+            { :name => "发起活动", :path => "/campaigns/new", :id => "campaigns_new", :logo => "/images/icons/date_add.png"}
           ]
         },
         {
         :navleft_header_name => "物料管理",
         :navleft_header_logo => "/images/icons/brick_edit.png",
         :navleft => [
-            { :name => "添加物料", :path => "/materials/new", :id => "materials_new", :logo => "/images/icons/brick_add.png"},
             { :name => "所有物料", :path => "/materials", :id => "materials", :logo => "/images/icons/brick.png"},
-            { :name => "添加分类", :path => "/categories/new", :id => "categories_new", :logo => "/images/icons/folder_brick.png"},
-            { :name => "所有分类", :path => "/categories", :id => "categories", :logo => "/images/icons/folder.png"}
+            { :name => "添加物料", :path => "/materials/new", :id => "materials_new", :logo => "/images/icons/brick_add.png"},
+            { :name => "所有分类", :path => "/categories", :id => "categories", :logo => "/images/icons/folder.png"}，
+            { :name => "添加分类", :path => "/categories/new", :id => "categories_new", :logo => "/images/icons/folder_brick.png"}
           ]
         },
         {
@@ -72,8 +72,8 @@ module ApplicationHelper
         :navleft_header_name => "用户管理",
         :navleft_header_logo => "/images/icons/user_edit.png",
         :navleft => [
-            { :name => "添加用户", :path => "/users/new", :id => "users_new", :logo => "/images/icons/user_add.png"},
-            { :name => "所有用户", :path => "/users", :id => "users", :logo => "/images/icons/user.png"}
+            { :name => "所有用户", :path => "/users", :id => "users", :logo => "/images/icons/user.png"}，
+            { :name => "添加用户", :path => "/users/new", :id => "users_new", :logo => "/images/icons/user_add.png"}
           ]
         }
       ]
@@ -100,18 +100,18 @@ module ApplicationHelper
         :navleft_header_name => "活动管理",
         :navleft_header_logo => "/images/icons/date_edit.png",
         :navleft => [
-            { :name => "发起活动", :path => "/campaigns/new", :id => "campaigns_new", :logo => "/images/icons/date_add.png"},
-            { :name => "所有活动", :path => "/campaigns", :id => "campaigns", :logo => "/images/icons/date.png"}
+            { :name => "所有活动", :path => "/campaigns", :id => "campaigns", :logo => "/images/icons/date.png"}，
+            { :name => "发起活动", :path => "/campaigns/new", :id => "campaigns_new", :logo => "/images/icons/date_add.png"}
           ]
         },
         {
         :navleft_header_name => "物料管理",
         :navleft_header_logo => "/images/icons/brick_edit.png",
         :navleft => [
-            { :name => "添加物料", :path => "/materials/new", :id => "materials_new", :logo => "/images/icons/brick_add.png"},
             { :name => "所有物料", :path => "/materials", :id => "materials", :logo => "/images/icons/brick.png"},
-            { :name => "添加分类", :path => "/categories/new", :id => "categories_new", :logo => "/images/icons/folder_brick.png"},
-            { :name => "所有分类", :path => "/categories", :id => "categories", :logo => "/images/icons/folder.png"}
+            { :name => "添加物料", :path => "/materials/new", :id => "materials_new", :logo => "/images/icons/brick_add.png"},
+            { :name => "所有分类", :path => "/categories", :id => "categories", :logo => "/images/icons/folder.png"}，
+            { :name => "添加分类", :path => "/categories/new", :id => "categories_new", :logo => "/images/icons/folder_brick.png"}
           ]
         },
         {
