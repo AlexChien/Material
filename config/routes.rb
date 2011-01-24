@@ -24,7 +24,7 @@ ActionController::Routing::Routes.draw do |map|
                                                 :print=>:get},
                                       :collection=>{:load_data=>:get,
                                                     :ext_update=>:put,
-                                                    :ext_destroy=>:delete}
+                                                    :ext_destroy=>:post}
 
   map.resources :order_line_item_adjusteds,:collection=>{:load_data=>:get,
                                                          :ext_update=>:put}

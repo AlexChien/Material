@@ -49,15 +49,16 @@ a:hover {
 
 #content {
     width:1003px;
+    height:auto!important;
     min-height:500px;
-    height:500px;
+    *height:500px;
 }
 #menu {
 /*  background-color: #EDF4FE;
     height: 600px;*/
     width: 180px;
-    margin-left:10px;
-    margin-right: 15px;
+    padding-left:10px;
+    padding-right: 15px;
     float: left;
 }
 #main {
