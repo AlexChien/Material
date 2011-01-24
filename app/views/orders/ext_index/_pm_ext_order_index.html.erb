@@ -24,8 +24,8 @@
                     {name: 'amount', mapping: 'amount'},
                     {name: 'region', mapping: 'region'},
                     {name: 'campaign', mapping: 'campaign'},
-                    {name: 'catalog_startdate', mapping: 'catalog_startdate'},
-                    {name: 'catalog_enddate', mapping: 'catalog_enddate'},
+                    {name: 'catalog_startdate', mapping: 'catalog_startdate',type:'date'},
+                    {name: 'catalog_enddate', mapping: 'catalog_enddate',type:'date'},
                     {name: 'show_status', mapping: 'show_status'},
                     {name: 'link', mapping: 'link'}
                 ])
@@ -36,8 +36,8 @@
             {id: 'amount', header: "订单总计", dataIndex: 'amount',sortable:true,width:80},
             {id: 'region', header: "所属区", dataIndex: 'region',sortable:true,width:80},
             {id: 'campaign', header: "相关活动", dataIndex: 'campaign',sortable:true,width:146},
-            {id: 'catalog_startdate', header: "预定开始", dataIndex: 'catalog_startdate',sortable:true,width:80},
-            {id: 'catalog_enddate', header: "结束时间", dataIndex: 'catalog_enddate',sortable:true,width:80},
+            {id: 'catalog_startdate', header: "预定开始", dataIndex: 'catalog_startdate',sortable:true,width:80,renderer:Ext.util.Format.dateRenderer("Y-m-d")},
+            {id: 'catalog_enddate', header: "结束时间", dataIndex: 'catalog_enddate',sortable:true,width:80,renderer:Ext.util.Format.dateRenderer("Y-m-d")},
             {id: 'show_status', header: "活动状态", dataIndex: 'show_status',sortable:true,width:80},
             {id: 'link', header: "操作", dataIndex: 'link',sortable:true,width:80}
         ]);
