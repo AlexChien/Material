@@ -8,11 +8,11 @@ class Material < ActiveRecord::Base
   has_many :transfer_line_items
   belongs_to :category, :counter_cache => true
 
-  validates_presence_of :name,:category_id
+  validates_presence_of :name,:category_id,:min_num,:max_num
   validates_uniqueness_of :name
   validates_numericality_of :cost,:greater_than_or_equal_to=>0
-  validates_numericality_of :min_num,:greater_than_or_equal_to=>0
-  validates_numericality_of :max_num,:greater_than_or_equal_to=>0
+  validates_numericality_of :min_num,:greater_than=>0
+  validates_numericality_of :max_num,:greater_than=>0
   validate :min_num,:check_min_num
 
   has_attached_file :uploaded_data,
