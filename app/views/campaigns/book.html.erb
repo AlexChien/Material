@@ -27,6 +27,7 @@
                 <tr>
                     <td class="f_tab">sku</td>
                     <td class="f_tab">物料图片</td>
+                    <td class="f_tab">物料名称</td>
                     <td class="f_tab">预定数量</td>
                     <td class="f_tab">销售代表</td>
                     <td class="f_tab">价格</td>
@@ -37,6 +38,7 @@
                 <tr>
                     <td><%=cm.material.sku%></td>
                     <td><%=image_tag (cm.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+                    <td><%=cm.material.name%></td>
                     <td><input type="text" value="1" size="4" name="nums" id="num_<%=cm.material.id%>"></td>
                     <td>
                         <select name="salesrep" id="salesrep_<%=cm.material.id%>">
