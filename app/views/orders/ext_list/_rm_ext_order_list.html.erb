@@ -145,31 +145,10 @@
             treeMenu.showAt(e.getPoint());
         });
         }
-
-        function init_listener(){
-            var App = new Ext.App({});
-            Ext.data.DataProxy.addListener('beforewrite', function(proxy, action) {
-                App.setAlert(App.STATUS_NOTICE, "操作中...");
-            });
-
-            Ext.data.DataProxy.addListener('write', function(proxy, action, result, res, rs) {
-                $("#olia_total").html(res.message.olia_total);
-                App.setAlert(true, res.message.notice);
-            });
-
-            Ext.data.DataProxy.addListener('exception', function(proxy, type, action, options, res) {
-                // App.setAlert(false, "Something bad happend while executing " + action);
-                Ext.Msg.show({
-                    title: '发生错误',
-                    msg: res.message,
-                    icon: Ext.MessageBox.ERROR
-                });
-            });
-        }
     </script>
     </div>
 
-    <div style="padding:10px 50px 0px 0px;float:right" id="olia_total">
+    <div style="padding:10px 50px 0px 0px;float:right" id="grand_total">
         <%order_amount=@order.order_line_item_adjusteds.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f%>
         <%if @order.order_status_id ==1 || @order.order_status_id ==4%>
             预定总计：￥<%=order_amount%><br/>

@@ -202,7 +202,8 @@ class OrderLineItemRawsController < ApplicationController
       @olir_total = OrderLineItemRaw.raw_total(@olir.campaign.campaign_catalog.id,current_user.region.id)
       return_data[:success] = true
       success_message = {:notice=>"物料#{@olir.material.name}预定数量为#{@olir.quantity}",
-                         :olir_total=>@olir_total}
+                         :display_text=>"总计：￥",
+                         :grand_total=>@olir_total}
       return_data[:message] = success_message
       return_data[:Olirs] = {:id=>@olir.id,
                              :sku=>@olir.material.sku,
@@ -236,7 +237,8 @@ class OrderLineItemRawsController < ApplicationController
       @olir_total = OrderLineItemRaw.raw_total(@olir.campaign.campaign_catalog.id,current_user.region.id)
       return_data[:success] = true
       success_message = {:notice=>"物料#{@olir.material.name}预定已删除",
-                         :olir_total=>@olir_total}
+                         :display_text=>"总计：￥",
+                         :grand_total=>@olir_total}
       return_data[:message] = success_message
     else
       return_data[:success] = false

@@ -139,34 +139,10 @@
             treeMenu.showAt(e.getPoint());
         });
         }
-
-        function init_listener(){
-            var App = new Ext.App({});
-            Ext.data.DataProxy.addListener('beforewrite', function(proxy, action) {
-                App.setAlert(App.STATUS_NOTICE, "操作中...");
-            });
-
-            Ext.data.DataProxy.addListener('write', function(proxy, action, result, res, rs) {
-                $("#olir_total").html("总计：￥"+res.message.olir_total);
-                if(res.message.olir_total <= 0){
-                    $("#order_list").html('<font color="red">您在此活动中无任何预订记录</font>');
-                }
-                App.setAlert(true, res.message.notice);
-            });
-
-            Ext.data.DataProxy.addListener('exception', function(proxy, type, action, options, res) {
-                // App.setAlert(false, "Something bad happend while executing " + action);
-                Ext.Msg.show({
-                    title: '发生错误',
-                    msg: res.message,
-                    icon: Ext.MessageBox.ERROR
-                });
-            });
-        }
     </script>
     </div>
 
-    <div style="padding:10px 50px 0px 0px;float:right" id="olir_total">
+    <div style="padding:10px 50px 0px 0px;float:right" id="grand_total">
         总计：￥<%=OrderLineItemRaw.raw_total(@campaign.campaign_catalog.id,current_user.region.id)%>
     </div>
     <div class="clear"></div>
