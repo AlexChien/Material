@@ -1,0 +1,121 @@
+<% content_for :title, "仓库管理" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "inventories_#{params[:is_central]=='1' ? 1 : 0}"} %>
+
+<div id="main">
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+    <%= render :partial => 'shared/s_path'%>
+    <%end%>
+
+    <div id="data_list">
+    <script type="text/javascript" charset="utf-8">
+        var grid;
+        var ds;
+        $(function(){
+            init_grid();
+        });
+
+        function init_grid() {
+            ds = new Ext.data.GroupingStore({
+                proxy: new Ext.data.HttpProxy({
+                    api: {
+                            read: '/inventories/ext_index?is_central=<%=params[:is_central]%>'
+                         }
+                }),
+                reader: new Ext.data.JsonReader({
+                        root: 'Inventories',
+                        totalProperty: 'size',
+                        messageProperty: "message"
+                    },
+                    [
+                        {name: 'material_id', mapping: 'material_id'},
+                        {name: 'sku', mapping: 'sku'},
+                        {name: 'material_name', mapping: 'material_name'},
+                        {name: 'region', mapping: 'region'},
+                        {name: 'warehouse', mapping: 'warehouse'},
+                        {name: 'quantity', mapping: 'quantity'},
+                        {name: 'link', mapping: 'link'}
+                    ])
+            });
+
+            var cm_array = [
+                {id: 'sku', header: "sku", dataIndex: 'sku',sortable:true,width:100},
+                {id: 'material_name', header: "物料名称", dataIndex: 'material_name',sortable:true,width:186},
+                {id: 'region', header: "所属大区", dataIndex: 'region',sortable:true,width:100},
+                {id: 'warehouse', header: "所在仓库", dataIndex: 'warehouse',sortable:true,width:100},
+                {id: 'quantity', header: "库存量", dataIndex: 'quantity',sortable:true,width:100}
+            ]
+
+            <%if params[:is_central] == "1"%>
+                cm_array.push({id: 'link', header: "操作", dataIndex: 'link',width:100});
+            <%end%>
+
+            var cm = new Ext.grid.ColumnModel(cm_array);
+
+        var filters = new Ext.ux.grid.GridFilters({
+            local: true,   // defaults to false (remote filtering)
+            filters: [
+            {
+                type: 'string',
+                dataIndex: 'sku'
+            }, {
+                type: 'string',
+                dataIndex: 'material_name'
+            }, {
+                type: 'string',
+                dataIndex: 'region'
+            }, {
+                type: 'string',
+                dataIndex: 'warehouse'
+            }, {
+                type: 'numeric',
+                dataIndex: 'quantity'
+            }]
+        });
+
+        // utilize custom extension for Hybrid Summary
+        var summary = new Ext.ux.grid.HybridSummary();
+
+        grid = new Ext.grid.GridPanel({
+            loadMask: true,
+            // autoHeight: true,
+            height: 300,
+            autoWidth: true,
+            ds: ds,
+            cm: cm,
+            sm: new Ext.grid.RowSelectionModel({ singleSelect: true }),
+            plugins: [filters,summary],
+            view: new Ext.grid.GroupingView({
+                forceFit:true,
+                groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+            }),
+            title: '<center>所有物料</center>'
+        });
+
+        grid.render('data_list');
+        ds.load();//{params:{start:0}}
+        grid.on("rowcontextmenu",function(grid,rowIndex,e){
+            if(rowIndex<0){return;}
+            e.preventDefault();
+            grid.getSelectionModel().selectRow(rowIndex);
+            var treeMenu = new Ext.menu.Menu([
+                {
+                    xtype:"",
+                    text:"显示详情",
+                    icon:"/images/icons/database.png",
+                    pressed:true,
+                    handler:function(){
+                        var selections = grid.getSelectionModel().getSelections();
+                        for (var i = 0; i < selections.length; i++) {
+    parent.addwindow("/materials/"+selections[i].get('material_id')+"/iframe_show","物料详情",400,300);
+                        }
+                    }
+                }
+            ]);
+            treeMenu.showAt(e.getPoint());
+        });
+        }
+    </script>
+    </div>
+
+</div>

@@ -16,6 +16,28 @@ class InventoriesController < ApplicationController
       else
         @inventories = Inventory.in_region(Region.in_central(false).all).paginate(:all,:per_page=>20,:page => params[:page], :order => 'inventories.created_at DESC')
       end
+      render :template => "/inventories/ext_index"
+    end
+  end
+
+  def ext_index
+    if current_user.has_role?("pm") || current_user.has_role?("admin")
+      if params[:is_central] == "1"
+        @inventories = Inventory.in_region(Region.in_central(true).first).all(:order => 'inventories.created_at DESC')
+      else
+        @inventories = Inventory.in_region(Region.in_central(false).all).all(:order => 'inventories.created_at DESC')
+      end
+      return_data = Hash.new()
+      return_data[:size] = @inventories.size
+      return_data[:Inventories] = @inventories.collect{|p| {:material_id=>p.material.id,
+                                                            :sku=>p.material.sku,
+                                                            :material_name=>p.material.name,
+                                                            :region=>p.region.name,
+                                                            :warehouse=>p.warehouse.name,
+                                                            :quantity=>p.quantity,
+                                                            :link=>"<a href='/transfers/new?type=2_3&material_id=#{p.material.id}'>库存转移</a>"
+                                                            }}
+      render :text=>return_data.to_json, :layout=>false
     end
   end
 

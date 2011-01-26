@@ -41,7 +41,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :production_line_items, :collection=>{:ext_update=>:put}
 
-  map.resources :inventories, :collection => {:calculate_materials =>:get}
+  map.resources :inventories, :collection => {:calculate_materials =>:get,
+                                              :ext_index=>:get}
 
   map.resources :transfers
 
