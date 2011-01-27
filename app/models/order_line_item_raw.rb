@@ -5,6 +5,7 @@ class OrderLineItemRaw < ActiveRecord::Base
   belongs_to :region
   belongs_to :material
   belongs_to :salesrep
+  has_many :order_line_item_applies
 
   named_scope :in_catalog, lambda {|catalog_id|
         {:conditions => ["order_line_item_raws.catalog_id in (?)", catalog_id]}
@@ -43,14 +44,6 @@ class OrderLineItemRaw < ActiveRecord::Base
       "物料未送达"
     elsif self.status == 1
       "物料待申领"
-    elsif self.status == 2
-      "申领审批中"
-    elsif self.status == 3
-      "等待发货"
-    elsif self.status == 4
-      "等待收货确认"
-    elsif self.status == 5
-      "确认已收货"
     end
   end
 

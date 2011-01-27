@@ -145,7 +145,7 @@ module ApplicationHelper
         :navleft_header_name => "物料发放",
         :navleft_header_logo => "/images/icons/basket_edit.png",
         :navleft => [
-            { :name => "等待发放", :path => "/order_line_item_raws", :id => "order_line_item_raws", :logo => "/images/icons/basket.png"},
+            { :name => "等待发放", :path => "/order_line_item_applies", :id => "order_line_item_applies", :logo => "/images/icons/basket.png"},
           ]
         }
       ]
@@ -163,7 +163,7 @@ module ApplicationHelper
         :navleft_header_name => "申领管理",
         :navleft_header_logo => "/images/icons/basket_edit.png",
         :navleft => [
-            { :name => "审核申领", :path => "/order_line_item_raws", :id => "order_line_item_raws", :logo => "/images/icons/basket.png"},
+            { :name => "审核申领", :path => "/order_line_item_applies", :id => "order_line_item_applies", :logo => "/images/icons/basket.png"},
           ]
         },
         {
@@ -189,7 +189,8 @@ module ApplicationHelper
         :navleft_header_name => "我要申领",
         :navleft_header_logo => "/images/icons/basket_edit.png",
         :navleft => [
-            { :name => "物料申领", :path => "/order_line_item_raws", :id => "order_line_item_raws", :logo => "/images/icons/basket.png"},
+            { :name => "物料申领", :path => "/order_line_item_raws", :id => "order_line_item_raws", :logo => "/images/icons/basket_add.png"},
+            { :name => "已提交申领", :path => "/order_line_item_applies", :id => "order_line_item_applies", :logo => "/images/icons/basket.png"},
           ]
         },
         {

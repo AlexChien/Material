@@ -1,24 +1,9 @@
-<% javascript_tag do %>
-   <%if @error_message%>
-       alert("<%=@error_message%>");
-   <%else%>
-       $("#quantity_"+<%=@olir.id%>).attr("value","<%=@olir.apply_adjust%>");
-   <%end%>
-<% end %>
-
-<%form_for @olir,:url=>{:action=>"update_status"},:html=>{:method=>:put} do |f|%>
+<%form_for @olia,:url=>{:controller=>"order_line_item_raws",:action=>"update_status"},:html=>{:method=>:put} do |f|%>
 <div class="tab">
 <table cellspacing="1" cellpadding="0" border="0" width="786">
     <tbody>
         <tr>
-            <td colspan="11" id="tab_tit">
-                物料明细（<%=@olir.show_status%>）
-                <%if current_user.has_role?("wa")%>
-                    <%if @olir.status == 3 || @olir.status == 4%>
-                        <a href="/order_line_item_raws/<%=@olir.id%>/print"><img src="/images/icons/printer.png" /></a>
-                    <%end%>
-                <%end%>
-            </td>
+            <td colspan="11" id="tab_tit">物料明细</td>
         </tr>
         <tr>
             <td class="f_tab">sku</td>
@@ -28,9 +13,8 @@
             <td class="f_tab">销售姓名</td>
             <td class="f_tab">物料价格</td>
             <td class="f_tab">预定数量</td>
-            <td class="f_tab">小计</td>
-            <td class="f_tab">调整申请数量</td>
-            <td class="f_tab">申请总数</td>
+            <td class="f_tab">申请中总数量</td>
+            <td class="f_tab">本次申请</td>
             <td class="f_tab">申请总计</td>
         </tr>
 
@@ -42,21 +26,12 @@
             <td><%=@olir.salesrep.name%></td>
             <td><%=@olir.unit_price%></td>
             <td><%=@olir.quantity%></td>
-            <td>￥<%=@olir.subtotal%></td>
+            <td><%=@olir.apply_size%></td>
             <td>
-            <%if @olir.status == 1%>
-                <input type="text" value="<%=@olir.apply_adjust%>" size="3" id="quantity_<%=@olir.id%>">
-                <%= link_to_remote '<img src="/images/icons/tick.png" />',
-                :url => {:controller => :order_line_item_raws, :action => :apply_update, :id => @olir.id},
-                :with => "'&quantity='+$('#quantity_#{@olir.id}').val()",
-                :method => :put,
-                :update => "order_list"%>
-            <%else%>
-                <%=@olir.apply_adjust%>
-            <%end%>
+                <input type="text" value="0" size="3" id="olia_quantity">
+                <%= link_to_function '<img src="/images/icons/tick.png" />',"update_total()"%>
             </td>
-            <td><%=@olir.apply_quantity%></td>
-            <td>￥<%=@olir.apply_subtotal%></td>
+            <td id="upload_total_field">￥0</td>
         </tr>
         <tr>
             <td colspan="11" id="tab_tit02"></td>
@@ -71,24 +46,17 @@
             <tr>
                 <td id="tab_tit" colspan="4">详细送货地址</td>
             </tr>
+            <%= f.hidden_field :apply_quantity %>
             <tr>
                 <td><%= label_tag :address, "<em>*</em>请填写详细送货地址" %></td>
                 <td class="td_left">
-                    <%if @olir.status == 1%>
-                        <%= f.text_field :address,:value=>"#{@olir.address.blank? ? @olir.salesrep.address : @olir.address}"%>
-                    <%else%>
-                        <%= f.text_field :address,:value=>"#{@olir.address.blank? ? @olir.salesrep.address : @olir.address}",:disabled=>"disabled"%>
-                    <%end%>
+                    <%= f.text_field :address,:value=> "#{@olir.salesrep.address}"%>
                 </td>
             </tr>
             <tr>
-                <td><%= label_tag :memo, "<em>*</em>请填写备注" %></td>
+                <td><%= label_tag :memo, "请填写备注" %></td>
                 <td class="td_left">
-                    <%if @olir.status == 1%>
-                        <%= f.text_area :memo,:value=>"#{@olir.memo.blank? ? @olir.salesrep.memo : @olir.memo}" %>
-                    <%else%>
-                        <%= f.text_area :memo,:value=>"#{@olir.memo.blank? ? @olir.salesrep.memo : @olir.memo}",:disabled=>"disabled" %>
-                    <%end%>
+                    <%= f.text_area :memo,:value=> "#{@olir.salesrep.memo}" %>
                 </td>
             </tr>
             <tr><td id="tab_tit" colspan="4"></td>
@@ -96,34 +64,18 @@
         </tbody>
     </table>
     <br/>
-    <%if current_user.has_role?("rc")%>
-        <%if @olir.status == 1%>
-        <div class="tab_btn">
-            <%= f.submit "提交申请",:class=>"button_btn",:confirm=>"提交后将不能修改申请！您确认此次提交吗？" %>
-        </div>
-        <%end%>
 
-        <%if @olir.status == 4%>
-        <div class="tab_btn">
-            <%= f.submit "确认收货",:class=>"button_btn",:confirm=>"确认后将完成整个申请！您确认此次收货吗？" %>
-        </div>
-        <%end%>
-    <%end%>
-
-    <%if current_user.has_role?("rm")%>
-        <%if @olir.status == 2%>
-        <div class="tab_btn">
-            <%= f.submit "提交审批",:class=>"button_btn",:confirm=>"提交后将不能修改审批！您确认此次审批吗？" %>
-        </div>
-        <%end%>
-    <%end%>
-
-    <%if current_user.has_role?("wa")%>
-        <%if @olir.status == 3%>
-        <div class="tab_btn">
-            <%= f.submit "我要发货",:class=>"button_btn",:confirm=>"本次将发给销售#{@olir.salesrep.name}#{@olir.apply_quantity}个#{@olir.material.name}！您确认此次发货吗？" %>
-        </div>
-        <%end%>
-    <%end%>
+    <div class="tab_btn">
+        <%= f.submit "提交申请",:class=>"button_btn",:confirm=>"提交后将不能修改申请！您确认此次提交吗？" %>
+    </div>
 </div>
 <%end%>
+
+<% javascript_tag do %>
+    function update_total(){
+        var quantity = $("#olia_quantity").val();
+        var total = <%=@olir.unit_price%> * quantity;
+        $("#order_line_item_apply_apply_quantity").attr("value",quantity);
+        $("#upload_total_field").html("￥"+total);
+    }
+<% end %>

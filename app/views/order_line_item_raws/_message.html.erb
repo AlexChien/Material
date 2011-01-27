@@ -1,6 +1,0 @@
-<% javascript_tag do %>
-   <%if @error_message%>
-       alert("<%=@error_message%>");
-       $("#provide_"+<%=@olir.id%>).attr("value","<%=@olir.apply_quantity%>");
-   <%end%>
-<% end %>

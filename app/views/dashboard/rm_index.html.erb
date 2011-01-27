@@ -35,15 +35,15 @@
         </div>
     <%end%>
 
-    <%@olirs.each do |olir|%>
+    <%@olias.each do |olia|%>
         <div class="info">
             <div class="info_action">
                 <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
             </div>
             <div class="info_content">
                 <p class="single">
-                    <strong>销售<%=olir.salesrep.name%>在活动<%=olir.campaign.name%>中发起申请物料<%=olir.material.name%>.</strong>
-                    <a href="/order_line_item_raws/<%=olir.id%>">去审批.</a>
+                    <strong>销售<%=olia.order_line_item_raw.salesrep.name%>在活动<%=olia.order_line_item_raw.campaign.name%>中发起申请物料<%=olia.order_line_item_raw.material.name%>.</strong>
+                    <a href="/order_line_item_applies/<%=olia.id%>">去审批.</a>
                 </p>
             </div>
         </div>
