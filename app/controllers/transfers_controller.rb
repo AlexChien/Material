@@ -63,12 +63,13 @@ class TransfersController < ApplicationController
           #检查物料是否全部送达，来更新订单状态
           arrived_olias = OrderLineItemAdjusted.in_material(@material.id).in_region(@transfer.to_region.id).is_arrived(0)
           total = arrived_olias.first(:select=>"sum(quantity_total) as total").total.to_i
+
           i = Inventory.in_region(@transfer.to_region.id).in_material(@material.id).first
           if total <= i.quantity
             order = []
             arrived_olias.all.each do |olia|
               order << olia.order.id
-              olia.update_attribute(:arrived,1) if i.quantity >= olia.quantity_total
+              olia.update_attribute(:arrived,1) if i.quantity >= total
               # olia.order.update_attribute(:order_status_id,6) if OrderLineItemAdjusted.in_order(olia.order.id).is_arrived(0).empty?
             end
             olirs = OrderLineItemRaw.in_material(@material.id).in_region(@transfer.to_region.id).in_order(order)
