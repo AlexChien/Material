@@ -12,8 +12,8 @@ class OrderLineItemAppliesController < ApplicationController
     olia = OrderLineItemApply
     olia = olia.in_status([1,2,3,4,5]).in_region(current_user.region) if current_user.has_role?("rc")
     olia = olia.in_status([2,3,4,5]).in_region(current_user.region) if current_user.has_role?("rm")
-    olia = olia.in_status([3,4,5]).in_region(current_user.region) if current_user.has_role?("wa")
-    @olias = olia.paginate(:all,:per_page=>20,:page => params[:page], :order => 'order_line_item_applies.created_at DESC')
+    olia = olia.in_status([3,4,5]) if current_user.has_role?("wa")
+    @olias = olia.paginate(:all,:include=>[:order_line_item_raw],:per_page=>20,:page => params[:page], :order => 'order_line_item_applies.created_at DESC')
   end
 
   def show

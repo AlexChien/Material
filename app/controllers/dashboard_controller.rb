@@ -36,7 +36,7 @@ class DashboardController < ApplicationController
   end
 
   def wa_dashboard
-    @olias = OrderLineItemApply.in_region(current_user.region).in_status(3).all
+    @olias = OrderLineItemApply.in_status(3).all
     render :template => "dashboard/wa_index"
   end
 
