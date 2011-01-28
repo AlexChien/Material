@@ -66,4 +66,18 @@
         </div>
     <%end%>
 
+    <%@olia1s.each do |olia|%>
+        <div class="info">
+            <div class="info_action">
+                <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
+            </div>
+            <div class="info_content">
+                <p class="single">
+                   <%olir=olia.order_line_item_raw%> <strong>销售<%=olir.salesrep.name%>在活动<%=olir.campaign.name%>中申请的物料<%=olir.material.name%>申请失败，已退回.</strong>
+                    <a href="/order_line_item_applies/<%=olia.id%>">去修改.</a>
+                </p>
+            </div>
+        </div>
+    <%end%>
+
 </div>

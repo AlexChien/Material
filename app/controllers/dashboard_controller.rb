@@ -25,6 +25,7 @@ class DashboardController < ApplicationController
     @orders = Order.in_region(current_user.region).in_order_status(2).all
     @olirs = OrderLineItemRaw.in_region(current_user.region).in_status(1).all
     @olias = OrderLineItemApply.in_region(current_user.region).in_status(4).all
+    @olia1s = OrderLineItemApply.in_region(current_user.region).in_status(1).all
     render :template => "dashboard/rc_index"
   end
 

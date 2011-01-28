@@ -6,12 +6,15 @@ class OrderLineItemAppliesController < ApplicationController
     action :print do
       allow :wa
     end
+    action :accept_fail_message, :accept_fail do
+      allow :rm
+    end
   end
 
   def index
     olia = OrderLineItemApply
     olia = olia.in_status([1,2,3,4,5]).in_region(current_user.region) if current_user.has_role?("rc")
-    olia = olia.in_status([2,3,4,5]).in_region(current_user.region) if current_user.has_role?("rm")
+    olia = olia.in_status([1,2,3,4,5]).in_region(current_user.region) if current_user.has_role?("rm")
     olia = olia.in_status([3,4,5]) if current_user.has_role?("wa")
     @olias = olia.paginate(:all,:include=>[:order_line_item_raw],:per_page=>20,:page => params[:page], :order => 'order_line_item_applies.created_at DESC')
   end
@@ -27,14 +30,6 @@ class OrderLineItemAppliesController < ApplicationController
         return
       end
     end
-
-    if current_user.has_role?("rm")
-      if @olia.status == 1
-        flash[:error] = "物料申请中"
-        redirect_to "/order_line_item_applies"
-        return
-      end
-    end
   end
 
   def update_status
@@ -44,7 +39,9 @@ class OrderLineItemAppliesController < ApplicationController
     if current_user.has_role?("rc")
       if @olia.status == 1
         @olia.status = 2
+        @olia.apply_subtotal = params[:order_line_item_apply][:apply_quantity].to_i * @olir.unit_price
         @olia.update_attributes(params[:order_line_item_apply])
+        @olir.update_attributes(:apply_size=>@olir.apply_size+@olia.apply_quantity)
         flash[:notice] = "申请已提交，等待区域经理审批"
       end
 
@@ -91,7 +88,6 @@ class OrderLineItemAppliesController < ApplicationController
         end
       end
     end
-
     redirect_to "/order_line_item_applies/#{@olia.id}"
   end
 
@@ -103,6 +99,25 @@ class OrderLineItemAppliesController < ApplicationController
     else
       render :text => "该送货单不能打印"
     end
+  end
+
+  def accept_fail_message
+    @olia = OrderLineItemApply.find(params[:id])
+    render :partial => "accept_fail_message"
+  end
+
+  def accept_fail
+    @olia = OrderLineItemApply.find(params[:id])
+    @olir = @olia.order_line_item_raw
+    if @olia.status == 2
+      if @olia.update_attributes(:reason=>params[:reason],:status=>1)
+        @olir.update_attribute(:apply_size,@olir.apply_size - @olia.apply_quantity)
+        flash[:notice] = "总部拒绝申领，等待大区管理员重新修改"
+      else
+        flash[:error] = "发生未知错误"
+      end
+    end
+    redirect_to "/order_line_item_applies/#{@olia.id}"
   end
 
 end

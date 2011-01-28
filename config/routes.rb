@@ -30,7 +30,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :order_line_item_applies,:member=>{:update_status=>:put,
                                                    :apply_update=>:put,
-                                                   :print=>:get}
+                                                   :print=>:get,
+                                                   :accept_fail_message=>:get,
+                                                   :accept_fail=>:put}
 
   map.resources :orders,:member=>{:approve_fail_message=>:get,
                                   :approve_fail=>:put,

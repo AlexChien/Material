@@ -182,13 +182,11 @@
 
     </div>
 
-    <%javascript_tag do%>
-        function approve_fail(order_id){
-            $("#approve_fail_message").load("/orders/"+order_id+"/approve_fail_message");
-        }
-    <%end%>
-
 <% javascript_tag do %>
+    function approve_fail(order_id){
+        $("#approve_fail_message").load("/orders/"+order_id+"/approve_fail_message");
+    }
+
     <%if @error_message%>
         alert("<%=@error_message%>");
     <%end%>

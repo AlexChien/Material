@@ -39,7 +39,7 @@
                         <td>
                             <%if current_user.has_role?("rc")%>
                                 <%if olia.status == 1%>
-                                    <%=link_to "我要申领", "/order_line_item_applies/#{olia.id}"%>
+                                    <%=link_to "修改申领", "/order_line_item_applies/#{olia.id}"%>
                                 <%elsif olia.status == 4%>
                                     <%=link_to "确认收货", "/order_line_item_applies/#{olia.id}"%>
                                 <%else%>

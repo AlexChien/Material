@@ -12,10 +12,8 @@ class OrderLineItemApply < ActiveRecord::Base
   }
 
   def show_status
-    if self.status == 0
-      "物料未送达"
-    elsif self.status == 1
-      "物料待申领"
+    if self.status == 1
+      "申领已退回"
     elsif self.status == 2
       "申领审批中"
     elsif self.status == 3
