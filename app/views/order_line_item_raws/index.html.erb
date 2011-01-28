@@ -11,7 +11,7 @@
         <table width="786" cellspacing="1" cellpadding="0" border="0">
             <tbody>
                 <tr>
-                    <td id="tab_tit" colspan="9">
+                    <td id="tab_tit" colspan="11">
                         物料申领
                     </td>
                 </tr>
@@ -23,7 +23,9 @@
                     <td class="f_tab">所属区</td>
                     <td class="f_tab">销售姓名</td>
                     <td class="f_tab">预定数量</td>
-                    <td class="f_tab">申请中总数量</td>
+                    <td class="f_tab">申请中</td>
+                    <td class="f_tab">已审核</td>
+                    <td class="f_tab">已发货</td>
                     <td class="f_tab">操作</td>
                 </tr>
                 <%@olirs.each do |olir|%>
@@ -36,6 +38,8 @@
                         <td><%=olir.salesrep.name%></td>
                         <td><%=olir.quantity%></td>
                         <td><%=olir.apply_size%></td>
+                        <td><%=olir.applied_size%></td>
+                        <td><%=olir.sended_size%></td>
                         <td>
                             <%if olir.apply_size == 0%>
                                 <%=link_to "我要申领", "/order_line_item_raws/#{olir.id}"%>
@@ -46,7 +50,7 @@
                     </tr>
                 <%end%>
                 <tr>
-                    <td id="tab_tit02" colspan="9"><font color="green">共有<%=@olirs.total_entries%>条记录</font></td>
+                    <td id="tab_tit02" colspan="11"><font color="green">共有<%=@olirs.total_entries%>条记录</font></td>
                 </tr>
             </tbody>
         </table>

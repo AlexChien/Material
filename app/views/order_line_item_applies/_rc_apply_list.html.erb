@@ -20,8 +20,9 @@
             <td class="f_tab">销售姓名</td>
             <td class="f_tab">物料价格</td>
             <td class="f_tab">预定数量</td>
-            <td class="f_tab">申请中总数量</td>
             <td class="f_tab">本次申请</td>
+            <td class="f_tab">已审核</td>
+            <td class="f_tab">已发货</td>
             <td class="f_tab">申请总计</td>
         </tr>
 
@@ -33,19 +34,9 @@
             <td><%=@olir.salesrep.name%></td>
             <td><%=@olir.unit_price%></td>
             <td><%=@olir.quantity%></td>
-            <td><%=@olir.apply_size%></td>
-            <td>
-            <%if @olia.status == 1%>
-                <input type="text" value="<%=@olir.apply_adjust%>" size="3" id="quantity_<%=@olia.id%>">
-                <%= link_to_remote '<img src="/images/icons/tick.png" />',
-                :url => {:controller => :order_line_item_applies, :action => :apply_update, :id => @olia.id},
-                :with => "'&quantity='+$('#quantity_#{@olir.id}').val()",
-                :method => :put,
-                :update => "order_list"%>
-            <%else%>
-                <%=@olia.apply_quantity%>
-            <%end%>
-            </td>
+            <td><%=@olia.apply_quantity%></td>
+            <td><%=@olir.applied_size%></td>
+            <td><%=@olir.sended_size%></td>
             <td id="upload_total_field">￥<%=@olia.apply_subtotal%></td>
         </tr>
         <tr>
