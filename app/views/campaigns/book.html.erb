@@ -37,7 +37,7 @@
                 <%@cms.each do |cm|%>
                 <tr>
                     <td><%=cm.material.sku%></td>
-                    <td><%=image_tag (cm.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+                    <td><%=image_tag (cm.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
                     <td><%=cm.material.name%></td>
                     <td><input type="text" value="1" size="4" name="nums" id="num_<%=cm.material.id%>"></td>
                     <td>
@@ -61,7 +61,7 @@
         <%@cms.each do |cm|%>
             <div class="book_info">
                 <div class="good_image">
-                    <%=image_tag (cm.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%>
+                    <%=image_tag (cm.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%>
                 </div>
                 <div class="good_info">
                     <p>sku：<%=cm.material.sku%></p>

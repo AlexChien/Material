@@ -40,7 +40,7 @@
             <%@olirs.each do |olir|%>
             <tr>
                 <td><%=olir.material.sku%></td>
-                <td><%=image_tag (olir.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+                <td><%=image_tag (olir.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
                 <td><%=olir.material.name%></td>
                 <td><%=olir.region.name%></td>
                 <td><%=olir.salesrep.name%></td>

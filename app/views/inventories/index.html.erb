@@ -30,7 +30,7 @@
                 <%@inventories.each do |inventory|%>
                     <tr>
                         <td><%=inventory.material.sku%></td>
-                        <td><%=image_tag (inventory.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+                        <td><%=image_tag (inventory.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
                         <td><%=inventory.material.name%></td>
                         <td><%=inventory.region.name%></td>
                         <td><%=inventory.warehouse.name%></td>

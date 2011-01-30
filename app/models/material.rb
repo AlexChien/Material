@@ -17,6 +17,7 @@ class Material < ActiveRecord::Base
 
   has_attached_file :uploaded_data,
                     :default_url => "/images/powerposm/missing.jpg",
+                    :styles => {:thumb => '100x75>'},
                     :url => "/images/assets/:attachment/:id/:style/:filename",
                     :path => ":rails_root/public/images/assets/:attachment/:id/:style/:filename"
   # validates_attachment_presence :uploaded_data,:message => "请选择上传文件"

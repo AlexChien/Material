@@ -16,7 +16,7 @@
             <%@production.production_line_items.each do |pli|%>
             <tr>
                 <td><%=pli.material.sku%></td>
-                <td><%=image_tag (pli.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+                <td><%=image_tag (pli.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
                 <td><%=pli.material.name%></td>
                 <td><%=pli.quantity_collected%></td>
                 <td><%=pli.quantity_adjusted%></td>

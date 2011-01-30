@@ -20,7 +20,7 @@
             <%@order.order_line_item_adjusteds.each do |olia|%>
             <tr>
                 <td><%=olia.material.sku%></td>
-                <td><%=image_tag (olia.material.uploaded_data.url),:onload=>"DrawImage(this,100,75)"%></td>
+                <td><%=image_tag (olia.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
                 <td><%=olia.material.name%></td>
                 <td><%=olia.region.name%></td>
                 <td><%=olia.unit_price%></td>
