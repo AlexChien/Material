@@ -2,44 +2,45 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="/stylesheets/powerposm/admin.css" rel="stylesheet" type="text/css" />
-<link href="/stylesheets/powerposm/ui-lightness/jquery-ui-1.8.7.custom.css" rel="stylesheet" type="text/css" />
-<%= javascript_include_tag 'powerposm/jquery-1.4.4.min.js','powerposm/jquery-ui-1.8.7.custom.min.js','powerposm/jquery.progressbar.min.js','powerposm/application'%>
+
+<%= stylesheet_link_merged 'base' %>
+<%= javascript_include_merged 'base' %>
+
 <title><%= yield_title yield(:title) %></title>
 <style type="text/css" media="screen">
-	body {background:#fff url(/images/bg.jpg) repeat-x 0 0;}
-	.title {position:absolute;left:360px;top:232px;height:42px;float:none;}
-	.hlf { width:419px; position:absolute;left:360px;top:284px;clear:both; }
-	.hlf input { padding:5px; }
-	.flash {width:419px;}
-	#wrapper {
-		width: 1003px;
-		min-height:460px;
-		height:460px;
-		margin: 0 auto;
-		position:relative;
-	}
-	#notice{
-		border: 2px solid #FDEEF3;
-	    color: green; background-color:transparent;
-	    margin-bottom: 5px;
-	    padding: 1em;
-	}
-	#error {
-	    border: 2px solid #FDEEF3;
-	    color: red; background-color:transparent;
-	    margin-bottom: 5px;
-	    padding: 1em;
-	}
+    body {background:#fff url(/images/bg.jpg) repeat-x 0 0;}
+    .title {position:absolute;left:360px;top:232px;height:42px;float:none;}
+    .hlf { width:419px; position:absolute;left:360px;top:284px;clear:both; }
+    .hlf input { padding:5px; }
+    .flash {width:419px;}
+    #wrapper {
+        width: 1003px;
+        min-height:460px;
+        height:460px;
+        margin: 0 auto;
+        position:relative;
+    }
+    #notice{
+        border: 2px solid #FDEEF3;
+        color: green; background-color:transparent;
+        margin-bottom: 5px;
+        padding: 1em;
+    }
+    #error {
+        border: 2px solid #FDEEF3;
+        color: red; background-color:transparent;
+        margin-bottom: 5px;
+        padding: 1em;
+    }
 </style>
 </head>
 <body>
 <div id="wrapper" >
-	<span class="logo"></span>
+    <span class="logo"></span>
     <div>
         <%= yield %>
     </div>
-	<div class="div0"></div>
+    <div class="div0"></div>
 </div>
 </body>
 </html>
