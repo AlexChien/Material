@@ -31,6 +31,7 @@ namespace :deploy do
   desc "Generate database.yml and Create asset packages for production, minify and compress js and css files"
   after "deploy:update_code", :roles => [:web] do
     database_yml
+    asset_packager
   end
 
   # add soft link script for deploy
@@ -53,6 +54,13 @@ namespace :deploy do
     run "ln -nfs #{deploy_to}/#{shared_dir}/db/backup #{deploy_to}/#{current_dir}/db/backup"
 
     migrate
+  end
+  
+  desc "Create asset packages for production, minify and compress js and css files"
+  task :asset_packager, :roles => [:web] do
+    run <<-EOF
+    cd #{release_path} && rake RAILS_ENV=production asset:packager:build_all
+    EOF
   end
 
   task :start, :roles => :app do
