@@ -115,8 +115,8 @@ class CampaignsController < ApplicationController
                                 :quantity=>num,
                                 :unit_price=>@cm.price,
                                 :subtotal=>num * @cm.price,
-                                :apply_quantity=>num,
-                                :apply_subtotal=>num * @cm.price,
+                                # :apply_quantity=>num,
+                                # :apply_subtotal=>num * @cm.price,
                                 :salesrep=>salesrep)
       else
         exist_olir.update_attributes(:quantity=>exist_olir.quantity+num,:subtotal=>exist_olir.subtotal+num * @cm.price)
