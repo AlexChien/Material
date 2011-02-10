@@ -39,7 +39,7 @@ class Campaign < ActiveRecord::Base
   def catalogs_list
     list = ""
     cms.each do |cm|
-      list += "#{cm.material.name}（内部采购价：#{cm.price}）<br/>"
+      list += "#{cm.material.name}（物料价格：#{cm.price}）<br/>"
     end
     list
   end
