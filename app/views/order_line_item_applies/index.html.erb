@@ -62,6 +62,10 @@
                                     <%=link_to "查看详细", "/order_line_item_applies/#{olia.id}"%>
                                 <%end%>
                             <%end%>
+
+                            <%if current_user.has_role?("pm") || current_user.has_role?("admin")%>
+                                <%=link_to "查看详细", "/order_line_item_applies/#{olia.id}"%>
+                            <%end%>
                         </td>
                     </tr>
                 <%end%>

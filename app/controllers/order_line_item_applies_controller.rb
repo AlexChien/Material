@@ -6,6 +6,9 @@ class OrderLineItemAppliesController < ApplicationController
     action :print do
       allow :wa
     end
+    action :index, :show do
+      allow :pm, :admin
+    end
     action :accept_fail_message, :accept_fail do
       allow :rm
     end
@@ -16,6 +19,7 @@ class OrderLineItemAppliesController < ApplicationController
     olia = olia.in_status([1,2,3,4,5]).in_region(current_user.region) if current_user.has_role?("rc")
     olia = olia.in_status([1,2,3,4,5]).in_region(current_user.region) if current_user.has_role?("rm")
     olia = olia.in_status([3,4,5]) if current_user.has_role?("wa")
+    olia = olia if current_user.has_role?("pm") || current_user.has_role?("admin")
     @olias = olia.paginate(:all,:include=>[:order_line_item_raw],:per_page=>20,:page => params[:page], :order => 'order_line_item_applies.created_at DESC')
   end
 
