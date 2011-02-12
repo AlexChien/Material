@@ -7,6 +7,7 @@ Users
 
 **onUserCreated**  
 Event: when user account is created, fire email to notify user about account login info  
+Description: notifies user whom is being created about his login info  
 Recipient: user whom is being created  
 
 Subject: POSM - 用户帐号建立  
@@ -25,10 +26,10 @@ Content:
 	
 ButtonLabel: 立即登录  
 ButtonLink: http://www.powerposm.com/  
-Description: notifies user whom is being created about his login info  
 
 **onRetrivePassword**  
 Event: when user forgot password and click retrieve password button， fire email to give user to reset password link  
+Description: notifies user about the password reset link  
 Recipient: user who is requesting to retrieve password  
 
 Subject: POSM - 取回密码  
@@ -44,13 +45,13 @@ Content:
 
 ButtonLabel: 立即重置  
 ButtonLink: <%= reset_password_url(:id => @account.password_reset_code) %>   
-Description: notifies user about the password reset link  
 
 Campaign
 ---------
 
 **onCampaignCreated**  
 Event: when PM creates campaign， which means a campaign is created and material catalog is registered， fire email to notify RM/RC about this campaign  
+Description: notifies recipients that new campaign is created and ready for order  
 Recipient: all RCs and RMs  
 
 Subject: POSM - 新活动 {campaign_name} 即将开始  
@@ -58,7 +59,9 @@ Content:
 
 	你好 {name}，
 	
-	新的市场活动 {campaign_name} 即将于 {campaign.startdate.strftime("%Y年%m月%d日")} 开始，物料预订期从 {catalog.order_startdate.strftime("%Y年%m月%d日")} 至 {catalog.order_enddate.strftime("%Y年%m月%d日")}。
+	新的市场活动 {campaign_name} 即将于 {campaign.startdate.strftime("%Y年%m月%d日")} 开始。
+	
+	物料预订期从 {catalog.order_startdate.strftime("%Y年%m月%d日")} 至 {catalog.order_enddate.strftime("%Y年%m月%d日")}。
 		
 	请注意及时预订。
 	
@@ -66,13 +69,13 @@ Content:
 	
 ButtonLabel: 预订物料  
 ButtonLink: {campaign_orderurl}  
-Description: notifies recipients that new campaign is created and ready for order  
 
 Order
 ------
 
 **onOrderSubmitted_RC2RM**  
 Event: when RC collected orders from RPs and submitted order to RM for review  
+Description: notifies RM about new order arrival for review  
 Recipient: RM whom the order is sent to  
 
 Subject: POSM - 收到新的物料订单 #{order_id} 
@@ -86,10 +89,10 @@ Content:
 
 ButtonLabel: 审核订单  
 ButtonLink:  {order_url} 
-Description: notifies RM about new order arrival for review  
 
 **onOrderRejected_RM2RC**  
 Event: when RM rejects the order submitted from RC for review  
+Description: notifies RC that the order is rejected and required for revision  
 Recipient: RC whom submitted the order  
 
 Subject: POSM - 物料订单 #{order_id} 被拒绝  
@@ -105,10 +108,10 @@ Content:
 
 ButtonLabel: 详细信息  
 ButtonLink: {order_url}  
-Description: notifies RC that the order is rejected and required for revision  
 
 **onOrderApproved_byRM**  
 Event: when RM approves the order submitted from RC for review  
+Description: notifies RC that the order is accepted
 Recipient: RC whom submitted the order  
 
 Subject: POSM - 物料订单 #{order_id} 通过区域审核  
@@ -122,10 +125,10 @@ Content:
 
 ButtonLabel: 详细信息  
 ButtonLink: {order_url}  
-Description: notifies RC that the order is accepted
 
 **onOrderSubmitted_RM2PM**  
 Event: when submitted order to PM for review  
+Description: notifies PM about new order arrival for review  
 Recipient: PM
 
 Subject: POSM - 收到新的区域物料订单 #{order_id}  
@@ -139,10 +142,10 @@ Content:
 
 ButtonLabel: 审核订单  
 ButtonLink: {order_url}  
-Description: notifies PM about new order arrival for review  
 
 **onOrderRejected_PM2RM**  
 Event: when PM approves the order submitted from RM for review  
+Description: notifies RM that the order is rejected and required for revision
 Recipient: RM whom submitted the order  
 
 Subject: POSM - 物料订单 #{order_id} 被拒绝  
@@ -158,10 +161,10 @@ Content:
 
 ButtonLabel: 详细信息  
 ButtonLink: {order_url}  
-Description: notifies RM that the order is rejected and required for revision
 
 **onOrderApproved_byPM**  
 Event: when PM approves the order submitted from RM for review  
+Description: notifies RM that the order is accepted
 Recipient: RM whom submitted the order  
 
 Subject: POSM - 物料订单 #{order_id} 通过审核  
@@ -175,13 +178,13 @@ Content:
 
 ButtonLabel: 详细信息  
 ButtonLink: {order_url}  
-Description: notifies RM that the order is accepted
 
 Production Sheet
 -----------------
 
 **onProductionSheetCreated**  
 Event: when production sheet is created (cron job might be needed)  
+Description: notifies PM that campaign order is finished and production sheet is ready  
 Recipient:  PM  
 
 Subject: POSM - 活动 {campaign_name} 预订结束，生产单已生成  
@@ -195,13 +198,13 @@ Content:
 
 ButtonLabel: 生产单  
 ButtonLink: {productionsheet_url}  
-Description: notifies PM that campaign order is finished and production sheet is ready  
 
 Inventory
 ----------
 
 **onStockIn**  
 Event: when WA registers new materials into inventory  
+Description: notifies PM about stock increase  
 Recipient: PM  
 
 Subject: POSM - 新的物料入库 {material_name}  
@@ -215,10 +218,10 @@ Content:
 
 ButtonLabel: 查看库存  
 ButtonLink: {inventory_url}  
-Description: notifies PM about stock increase  
 
 **onStockTransferred**  
 Event: when PM transfers stock  
+Description: notifies target region responsible that new stock arrives    
 Recipient: responsible of target region (PM if target region is central, otherwise RM)  
 
 Subject: POSM - 物料转移入库 来自{warehouse_name}  
@@ -227,13 +230,15 @@ Content:
 	你好 {name}，
 	
 	物料转移入库 来自 {warehouse_name}，请了解。
+	
+	{inventory_url}
 
 ButtonLabel: 查看库存  
 ButtonLink: {inventory_url}  
-Description: notifies target region responsible that new stock arrives    
 
 **onStockRequestSubmitted_RC2RM**  
 Event: when RC submits material request to RM  
+Description: notifies RM that RC is requesting for material  
 Recipient: RM whom the material request is sent to  
 
 Subject: POSM - 新的物料申领请求 #{order_id}  
@@ -247,13 +252,13 @@ Content:
 
 ButtonLabel: 审核物料申领  
 ButtonLink: {order_url}  
-Description: notifies RM that RC is requesting for material  
 
 **onStockRequestApproved_byRM**  
 Event: when RM approves material request sent by RC  
 Recipient:  WA and RM cc RC  
 2 emails.  
 
+Description: WA: notifies WA of new shipping request approved  
 Recipient: WA
 Subject: POSM - 物料申领请求 #{order_id} 通过审核，请发货 
 Content:   
@@ -266,8 +271,8 @@ Content:
 
 ButtonLabel: 确认发货  
 ButtonLink: {order_url}  
-Description: WA: notifies WA of new shipping request approved  
 
+Description: RM cc RC: notifies RM and RC of material request being approved and to prepare for inception  
 Recipient: RM cc RC	
 Subject: POSM - 物料申领请求 #{order_id} 通过审核，发货准备中 
 Content:   
@@ -280,11 +285,11 @@ Content:
 
 ButtonLabel: 详细信息  
 ButtonLink: {order_url}  
-Description: RM cc RC: notifies RM and RC of material request being approved and to prepare for inception  
 
 
 **onStockRequestRejected_byRM**  
 Event: when RM rejects material request from RC  
+Description: notifies RC about the rejection  
 Recipient: RC  
 
 Subject: POSM - 物料申领请求 #{order_id} 被拒绝  
@@ -298,10 +303,10 @@ Content:
 
 ButtonLabel: 详细信息  
 ButtonLink: {order_url}  
-Description: notifies RC about the rejection  
 
 **onStockShipped**  
 Event: when WA marks shipping request as *SHIPPED*  
+Description: notifies RC that material has been shipped and prepare for inception  
 Recipient:  RC cc RM, PM  
 
 Subject: POSM - 物料申领请求 #{order_id} 已发货  
@@ -315,10 +320,10 @@ Content:
 
 ButtonLabel: 确认收货  
 ButtonLink: {order_url}  
-Description: notifies RC that material has been shipped and prepare for inception  
 
 **onStockReceived**  
 Event: when RC receives material package and marks origin request as *RECEIVED*  
+Description: notifies WA that material has been received  
 Recipient: WA cc RM, PM
 
 Subject: POSM - 物料申领请求 #{order_id} 收货确认  
@@ -332,4 +337,3 @@ Content:
 
 ButtonLabel: 详细信息  
 ButtonLink: {order_url}  
-Description: notifies WA that material has been received  
