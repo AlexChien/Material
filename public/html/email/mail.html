@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>达能－POSM物料管理系统</title>
+</head>
+
+<body>
+
+<table width="700" cellpadding="0" cellspacing="0" border="4" bordercolor="#EFAAC0" align="center">
+<tr><td>
+
+<table width="700" cellspacing="0" cellpadding="0" border="0" align="center">
+                <tbody>
+        <tr>
+            <td width="315"><a href="http://www.powerposm.com"><img border="0" style="display: block;" alt="达能－POSM物料管理系统" src="http://www.powerposm.com/images/email/top.jpg"></a></td>
+        </tr>
+        <tr>
+            <td><table width="700" cellspacing="0" cellpadding="0" border="0" align="center">
+              <tbody><tr>
+                <td width="60" valign="top">&nbsp;</td>
+                <td valign="top" bgcolor="#ffffff" ><table width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <tbody><tr>
+                      <td valign="bottom" height="66"><table height="23" cellspacing="0" cellpadding="0" border="0">
+                          <tbody><tr>
+                            <td align="center"><font size="2" face="Verdana" color="#60605f" style="font-size: 15px;"><strong><%= Time.now.strftime("%Y年%m月%d日 %H:%M:%S")%></strong></font></td>
+                          </tr>
+                      </tbody></table></td>
+                    </tr>
+                    <tr>
+                      <td height="93"><font size="2" face="Verdana" color="#60605f" style="font-size: 35px;"> {Subject} </font>  </td>
+                    </tr>
+                    <tr>
+                      <td height="139" valign="top"><font size="1" face="Verdana" color="#60605f" style="font-size: 12px;"><p>{Content}</p></font></td>
+                    </tr>
+                    <% unless ButtonLink.blank? %>
+                    <tr>
+                      <td height="29" align="left"><table cellspacing="0" cellpadding="0" border="0">
+                          <tbody><tr>
+                            <td width="30"><a style="text-decoration:none;" href="{ButtonLink}"><img border="0" style="display: block;" alt="" src="http://www.powerposm.com/images/email/but_left.gif"></a></td>
+                            <td width="100" bgcolor="#e72561" align="center"><a style="text-decoration:none;" href="{ButtonLink}"><font size="1" face="Verdana" color="#ffffff" style="font-size: 13px;"><strong>{ButtonLabel}</strong></font></a> </td>
+                            <td width="12"><a style="text-decoration:none;" href="{ButtonLink}"><img border="0" style="display: block;" alt="" src="http://www.powerposm.com/images/email/but_right.gif"></a></td>
+                          </tr>
+                      </tbody></table>
+                      </td>
+                    </tr>
+                    <% end %>
+                    
+                    <tr>
+                      <td>&nbsp;</td>
+                    </tr>
+                </tbody></table></td>
+                <td width="60" valign="top">&nbsp;</td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+        <tr>
+          <td height="20"><table border="0" cellspacing="0" cellpadding="10">
+            <tr>
+              <td><font size="1" face="Verdana" color="#999999" style="font-size: 10px;"><p>Ce message electronique et tous les fichiers attaches qu'il contient sont confidentiels et destines exclusivement a l'usage de la personne a laquelle ils sont adresses. Si vous avez recu ce message par erreur, merci de le retourner a son emetteur. Les idees et opinions presentees dans ce message sont celles de son auteur, et ne representent pas necessairement celles de DANONE ou d'une quelconque de ses filiales. La publication, l'usage, la distribution, l'impression ou la copie non autorisee de ce message et des attachements qu'il contient sont strictement interdits.</p>
+          <p>This e-mail and any files transmitted with it are confidential and intended solely for the use of the individual to whom it is addressed. If you have received this email in error please send it back to the person that sent it to you. Any views or opinions presented are solely those of its author and do not necessarily represent those of DANONE or any of its subsidiary companies. Unauthorized publication, use, dissemination, forwarding, printing or copying of this email and its associated attachments is strictly prohibited.</p>
+          </font></td>
+            </tr>
+          </table></td>
+        </tr>
+    </tbody>
+</table>
+
+</td></tr></table>
+</body>
+</html>
