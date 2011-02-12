@@ -57,7 +57,7 @@
 
                             <%if current_user.has_role?("wa")%>
                                 <%if olia.status == 3%>
-                                    <%=link_to "我要发货", "/order_line_item_applies/#{olia.id}"%>
+                                    <%=link_to "去发货", "/order_line_item_applies/#{olia.id}"%>
                                 <%else%>
                                     <%=link_to "查看详细", "/order_line_item_applies/#{olia.id}"%>
                                 <%end%>

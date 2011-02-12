@@ -116,7 +116,7 @@
     <%if current_user.has_role?("wa")%>
         <%if @olia.status == 3%>
         <div class="tab_btn">
-            <%= f.submit "我要发货",:class=>"button_btn",:confirm=>"本次将发给销售#{@olir.salesrep.name}#{@olia.apply_quantity}个#{@olir.material.name}！您确认此次发货吗？" %>
+            <%= f.submit "确认发货",:class=>"button_btn",:confirm=>"本次将发给销售#{@olir.salesrep.name}#{@olia.apply_quantity}个#{@olir.material.name}！您确认此次发货吗？" %>
         </div>
         <%end%>
     <%end%>

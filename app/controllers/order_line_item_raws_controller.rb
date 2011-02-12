@@ -23,7 +23,7 @@ class OrderLineItemRawsController < ApplicationController
       @error_message = "请正确填写预定数量"
       @material = @olir.material
     else
-      @olir.update_attributes(:quantity=>quantity,:subtotal=>@olir.unit_price*quantity,:apply_quantity=>quantity,:apply_subtotal=>@olir.unit_price*quantity)
+      @olir.update_attributes(:quantity=>quantity,:subtotal=>@olir.unit_price*quantity)#,:apply_quantity=>quantity,:apply_subtotal=>@olir.unit_price*quantity
     end
     init_list
     render :partial => "campaigns/order_list"
@@ -110,7 +110,7 @@ class OrderLineItemRawsController < ApplicationController
       error_message = "预订不能修改"
     end
     if error_message.blank?
-      @olir.update_attributes(:quantity=>quantity,:subtotal=>@olir.unit_price*quantity,:apply_quantity=>quantity,:apply_subtotal=>@olir.unit_price*quantity)
+      @olir.update_attributes(:quantity=>quantity,:subtotal=>@olir.unit_price*quantity)#,:apply_quantity=>quantity,:apply_subtotal=>@olir.unit_price*quantity
       @olir_total = OrderLineItemRaw.raw_total(@olir.campaign.campaign_catalog.id,current_user.region.id)
       return_data[:success] = true
       success_message = {:notice=>"物料#{@olir.material.name}预定数量为#{@olir.quantity}",
