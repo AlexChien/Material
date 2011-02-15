@@ -8,7 +8,7 @@ class UsersController < ApplicationController
       allow logged_in
     end
   end
-  
+
   def index
     user = User
     user = user.include_admin(false)
@@ -26,18 +26,22 @@ class UsersController < ApplicationController
     # logout_keeping_session!
     @user = User.new(params[:user])
     if @user.save
-      redirect_to "/users"
+
+      # when user account is created, fire email to notify user about account login info
+      PosmMailer.deliver_onUserCreated(@user)
+
       flash[:notice] = "用户#{@user.login}添加成功"
+      redirect_to "/users"
     else
       flash[:error]  = "添加失败，请重新尝试"
       render :action => 'new'
     end
   end
-  
+
   def edit
     @user = User.find(params[:id])
   end
-  
+
   def update
     @user = User.find(params[:id])
     if @user.update_attributes(params[:user])
@@ -48,7 +52,7 @@ class UsersController < ApplicationController
       render :action => "edit"
     end
   end
-  
+
   def destroy
     @user = User.find(params[:id])
     if @user.destroy

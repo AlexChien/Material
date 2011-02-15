@@ -13,7 +13,22 @@ config.action_controller.consider_all_requests_local = true
 config.action_view.debug_rjs                         = true
 config.action_controller.perform_caching             = false
 
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.default_url_options = { :host => "localhost:3000" }
+config.action_mailer.smtp_settings = {
+  :address => "mail.koocaa.com",
+  :port => 25,
+  :domain => "mail.koocaa.com",
+  :authentication => :login,
+  :user_name => "jian.li@koocaa.com",
+  :password => "1234",
+  :default_charset => "utf-8",
+  :default_content_type => "text/html; charset=utf-8"
+}
+
+config.action_mailer.perform_deliveries = true
 # Don't care if the mailer can't send
-config.action_mailer.raise_delivery_errors = false
+config.action_mailer.raise_delivery_errors = true
+config.action_mailer.default_charset = "utf-8"
 
 config.gem 'rails-footnotes'

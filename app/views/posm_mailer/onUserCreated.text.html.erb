@@ -1,0 +1,10 @@
+<p>你好 <%=@user.name%>，</p>
+<p>&nbsp;</p>
+<p>已经为您创建达能POSM - 物料管理系统登录帐号，登录信息如下：</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;用户名：<%=@user.login%></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;密码：<%=@user.password%></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;角色：<%=@user.roles.first.full_name%></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;区域：<%=@user.region.name%></p>
+<p>&nbsp;</p>
+<p>登录地址：http://www.powerposm.com/</p>
