@@ -1,0 +1,9 @@
+你好 <%=@user.name%>，
+
+新的市场活动 <%=@campaign.name%> 即将于 <%=@catalog.order_startdate.strftime("%Y年%m月%d日")%> 开始。
+
+物料预订期从 <%=@catalog.order_startdate.strftime("%Y年%m月%d日")%> 至 <%=@catalog.order_enddate.strftime("%Y年%m月%d日")%>。
+
+请注意及时预订。
+
+<%=@button_link%>

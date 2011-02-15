@@ -47,8 +47,18 @@ class CampaignsController < ApplicationController
           cm.save
         end
       end
-      redirect_to "/campaigns"
+
+      # when PM creates campaign， which means a campaign is created and material catalog is registered， fire email to notify RM/RC about this campaign
+      Role.find_by_name("rc").users.each do |user|
+        PosmMailer.deliver_onCampaignCreated(user,@campaign)
+      end
+
+      Role.find_by_name("rm").users.each do |user|
+        PosmMailer.deliver_onCampaignCreated(user,@campaign)
+      end
+
       flash[:notice] = "活动#{@campaign.name}添加成功"
+      redirect_to "/campaigns"
     else
       flash[:error]  = "添加失败，请重新尝试"
       render :action => 'new'
@@ -150,6 +160,12 @@ class CampaignsController < ApplicationController
                                     :quantity_collected=>olia.quantity_total,
                                     :quantity_total=>olia.quantity_total)
         end
+
+        # when production sheet is created (cron job might be needed)
+        Role.find_by_name("pm").users.each do |user|
+          PosmMailer.deliver_onProductionSheetCreated(user,@campaign)
+        end
+
       end
     end
     redirect_to "/productions/#{@production.id}"

@@ -1,0 +1,9 @@
+<p>你好 <%=@user.name%>，</p>
+<p>&nbsp;</p>
+<p>新的市场活动 <%=@campaign.name%> 即将于 <%=@catalog.order_startdate.strftime("%Y年%m月%d日")%> 开始。</p>
+<p>&nbsp;</p>
+<p>物料预订期从 <%=@catalog.order_startdate.strftime("%Y年%m月%d日")%> 至 <%=@catalog.order_enddate.strftime("%Y年%m月%d日")%>。</p>
+<p>&nbsp;</p>
+<p>请注意及时预订。</p>
+<p>&nbsp;</p>
+<p><a href="<%=@button_link%>"><%=@button_link%></a></p>

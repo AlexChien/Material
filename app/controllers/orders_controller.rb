@@ -79,6 +79,12 @@ class OrdersController < ApplicationController
                                      :subtotal=>olia.subtotal+olir.subtotal)
             end
           end
+
+          # when RC collected orders from RPs and submitted order to RM for review
+          Role.find_by_name("rm").users.in_region(current_user.region).each do |user|
+            PosmMailer.deliver_onOrderSubmitted_RC2RM(user,@order,current_user)
+          end
+
           flash[:notice] = "订单已提交，待大区经理审核"
         else
           flash[:error] = "订单提交错误"
@@ -141,6 +147,17 @@ class OrdersController < ApplicationController
       if current_user.has_role?("rm")
         if @order.order_status_id == 1 || @order.order_status_id == 4
           @order.update_attributes(:amount=>amount,:order_status_id=>3,:memo=>nil)
+
+          # when RM approves the order submitted from RC for review
+          Role.find_by_name("rc").users.in_region(current_user.region).each do |user|
+            PosmMailer.deliver_onOrderApproved_byRM(user,@order)
+          end
+
+          # when submitted order to PM for review
+          Role.find_by_name("pm").users.each do |user|
+            PosmMailer.deliver_onOrderSubmitted_RM2PM(user,@order,current_user)
+          end
+
           flash[:notice] = "订单已提交总部，等待总部审核"
         end
         if @order.order_status_id == 7
@@ -151,6 +168,12 @@ class OrdersController < ApplicationController
         if @order.order_status_id == 3
           @order.update_attributes(:amount=>amount,:order_status_id=>5,:memo=>nil)
           @order.region.update_attribute(:used_budget,@order.region.used_budget+amount)
+
+          # when PM approves the order submitted from RM for review
+          Role.find_by_name("rm").users.in_region(@order.region).each do |user|
+            PosmMailer.deliver_onOrderApproved_byPM(user,@order)
+          end
+
           flash[:notice] = "总部接受订单"
         end
       elsif current_user.has_role?("rc")
@@ -193,6 +216,12 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     if @order.order_status_id == 1
       if @order.update_attributes(:memo=>params[:memo],:order_status_id=>2)
+
+        # when RM rejects the order submitted from RC for review
+        Role.find_by_name("rc").users.in_region(current_user.region).each do |user|
+          PosmMailer.deliver_onOrderRejected_RM2RC(user,@order)
+        end
+
         flash[:notice] = "订单审批未通过，等待大区协调员重新修改"
       else
         flash[:error] = "发生未知错误"
@@ -210,6 +239,12 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     if @order.order_status_id == 3
       if @order.update_attributes(:memo=>params[:memo],:order_status_id=>4)
+
+        # when PM approves the order submitted from RM for review
+        Role.find_by_name("rm").users.in_region(@order.region).each do |user|
+          PosmMailer.deliver_onOrderRejected_PM2RM(user,@order)
+        end
+
         flash[:notice] = "总部拒绝订单，等待大区管理员重新修改"
       else
         flash[:error] = "发生未知错误"

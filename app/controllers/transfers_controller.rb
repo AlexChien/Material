@@ -26,6 +26,12 @@ class TransfersController < ApplicationController
     if tr_id == "1" && current_user.has_role?("wa")
       @material = @transfer.transfer_line_items.first.material
       if @transfer.save
+
+        # when WA registers new materials into inventory
+        Role.find_by_name("pm").users.each do |user|
+          PosmMailer.deliver_onStockIn(user,@material,current_user)
+        end
+
         flash[:notice] = "物料#{@material.name}入库成功"
         redirect_to "/inventories?is_central=1"
       else
@@ -76,6 +82,11 @@ class TransfersController < ApplicationController
             olirs.all.each do |olir|
               olir.update_attribute(:status,1)
             end
+          end
+
+          # when PM transfers stock
+          Role.find_by_name("rm").users.in_region(@transfer.to_region).each do |user|
+            PosmMailer.deliver_onStockTransferred(user,@material)
           end
 
           flash[:notice] = "物料#{@material.name}转移成功"
