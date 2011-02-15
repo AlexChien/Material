@@ -94,19 +94,54 @@ class PosmMailer < ActionMailer::Base
     @body[:button_label] = "查看库存"
   end
 
-  def onStockRequestSubmitted_RC2RM
+  def onStockRequestSubmitted_RC2RM(user,olia,rc)
+    setup_email(user)
+    @subject += "新的物料申领请求 #{olia.id}"
+    @body[:olia] = olia
+    @body[:rc] = rc
+    @body[:button_link] = "http://www.powerposm.com/order_line_item_applies/#{olia.id}"
+    @body[:button_label] = "审核物料申领"
   end
 
-  def onStockRequestApproved_byRM
+  def onStockRequestApproved_toWA(user,olia)
+    setup_email(user)
+    @subject += "物料申领请求 #{olia.id} 通过审核，请发货"
+    @body[:olia] = olia
+    @body[:button_link] = "http://www.powerposm.com/order_line_item_applies/#{olia.id}"
+    @body[:button_label] = "确认发货"
   end
 
-  def onStockRequestRejected_byRM
+  def onStockRequestApproved_byRM(user,olia)
+    setup_email(user)
+    @subject += "物料申领请求 #{olia.id} 通过审核，发货准备中"
+    @body[:olia] = olia
+    @body[:button_link] = "http://www.powerposm.com/order_line_item_applies/#{olia.id}"
+    @body[:button_label] = "详细信息"
   end
 
-  def onStockShipped
+  def onStockRequestRejected_byRM(user,olia)
+    setup_email(user)
+    @subject += "物料申领请求 #{olia.id} 被拒绝"
+    @body[:olia] = olia
+    @body[:button_link] = "http://www.powerposm.com/order_line_item_applies/#{olia.id}"
+    @body[:button_label] = "详细信息"
   end
 
-  def onStockReceived
+  def onStockShipped(user,olia)
+    setup_email(user)
+    @subject += "物料申领请求 #{olia.id} 已发货"
+    @body[:olia] = olia
+    @body[:button_link] = "http://www.powerposm.com/order_line_item_applies/#{olia.id}"
+    @body[:button_label] = "确认收货"
+  end
+
+  def onStockReceived(user,olia,rc)
+    setup_email(user)
+    @subject += "物料申领请求 #{olia.id} 收货确认"
+    @body[:olia] = olia
+    @body[:rc] = rc
+    @body[:button_link] = "http://www.powerposm.com/order_line_item_applies/#{olia.id}"
+    @body[:button_label] = "详细信息"
   end
 
 protected

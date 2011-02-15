@@ -46,11 +46,23 @@ class OrderLineItemAppliesController < ApplicationController
         @olia.apply_subtotal = params[:order_line_item_apply][:apply_quantity].to_i * @olir.unit_price
         @olia.update_attributes(params[:order_line_item_apply])
         @olir.update_attributes(:apply_size=>@olir.apply_size+@olia.apply_quantity)
+
+        # when RC submits material request to RM
+        Role.find_by_name("rm").users.in_region(current_user.region).each do |user|
+          PosmMailer.deliver_onStockRequestSubmitted_RC2RM(user,@olia,current_user)
+        end
+
         flash[:notice] = "申请已提交，等待区域经理审批"
       end
 
       if @olia.status == 4
         @olia.update_attribute(:status,5)
+
+        # when RC receives material package and marks origin request as RECEIVED
+        Role.find_by_name("wa").users.each do |user|
+          PosmMailer.deliver_onStockReceived(user,@olia,current_user)
+        end
+
         flash[:notice] = "确认已收货，申请完成"
       end
     end
@@ -59,6 +71,16 @@ class OrderLineItemAppliesController < ApplicationController
       if @olia.status == 2
         @olia.update_attribute(:status,3)
         @olir.update_attributes(:apply_size=>@olir.apply_size-quantity,:applied_size=>@olir.applied_size+quantity)
+
+        # when RM approves material request sent by RC
+        Role.find_by_name("wa").users.each do |user|
+          PosmMailer.deliver_onStockRequestApproved_toWA(user,@olia)
+        end
+
+        Role.find_by_name("rc").users.in_region(current_user.region).each do |user|
+          PosmMailer.deliver_onStockRequestApproved_byRM(user,@olia)
+        end
+
         flash[:notice] = "审批已通过，等待仓库管理员发货"
       end
     end
@@ -87,6 +109,12 @@ class OrderLineItemAppliesController < ApplicationController
             Transfer.new(params).save
             @olia.update_attribute(:status,4)
             @olir.update_attributes(:sended_size=>@olir.sended_size+quantity)
+
+            # when WA marks shipping request as SHIPPED
+            Role.find_by_name("rc").users.in_region(@olir.region).each do |user|
+              PosmMailer.deliver_onStockShipped(user,@olia)
+            end
+
             flash[:notice] = "货物已发放，等待大区管理员收货"
           end
         end
@@ -116,7 +144,13 @@ class OrderLineItemAppliesController < ApplicationController
     if @olia.status == 2
       if @olia.update_attributes(:reason=>params[:reason],:status=>1)
         @olir.update_attribute(:apply_size,@olir.apply_size - @olia.apply_quantity)
-        flash[:notice] = "总部拒绝申领，等待大区管理员重新修改"
+
+        # when RM rejects material request from RC
+        Role.find_by_name("rc").users.in_region(current_user.region).each do |user|
+          PosmMailer.deliver_onStockRequestRejected_byRM(user,@olia)
+        end
+
+        flash[:notice] = "申领审批未通过，等待大区协调员重新修改"
       else
         flash[:error] = "发生未知错误"
       end

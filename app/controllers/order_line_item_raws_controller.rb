@@ -68,6 +68,12 @@ class OrderLineItemRawsController < ApplicationController
     @olia.status = 2
     if @olia.save
       @olir.update_attribute(:apply_size,@olir.apply_size+@olia.apply_quantity)
+
+      # when RC submits material request to RM
+      Role.find_by_name("rm").users.in_region(current_user.region).each do |user|
+        PosmMailer.deliver_onStockRequestSubmitted_RC2RM(user,@olia,current_user)
+      end
+
       flash[:notice] = "申请已提交，等待区域经理审批"
       redirect_to "/order_line_item_applies/#{@olia.id}"
     else
