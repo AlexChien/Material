@@ -1,6 +1,6 @@
 <%form_for @olia,:url=>{:action=>"update_status"},:html=>{:method=>:put} do |f|%>
 <div class="tab">
-<table cellspacing="1" cellpadding="0" border="0" width="786">
+<table cellspacing="0" cellpadding="0" border="0" width="786">
     <tbody>
         <tr>
             <td colspan="12" id="tab_tit">
@@ -52,14 +52,14 @@
             <td id="upload_total_field">￥<%=@olia.apply_subtotal%></td>
         </tr>
         <tr>
-            <td colspan="12" id="tab_tit02"></td>
+            <td colspan="12" id="tab_bottom"></td>
         </tr>
     </tbody>
 </table>
 </div>
 
 <div class="tab">
-    <table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
+    <table cellspacing="0" cellpadding="0" border="0" width="786" class="tab01">
         <tbody>
             <tr>
                 <td id="tab_tit" colspan="4">详细送货地址</td>
@@ -85,7 +85,7 @@
                     <%end%>
                 </td>
             </tr>
-            <tr><td id="tab_tit" colspan="4"></td>
+            <tr><td id="tab_bottom" colspan="4"></td>
             </tr>
         </tbody>
     </table>

@@ -10,7 +10,7 @@
     <div class="tab">
         <% form_for :material, :url => materials_path, :html=>{:multipart => true} do |f| -%>
         <%=f.error_messages%>
-        <table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
+        <table cellspacing="0" cellpadding="0" border="0" width="786" class="tab01">
             <tbody>
                 <tr>
                     <td id="tab_tit" colspan="4">添加物料</td>
@@ -72,7 +72,7 @@
                         <%= f.text_area :memo %>
                     </td>
                 </tr>
-                <tr><td id="tab_tit" colspan="4"></td>
+                <tr><td id="tab_bottom" colspan="4"></td>
                 </tr>
             </tbody>
         </table>

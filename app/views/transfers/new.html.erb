@@ -11,7 +11,7 @@
 		<% form_for @transfer, :url => transfers_path,:html=>{:onSubmit=>"return check_quantity();"} do |f| -%>
 		<%= f.hidden_field :transfer_type_id,:value=>1%>
 		<%=f.error_messages%>
-		<table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
+		<table cellspacing="0" cellpadding="0" border="0" width="786" class="tab01">
 			<tbody>
 				<tr>
 					<td id="tab_tit" colspan="4">物料入库</td>
@@ -42,7 +42,7 @@
 						<%= f.text_area :memo %>
 					</td>
 				</tr>
-				<tr><td id="tab_tit" colspan="4"></td>
+				<tr><td id="tab_bottom" colspan="4"></td>
 				</tr>
 			</tbody>
 		</table>

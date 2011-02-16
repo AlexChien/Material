@@ -5,7 +5,7 @@
 <% end %>
 
 <% form_for @production do |f| -%>
-<table cellspacing="1" cellpadding="0" border="0" width="786">
+<table cellspacing="0" cellpadding="0" border="0" width="786">
     <tbody>
         <tr>
             <td colspan="9" id="tab_tit">
@@ -47,7 +47,7 @@
         <%end%>
 
         <tr>
-            <td colspan="9" id="tab_tit02"><font >共有<%=@production.production_line_items.size%>条记录</font></td>
+            <td colspan="9" id="tab_bottom"><font >共有<%=@production.production_line_items.size%>条记录</font></td>
         </tr>
     </tbody>
 </table>

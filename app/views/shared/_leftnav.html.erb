@@ -1,6 +1,6 @@
 <div id="menu">
 	<%nav_bar.each_with_index do |nav,index|%>
-	<div class="leftnav_header" value="<%=index+1%>">
+	<div class="leftnav_header" value="<%=index+1%>" id="header_<%=index+1%>">
 		<span class="leftnav_image leftnav_header_image_padding"><img src="<%=nav[:navleft_header_logo]%>" /></span>
 		<span class="leftnav_title"><%=nav[:navleft_header_name]%></span>
 	</div>
@@ -13,7 +13,9 @@
 							<%@current_navleft_header_name=nav[:navleft_header_name]%>
 							<%@current_navleft_name=nav_left[:name]%>
 							<%javascript_tag do%>
-							  	$("#leftnav_<%=index+1%>").toggle("slow");
+								var id = <%=index+1%>;
+								$("#header_"+id).addClass("current");
+							  	$("#leftnav_"+id).toggle("slow");
 							<%end%>
 						<% end %>
 						<li>

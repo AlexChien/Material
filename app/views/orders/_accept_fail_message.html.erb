@@ -1,5 +1,5 @@
 <% form_for @order,:url=>{:action=>"accept_fail"},:html=>{:method=>:put,:onSubmit=>"return check_message();"} do |f| -%>
-<table cellspacing="1" cellpadding="0" border="0" width="786" class="tab01">
+<table cellspacing="0" cellpadding="0" border="0" width="786" class="tab01">
     <tbody>
         <tr>
             <td id="tab_tit" colspan="4">预定拒绝理由</td>
@@ -10,7 +10,7 @@
                 <%= text_area_tag :memo %>
             </td>
         </tr>
-        <tr><td id="tab_tit" colspan="4"></td>
+        <tr><td id="tab_bottom" colspan="4"></td>
         </tr>
     </tbody>
 </table>

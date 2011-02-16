@@ -15,7 +15,7 @@
     <br/>
 <%form_for @order do |f|%>
     <div class="tab">
-    <table cellspacing="1" cellpadding="0" border="0" width="786">
+    <table cellspacing="0" cellpadding="0" border="0" width="786">
         <tbody>
             <tr>
                 <td colspan="11" id="tab_tit">订单详细<%=@order.nil? ? "" : "(#{@order.order_status.name})"%></td>
@@ -66,7 +66,7 @@
             </tr>
 
             <tr>
-                <td colspan="11" id="tab_tit02"><font >共有<%=@olirs.size%>条记录</font></td>
+                <td colspan="11" id="tab_bottom"><font >共有<%=@olirs.size%>条记录</font></td>
             </tr>
         </tbody>
     </table>
