@@ -21,4 +21,5 @@ db/schema.rb
 config/database.yml
 doc/model/*.bak
 public/images/assets/*
+public/javascripts/ext-3.3.1
 public/ext-3.3.1
