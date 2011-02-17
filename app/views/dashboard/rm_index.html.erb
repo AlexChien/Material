@@ -8,6 +8,7 @@
     <%end%>
 
     <%@orders.each do |order|%>
+        <%if order.campaign.campaign_status == 1%>
         <div class="info">
             <div class="info_action">
                 <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
@@ -19,9 +20,11 @@
                 </p>
             </div>
         </div>
+        <%end%>
     <%end%>
 
     <%@order4s.each do |order|%>
+        <%if order.campaign.campaign_status == 1%>
         <div class="info">
             <div class="info_action">
                 <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
@@ -33,6 +36,7 @@
                 </p>
             </div>
         </div>
+        <%end%>
     <%end%>
 
     <%@olias.each do |olia|%>
