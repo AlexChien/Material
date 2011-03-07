@@ -25,6 +25,12 @@ class TransfersController < ApplicationController
     #总库入库
     if tr_id == "1" && current_user.has_role?("wa")
       @material = @transfer.transfer_line_items.first.material
+
+      if @material.nil?
+        flash[:error] = "请选择物料"
+        render :action => "new" and return
+      end
+
       if @transfer.save
 
         # when WA registers new materials into inventory

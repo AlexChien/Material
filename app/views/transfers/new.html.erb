@@ -3,63 +3,107 @@
 <%= render :partial => 'shared/leftnav',:locals => { :highlight => "transfers_new"} %>
 
 <div id="main">
-	<%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
-	<%= render :partial => 'shared/s_path'%>
-	<%end%>
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+    <%= render :partial => 'shared/s_path'%>
+    <%end%>
 
-	<div class="tab">
-		<% form_for @transfer, :url => transfers_path,:html=>{:onSubmit=>"return check_quantity();"} do |f| -%>
-		<%= f.hidden_field :transfer_type_id,:value=>1%>
-		<%=f.error_messages%>
-		<table cellspacing="0" cellpadding="0" border="0" width="786" class="tab01">
-			<tbody>
-				<tr>
-					<td id="tab_tit" colspan="4">物料入库</td>
-				</tr>
-				<% f.fields_for :transfer_line_items do |transfer_line_item| %>
-				<tr>
-					<td><%= transfer_line_item.label :material_id, "<em>*</em>物料名称" %></td>
-					<td class="td_left">
-						<%= transfer_line_item.select :material_id ,Material.all.collect{|p| [p.name, p.id]}%>
-					</td>
-				</tr>
-				<tr>
-					<td><%= transfer_line_item.label :quantity, "<em>*</em>入库数量" %></td>
-					<td class="td_left">
-						<%= transfer_line_item.text_field :quantity %>
-					</td>
-				</tr>
-				<tr>
-					<td><%= transfer_line_item.label :unit_price, "<em>*</em>内部单价" %></td>
-					<td class="td_left">
-						<%= transfer_line_item.text_field :unit_price %>
-					</td>
-				</tr>
-				<% end %>
-				<tr>
-					<td><%= f.label :memo, "备注" %></td>
-					<td class="td_left">
-						<%= f.text_area :memo %>
-					</td>
-				</tr>
-				<tr><td id="tab_bottom" colspan="4"></td>
-				</tr>
-			</tbody>
-		</table>
-		<br/>
-		<div class="tab_btn">
-			<%= f.submit "入库",:class=>"button_btn" %>
-		</div>
-		<%end%>
-	</div>
+    <div class="tab">
+        <% form_for @transfer, :url => transfers_path,:html=>{:onSubmit=>"return check_quantity();"} do |f| -%>
+        <%= f.hidden_field :transfer_type_id,:value=>1%>
+        <%=f.error_messages%>
+        <table cellspacing="0" cellpadding="0" border="0" width="786" class="tab01">
+            <tbody>
+                <tr>
+                    <td id="tab_tit" colspan="4">物料入库</td>
+                </tr>
+                <% f.fields_for :transfer_line_items do |transfer_line_item| %>
+                <tr>
+                    <td><%= transfer_line_item.label :material_id, "<em>*</em>物料" %></td>
+                    <td class="td_left">
+                        <input type="text" id="transfer_transfer_line_items_attributes_0_material_id" />
+                        <script type="text/javascript" charset="utf-8">
+                            Ext.namespace('Ext.material_data');
+
+                            Ext.material_data = [];
+                            <% Material.all.each do |material| %>
+                                Ext.material_data.push([<%=material.id%>,'<%=material.sku%>'])
+                                Ext.material_data.push([<%=material.id%>,'<%=material.name%>'])
+                            <% end %>
+
+                            Ext.onReady(function(){
+                                var store = new Ext.data.ArrayStore({
+                                    fields: ['id', 'material'],
+                                    data : Ext.material_data
+                                });
+
+                                var comboFromArray = new Ext.form.ComboBox({
+                                    store: store,
+                                    typeAhead: true,
+                                    displayField:'material',
+                                    valueField:'id',
+                                    hiddenName:"transfer[transfer_line_items_attributes][0][material_id]",
+                                    mode: 'local',
+                                    forceSelection: true,
+                                    triggerAction: 'all',
+                                    allowBlank: false,
+                                    emptyText:'请输入物料名称或sku...',
+                                    selectOnFocus:true,
+                                    applyTo: 'transfer_transfer_line_items_attributes_0_material_id'
+                                });
+
+                            });
+                        </script>
+                    </td>
+                </tr>
+                <% if false %>
+                <tr>
+                    <td><%= transfer_line_item.label :material_id, "<em>*</em>物料名称" %></td>
+                    <td class="td_left">
+                        <%= transfer_line_item.select :material_id ,Material.all.collect{|p| [p.name, p.id]}%>
+                    </td>
+                </tr>
+                <% end %>
+                <tr>
+                    <td><%= transfer_line_item.label :quantity, "<em>*</em>入库数量" %></td>
+                    <td class="td_left">
+                        <%= transfer_line_item.text_field :quantity %>
+                    </td>
+                </tr>
+                <tr>
+                    <td><%= transfer_line_item.label :unit_price, "<em>*</em>内部单价" %></td>
+                    <td class="td_left">
+                        <%= transfer_line_item.text_field :unit_price %>
+                    </td>
+                </tr>
+                <% end %>
+                <tr>
+                    <td><%= f.label :memo, "备注" %></td>
+                    <td class="td_left">
+                        <%= f.text_area :memo %>
+                    </td>
+                </tr>
+                <tr><td id="tab_bottom" colspan="4"></td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <div class="tab_btn">
+            <%= f.submit "入库",:class=>"button_btn" %>
+        </div>
+        <%end%>
+    </div>
 </div>
 
 <%javascript_tag do%>
-	function check_quantity(){
-		var quantity= $("#transfer_transfer_line_items_attributes_0_quantity").val();
-		if(quantity <= 0){
-			alert("入库数量不能小于0");
-			return false;
-		}
-	}
+    function check_quantity(){
+        var quantity= $("#transfer_transfer_line_items_attributes_0_quantity").val();
+        var material_id= $("#transfer_transfer_line_items_attributes_0_material_id").val();
+        if(material_id == "请输入物料名称或sku..."){
+            alert("请选择物料");
+            return false;
+        }else if(quantity <= 0){
+            alert("入库数量不能小于0");
+            return false;
+        }
+    }
 <%end%>
