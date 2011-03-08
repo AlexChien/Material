@@ -91,11 +91,21 @@
             forceFit:true,
             groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
         }),
-        title: '<center>所有订单</center>'
+        title: '<center>所有订单</center>',
+
+        // paging bar on the bottom
+        bbar: new Ext.PagingToolbar({
+            pageSize: 20,
+            store: ds,
+            displayInfo: true,
+            displayMsg: 'Displaying topics {0} - {1} of {2}',
+            emptyMsg: "No topics to display"
+        })
+
     });
 
     grid.render('data_list');
-    ds.load();//{params:{start:0}}
+    ds.load({params:{start:0, limit:20}});
     }
 </script>
 </div>

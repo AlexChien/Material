@@ -40,7 +40,7 @@ ActionController::Routing::Routes.draw do |map|
                                   :accept_fail=>:put,
                                   :provide=>:get,
                                   :print=>:get},
-                        :collection=>{:ext_index=>:get}
+                        :collection=>{:ext_index=>:post}
 
   map.resources :productions,:member=>{:print=>:get,:load_data=>:get}
 

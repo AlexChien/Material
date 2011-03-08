@@ -30,9 +30,15 @@ class OrdersController < ApplicationController
 
   def ext_index
     order = Order
-    @orders = order.all(:order => 'orders.created_at DESC')
+
+    start = (params[:start] || 1).to_i
+    size = (params[:limit] || 20).to_i
+    sort_col = (params[:sort] || 'created_at')
+    sort_dir = (params[:dir] || 'DESC')
+
+    @orders = order.all(:order => sort_col+' '+sort_dir,:offset => start, :limit => size)
     return_data = Hash.new()
-    return_data[:size] = @orders.size
+    return_data[:size] = order.count
     return_data[:Orders] = @orders.collect{|p| {:id=>p.id,
                                                 :order_status=>p.order_status.name,
                                                 :amount=>p.amount,
