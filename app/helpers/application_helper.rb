@@ -147,7 +147,8 @@ module ApplicationHelper
         :navleft_header_name => "物料发放",
         :navleft_header_logo => "/images/icons/basket_edit.png",
         :navleft => [
-            { :name => "等待发放", :path => "/order_line_item_applies", :id => "order_line_item_applies", :logo => "/images/icons/basket.png"},
+            { :name => "等待发放", :path => "/order_line_item_applies?status=3", :id => "order_line_item_applies_3", :logo => "/images/icons/basket.png"},
+            { :name => "已发放", :path => "/order_line_item_applies", :id => "order_line_item_applies", :logo => "/images/icons/basket.png"},
           ]
         }
       ]

@@ -3,7 +3,7 @@ class OrderLineItemAppliesController < ApplicationController
 
   access_control do
     allow :rc, :rm, :wa
-    action :print do
+    action :print,:ext_index do
       allow :wa
     end
     action :index, :show do
@@ -21,6 +21,36 @@ class OrderLineItemAppliesController < ApplicationController
     olia = olia.in_status([3,4,5]) if current_user.has_role?("wa")
     olia = olia if current_user.has_role?("pm") || current_user.has_role?("admin")
     @olias = olia.paginate(:all,:include=>[:order_line_item_raw],:per_page=>20,:page => params[:page], :order => 'order_line_item_applies.created_at DESC')
+  end
+
+  def ext_index
+    olia = OrderLineItemApply
+    if current_user.has_role?("wa")
+      if params[:status] == "3"
+        olia = olia.in_status(3)
+      else
+        olia = olia.in_status([4,5])
+      end
+    end
+
+    start = (params[:start] || 1).to_i
+    size = (params[:limit] || 20).to_i
+    sort_col = (params[:sort] || 'created_at')
+    sort_dir = (params[:dir] || 'DESC')
+
+    @olias = olia.all(:order => sort_col+' '+sort_dir,:offset => start, :limit => size)
+    return_data = Hash.new()
+    return_data[:size] = olia.count
+    return_data[:Applies] = @olias.collect{|p| {:id=>p.id,
+                                                :sku=>p.order_line_item_raw.material.sku,
+                                                :material_name=>p.order_line_item_raw.material.name,
+                                                :campaign=>p.order_line_item_raw.campaign.name,
+                                                :region=>p.order_line_item_raw.region.name,
+                                                :salesrep=>p.order_line_item_raw.salesrep.name,
+                                                :show_status=>p.show_status,
+                                                :link=>"<a href='/order_line_item_applies/#{p.id}'>#{p.status == 3 ? '去发货' : '查看详细'}</a>"
+                                                }}
+    render :text=>return_data.to_json, :layout=>false
   end
 
   def show
@@ -121,6 +151,54 @@ class OrderLineItemAppliesController < ApplicationController
       end
     end
     redirect_to "/order_line_item_applies/#{@olia.id}"
+  end
+
+  def update_checked
+    correct_count = error_count = 0
+    if current_user.has_role?("wa")
+      params[:apply_ids].split(",").each do |apply_id|
+        @olia = OrderLineItemApply.find(apply_id)
+        @olir = @olia.order_line_item_raw
+        quantity = @olia.apply_quantity
+        i = Inventory.in_region(@olir.region).in_material(@olir.material).first
+        if i.nil?
+          error_count += 1
+        else
+          if i.quantity < @olia.apply_quantity
+            error_count += 1
+          else
+            params = {:from_region_id=>@olir.order.region.id,
+                      :from_warehouse_id=>Warehouse.in_central(true).first.id,
+                      :amount=>"-#{@olir.unit_price*@olia.apply_quantity}",
+                      :transfer_type_id=>4,
+                      :transfer_line_items_attributes=>{"0"=>{"material_id"=>"#{@olir.material.id}",
+                                                              "quantity"=>"-#{@olia.apply_quantity}",
+                                                              "unit_price"=>"#{@olir.unit_price}",
+                                                              "subtotal"=>"-#{@olir.unit_price*@olia.apply_quantity}",
+                                                              "region_id"=>"#{@olir.order.region.id}",
+                                                              "salesrep_id"=>"#{@olir.salesrep.id}",
+                                                              "warehouse_id"=>"#{Warehouse.in_central(true).first.id}"}}
+                      }
+            Transfer.new(params).save
+            @olia.update_attribute(:status,4)
+            @olir.update_attributes(:sended_size=>@olir.sended_size+quantity)
+
+            # when WA marks shipping request as SHIPPED
+            Role.find_by_name("rc").users.in_region(@olir.region).each do |user|
+              PosmMailer.deliver_onStockShipped(user,@olia)
+            end
+
+            correct_count += 1
+          end
+        end
+      end
+    end
+    if error_count == 0
+      flash[:notice] = "成功发放#{correct_count}批物料。"
+    else
+      flash[:error] = "成功发放#{correct_count}批物料，#{error_count}批物料发放失败，原因为库存不足。"
+    end
+    redirect_to "/order_line_item_applies"
   end
 
   def print

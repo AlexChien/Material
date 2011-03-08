@@ -1,6 +1,12 @@
 <% content_for :title, "物料申领" %>
 
-<%= render :partial => 'shared/leftnav',:locals => { :highlight => "order_line_item_applies"} %>
+<%if @olia.status==3%>
+    <%highlight="order_line_item_applies_3"%>
+<%else%>
+    <%highlight="order_line_item_applies"%>
+<%end%>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "#{highlight}"} %>
 
 <div id="main">
     <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>

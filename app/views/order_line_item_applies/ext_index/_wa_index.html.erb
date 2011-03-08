@@ -1,0 +1,143 @@
+<div id="data_list">
+<script type="text/javascript" charset="utf-8">
+    var grid;
+    var ds;
+    $(function(){
+        init_grid();
+    });
+
+    function init_grid() {
+        ds = new Ext.data.GroupingStore({
+            groupField:'salesrep',
+            proxy: new Ext.data.HttpProxy({
+                api: {
+                        read: '/order_line_item_applies/ext_index?status=<%=params[:status]%>'
+                     }
+            }),
+            reader: new Ext.data.JsonReader({
+                    root: 'Applies',
+                    totalProperty: 'size',
+                    messageProperty: "message"
+                },
+                [
+                    {name: 'id', mapping: 'id'},
+                    {name: 'sku', mapping: 'sku'},
+                    {name: 'material_name', mapping: 'material_name'},
+                    {name: 'campaign', mapping: 'campaign'},
+                    {name: 'region', mapping: 'region'},
+                    {name: 'salesrep', mapping: 'salesrep'},
+                    {name: 'show_status', mapping: 'show_status'},
+                    {name: 'link', mapping: 'link'}
+                ])
+        });
+
+        var sm = new Ext.grid.CheckboxSelectionModel({
+             width: 25,
+             singleSelect: false
+        });
+
+        var cm_array = [];
+
+        <%if params[:status]=="3"%>
+            cm_array.push(sm);
+        <%end%>
+
+        cm_array.push(
+            {id: 'sku', header: "sku", dataIndex: 'sku',sortable:true,width:80},
+            {id: 'material_name', header: "物料名称", dataIndex: 'material_name',sortable:true,width:80},
+            {id: 'campaign', header: "所属活动", dataIndex: 'campaign',sortable:true,width:146},
+            {id: 'region', header: "所属区", dataIndex: 'region',sortable:true,width:80},
+            {id: 'salesrep', header: "销售姓名", dataIndex: 'salesrep',sortable:true,width:80},
+            {id: 'show_status', header: "当前状态", dataIndex: 'show_status',sortable:true,width:80},
+            {id: 'link', header: "操作", dataIndex: 'link',sortable:true,width:80}
+        );
+
+        var cm = new Ext.grid.ColumnModel(cm_array);
+
+    var filters = new Ext.ux.grid.GridFilters({
+        local: true,   // defaults to false (remote filtering)
+        filters: [
+        {
+            type: 'string',
+            dataIndex: 'sku'
+        }, {
+            type: 'string',
+            dataIndex: 'material_name'
+        }, {
+            type: 'string',
+            dataIndex: 'campaign'
+        }, {
+            type: 'string',
+            dataIndex: 'region'
+        }, {
+            type: 'string',
+            dataIndex: 'salesrep'
+        }, {
+            type: 'string',
+            dataIndex: 'show_status'
+        }, {
+            type: 'string',
+            dataIndex: 'link'
+        }]
+    });
+
+    // utilize custom extension for Hybrid Summary
+    var summary = new Ext.ux.grid.HybridSummary();
+
+    grid = new Ext.grid.GridPanel({
+        loadMask: true,
+        // autoHeight: true,
+        height: 300,
+        autoWidth: true,
+        ds: ds,
+        cm: cm,
+        sm: sm,
+        plugins: [filters,summary],
+        view: new Ext.grid.GroupingView({
+            forceFit:true,
+            groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+        }),
+        title: '<center><%if params[:status] == "3"%>等待发货<%else%>已发货<%end%></center>',
+
+        // paging bar on the bottom
+        bbar: new Ext.PagingToolbar({
+            pageSize: 10,
+            store: ds,
+            displayInfo: true,
+            displayMsg: 'Displaying topics {0} - {1} of {2}',
+            emptyMsg: "No topics to display"
+        })
+
+    });
+
+    grid.render('data_list');
+    ds.load({params:{start:0, limit:10}});
+    }
+</script>
+</div>
+
+<% if params[:status]=="3" %>
+    <% form_tag("/order_line_item_applies/update_checked",:method=>:put,:onSubmit=>"return check();") do %>
+    <%= hidden_field_tag :apply_ids%>
+    <div class="tab_btn">
+        <%= submit_tag "确认发货",:class=>"button_btn",:confirm=>"您确认此次发货吗？"%>
+    </div>
+    <% end %>
+
+    <script type="text/javascript" charset="utf-8">
+        function check(){
+            var selections = grid.getSelectionModel().getSelections();
+            var apply_ids = [];
+            for (var i = 0; i < selections.length; i++) {
+                apply_ids.push(selections[i].get('id'));
+            }
+            if(apply_ids == ""){
+                alert("请选择要发放物料");
+                return false;
+            }else{
+                $("#apply_ids").attr("value",apply_ids);
+            }
+        }
+    </script>
+
+<% end %>
