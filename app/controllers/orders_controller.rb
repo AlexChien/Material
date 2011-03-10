@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
   before_filter :check_order,:only=>[:create]
 
   access_control do
-    action :create do
+    action :create, :print do
       allow :rc
     end
     # action :index,:provide, :update do
@@ -268,6 +268,11 @@ class OrdersController < ApplicationController
   def print
     @order = Order.find(params[:id])
     if @order.order_status_id == 5
+
+      if current_user.has_role?("rc")
+        render :text => "您没有权限打印该订单" and return if current_user.region != @order.region
+      end
+
       render :layout => "print"
     else
       render :text => "该预定单不能打印"

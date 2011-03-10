@@ -82,7 +82,7 @@
             forceFit:true,
             groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
         }),
-        title: '<center>订单详细（<%=@order.order_status.name%>）</center>'
+        title: '<center>订单详细（<%=@order.order_status.name%>）<%if @order.order_status_id ==5%><a href="/orders/<%=@order.id%>/print"><img src="/images/icons/printer.png" /></a><%end%></center>'
     });
 
     grid.render('olir_list');
