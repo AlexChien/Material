@@ -135,38 +135,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  def generate_excel
-    @order = Order.find(params[:id])
-    @campaign = @order.campaign
-    book = Spreadsheet::Workbook.new
-    sheet = book.create_worksheet :name => "order_#{@order.id}"
-    concat = ['sku',
-      '物料名称',
-      '所属区',
-      '物料价格',
-      '预定数量',
-      '调整数量',
-      '预定总数',
-      '小计']
-    sheet.row(0).concat(concat)
-    @olias = @order.order_line_item_adjusteds.all(:order=>"created_at DESC")
-    @olias.each_with_index do |record,index|
-      replace = [record.material.sku,
-        record.material.name,
-        record.region.name,
-        record.unit_price.to_f,
-        record.quantity_collected.to_i,
-        record.quantity_adjust.to_i,
-        record.quantity_total.to_f,
-        record.subtotal.to_f
-        ]
-      sheet.row(index+1).replace(replace)
-    end
-    filename = "#{RAILS_ROOT}/tmp/tmp_xls/#{Time.now.to_i}.xls"
-    book.write filename
-    send_file filename
-  end
-
   def update
     @order = Order.find(params[:id])
     amount = @order.order_line_item_adjusteds.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f
@@ -308,6 +276,47 @@ class OrdersController < ApplicationController
       render :layout => "print"
     else
       render :text => "该预定单不能打印"
+    end
+  end
+
+  def generate_excel
+    @order = Order.find(params[:id])
+    if @order.order_status_id == 5
+
+      if current_user.has_role?("rc")
+        render :text => "您没有权限导出该订单" and return if current_user.region != @order.region
+      end
+
+      @campaign = @order.campaign
+      book = Spreadsheet::Workbook.new
+      sheet = book.create_worksheet :name => "order_#{@order.id}"
+      concat = ['sku',
+        '物料名称',
+        '所属区',
+        '物料价格',
+        '预定数量',
+        '调整数量',
+        '预定总数',
+        '小计']
+      sheet.row(0).concat(concat)
+      @olias = @order.order_line_item_adjusteds.all(:order=>"created_at DESC")
+      @olias.each_with_index do |record,index|
+        replace = [record.material.sku,
+          record.material.name,
+          record.region.name,
+          record.unit_price.to_f,
+          record.quantity_collected.to_i,
+          record.quantity_adjust.to_i,
+          record.quantity_total.to_f,
+          record.subtotal.to_f
+          ]
+        sheet.row(index+1).replace(replace)
+      end
+      filename = "#{RAILS_ROOT}/tmp/tmp_xls/#{Time.now.to_i}.xls"
+      book.write filename
+      send_file filename
+    else
+      render :text => "该预定单不能导出"
     end
   end
 

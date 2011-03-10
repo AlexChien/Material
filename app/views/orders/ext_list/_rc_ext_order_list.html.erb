@@ -69,6 +69,18 @@
 
     var summary = new Ext.ux.grid.HybridSummary();
 
+    var excel = new Ext.Action({
+        text: '导出excel',
+        handler: function(){
+            location.href="/orders/<%=@order.id%>/generate_excel";
+        },
+        icon: '/images/icons/page_excel.png'
+    });
+    var tbar = [];
+    <% if @order.order_status_id == 5%>
+        tbar.push(excel);
+    <% end %>
+
     grid = new Ext.grid.GridPanel({
         loadMask: true,
         // autoHeight: true,
@@ -82,7 +94,8 @@
             forceFit:true,
             groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
         }),
-        title: '<center>订单详细（<%=@order.order_status.name%>）<%if @order.order_status_id ==5%><a href="/orders/<%=@order.id%>/print"><img src="/images/icons/printer.png" /></a><%end%></center>'
+        title: '<center>订单详细（<%=@order.order_status.name%>）<%if @order.order_status_id ==5%><a href="/orders/<%=@order.id%>/print"><img src="/images/icons/printer.png" /></a><%end%></center>',
+        tbar: tbar
     });
 
     grid.render('olir_list');
