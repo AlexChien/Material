@@ -3,7 +3,10 @@ class OrderLineItemAppliesController < ApplicationController
 
   access_control do
     allow :rc, :rm, :wa
-    action :print,:ext_index do
+    action :print do
+      allow :wa, :rc
+    end
+    action :ext_index do
       allow :wa
     end
     action :index, :show do
@@ -204,10 +207,19 @@ class OrderLineItemAppliesController < ApplicationController
   def print
     @olia = OrderLineItemApply.find(params[:id])
     @olir = @olia.order_line_item_raw
-    if @olia.status == 3 || @olia.status == 4
-      render :layout => "print"
-    else
-      render :text => "该送货单不能打印"
+    if current_user.has_role?("wa")
+      if @olia.status == 3 || @olia.status == 4
+        render :layout => "print"
+      else
+        render :text => "该送货单不能打印"
+      end
+    elsif current_user.has_role?("rc")
+      if @olia.status == 5
+        render :text => "您没有权限打印该申领单" and return if @olir.region != current_user.region
+        render :layout => "print"
+      else
+        render :text => "该送货单不能打印"
+      end
     end
   end
 

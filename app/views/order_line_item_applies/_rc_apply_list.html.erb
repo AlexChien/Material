@@ -10,8 +10,9 @@
                         <a href="/order_line_item_applies/<%=@olia.id%>/print"><img src="/images/icons/printer.png" /></a>
                     <%end%>
                 <%end%>
-                <%if current_user.has_role?("rc") && @olia.status == 1%>
-                    <br/>原因：<%=@olia.reason%>
+                <%if current_user.has_role?("rc")%>
+                    <%if @olia.status == 1%><br/>原因：<%=@olia.reason%><%end%>
+                    <%if @olia.status == 5%><a href="/order_line_item_applies/<%=@olia.id%>/print"><img src="/images/icons/printer.png" /></a><%end%>
                 <%end%>
             </td>
         </tr>

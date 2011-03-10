@@ -2,7 +2,7 @@
     <table cellspacing="0" cellpadding="0" border="0" width="980">
         <tbody>
             <tr>
-                <td colspan="11" id="tab_tit">送货单（ID：<%=@olir.id%>）</td>
+                <td colspan="11" id="tab_tit"><%if @olia.status ==5 %>申领单（ID：<%=@olia.id%>）<%else%>送货单（ID：<%=@olia.id%>）<%end%></td>
             </tr>
             <tr>
                 <td colspan="1" style="text-align: center; padding: 10px;">
