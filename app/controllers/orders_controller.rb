@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
   before_filter :check_order,:only=>[:create]
 
   access_control do
-    action :create, :print do
+    action :create, :print, :generate_excel do
       allow :rc
     end
     # action :index,:provide, :update do
@@ -133,6 +133,38 @@ class OrdersController < ApplicationController
     elsif current_user.has_role?("pm") || current_user.has_role?("admin")
       render :template => "/orders/pm_show"
     end
+  end
+
+  def generate_excel
+    @order = Order.find(params[:id])
+    @campaign = @order.campaign
+    book = Spreadsheet::Workbook.new
+    sheet = book.create_worksheet :name => "order_#{@order.id}"
+    concat = ['sku',
+      '物料名称',
+      '所属区',
+      '物料价格',
+      '预定数量',
+      '调整数量',
+      '预定总数',
+      '小计']
+    sheet.row(0).concat(concat)
+    @olias = @order.order_line_item_adjusteds.all(:order=>"created_at DESC")
+    @olias.each_with_index do |record,index|
+      replace = [record.material.sku,
+        record.material.name,
+        record.region.name,
+        record.unit_price.to_f,
+        record.quantity_collected.to_i,
+        record.quantity_adjust.to_i,
+        record.quantity_total.to_f,
+        record.subtotal.to_f
+        ]
+      sheet.row(index+1).replace(replace)
+    end
+    filename = "#{RAILS_ROOT}/tmp/tmp_xls/#{Time.now.to_i}.xls"
+    book.write filename
+    send_file filename
   end
 
   def update

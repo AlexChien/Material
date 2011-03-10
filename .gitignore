@@ -3,7 +3,7 @@
 .bundle
 db/*.sqlite3
 log/*.log
-tmp/**/*
+#tmp/**/*
 *.fla
 *.swd
 *.LCK
