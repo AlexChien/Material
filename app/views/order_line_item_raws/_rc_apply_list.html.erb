@@ -54,7 +54,8 @@
             <tr>
                 <td><%= label_tag :address, "<em>*</em>请填写详细送货地址" %></td>
                 <td class="td_left">
-                    <%= f.text_field :address,:value=> "#{@olir.salesrep.address}"%>
+                    <%= f.hidden_field :address,:value=> "#{@olir.salesrep.address}"%>
+                    <%= text_field_tag :address, "#{@olir.salesrep.address}",:disabled=>"disabled"%>
                 </td>
             </tr>
             <tr>

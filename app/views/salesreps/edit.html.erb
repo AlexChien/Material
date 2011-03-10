@@ -22,6 +22,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td><%= f.label :address, "<em>*</em>地址" %></td>
+                    <td class="td_left">
+                        <%= f.text_field :address %>
+                    </td>
+                </tr>
+                <tr>
                     <td><%= f.label :email, "销售邮箱" %></td>
                     <td class="td_left">
                         <%= f.text_field :email %>
@@ -37,12 +43,6 @@
                     <td><%= f.label :phone, "联系电话" %></td>
                     <td class="td_left">
                         <%= f.text_field :phone %>
-                    </td>
-                </tr>
-                <tr>
-                    <td><%= f.label :address, "地址" %></td>
-                    <td class="td_left">
-                        <%= f.text_field :address %>
                     </td>
                 </tr>
                 <tr>

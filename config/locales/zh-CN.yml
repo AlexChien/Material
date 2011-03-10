@@ -150,6 +150,7 @@
          order_enddate: "预定结束时间"
        salesrep:
          name: "销售姓名"
+         address: "地址"
        transfer_line_item:
          unit_price: "内部单价"
          quantity: "数量"

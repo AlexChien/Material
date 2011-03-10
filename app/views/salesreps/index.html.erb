@@ -15,22 +15,22 @@
                 </tr>
                 <tr>
                     <td class="f_tab">销售姓名</td>
+                    <td class="f_tab">地址</td>
                     <td class="f_tab">销售邮箱</td>
                     <td class="f_tab">所属大区</td>
                     <td class="f_tab">手机号码</td>
                     <td class="f_tab">联系电话</td>
-                    <td class="f_tab">地址</td>
                     <td class="f_tab" width="200">详细描述</td>
                     <td class="f_tab">操作</td>
                 </tr>
                 <%@salesreps.each do |salesrep|%>
                     <tr>
                         <td><%=salesrep.name%></td>
+                        <td><%=salesrep.address%></td>
                         <td><%=salesrep.email%></td>
                         <td><%=salesrep.region.nil? ? "无" : salesrep.region.name%></td>
                         <td><%=salesrep.phone%></td>
                         <td><%=salesrep.mobile%></td>
-                        <td><%=salesrep.address%></td>
                         <td><%=salesrep.memo%></td>
                         <td>
                         <%= link_to image_tag("/images/icons/database_edit.png", {:alt => "修改", :title => "修改", :border => 0}), edit_salesrep_url(salesrep)%>
