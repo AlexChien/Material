@@ -15,7 +15,7 @@ class OrdersController < ApplicationController
     action :approve_fail_message, :approve_fail do
       allow :rm
     end
-    action :accept_fail_message, :accept_fail, :print do
+    action :accept_fail_message, :accept_fail, :print, :generate_excel do
       allow :pm, :admin
     end
   end
