@@ -55,7 +55,7 @@ namespace :deploy do
 
     migrate
   end
-  
+
   desc "Create asset packages for production, minify and compress js and css files"
   task :asset_packager, :roles => [:web] do
     run <<-EOF
@@ -84,3 +84,5 @@ namespace :deploy do
   end
 
 end
+
+# default_environment["PATH"] = "/usr/bin:/bin:/usr/local/bin"
