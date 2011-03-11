@@ -42,15 +42,22 @@ class InventoriesController < ApplicationController
   end
 
   def calculate_materials
+    total_str = ""
     @material = Material.find(params[:material_id])
     @region = Region.find(params[:region_id])
     i_m_central = Inventory.in_region(Region.in_central(true).first.id).in_material(@material.id).first
     i_m = Inventory.in_region(@region.id).in_material(@material.id).first
     quantity = i_m.nil? ? 0 : i_m.quantity
     total = OrderLineItemAdjusted.in_material(@material.id).in_region(@region.id).is_arrived(0).first(:select=>"sum(quantity_total) as total").total.to_i
+    total_str += "<br/>待转物料数量总和：#{total-quantity<0 ? 0 : total-quantity}"
+    OrderLineItemAdjusted.in_material(@material.id).in_region(@region.id).is_arrived(0).all(:joins=>"inner join orders on order_line_item_adjusteds.order_id = orders.id ",:select=>"*,sum(quantity_total) as total",:group=>"orders.campaign_id").each do |olia|
+      c = Campaign.find(olia.campaign_id)
+      total_str += "<br/>活动－#{c.name}:#{olia.total}"
+    end
+
     render :text => "<br/>#{Warehouse.in_central(true).first.name}总库存量：#{i_m_central.nil? ? 0 : i_m_central.quantity}
                      <br/>#{@region.warehouse.name}当前库存量：#{quantity}
-                     <br/>待转物料数量：#{total-quantity<0 ? 0 : total-quantity}"
+                     #{total_str}"
   end
 
 end
