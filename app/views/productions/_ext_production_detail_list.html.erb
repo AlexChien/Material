@@ -6,27 +6,15 @@
       init_grid();
     });
     function init_grid() {
-        var App = new Ext.App({});
-
-        var editor = new Ext.ux.grid.RowEditor({
-            saveText: '调整',
-            cancelText: "取消"
-        });
-
-        var writer = new Ext.data.JsonWriter({
-            encode: false
-        });
-
         ds = new Ext.data.GroupingStore({
             groupField:'sku',
             proxy: new Ext.data.HttpProxy({
                 api: {
-                        read: '/productions/<%=@production.id%>/load_data',
-                        update: {url: '/production_line_items/ext_update', method: 'put'}
+                        read: '/productions/<%=@production.id%>/load_data?type=detail'
                      }
             }),
             reader: new Ext.data.JsonReader({
-                    root: 'Plis',
+                    root: 'Olias',
                     totalProperty: 'size',
                     messageProperty: 'message'
                 },
@@ -34,18 +22,14 @@
                     {name: 'material_id', mapping: 'material_id'},
                     {name: 'sku', mapping: 'sku'},
                     {name: 'name', mapping: 'name'},
-                    {name: 'quantity_collected', mapping: 'quantity_collected'},
-                    {name: 'quantity_adjusted', mapping: 'quantity_adjusted'},
+                    {name: 'region', mapping: 'region'},
                     {name: 'quantity_total', mapping: 'quantity_total'}
-                ]),
-            // restful: true,
-            writer: writer
+                ])
         });
         var cm = new Ext.grid.ColumnModel([
             {id: 'sku', header: "sku", dataIndex: 'sku',sortable:true,width:150},
             {id: 'name', header: "物料名称", dataIndex: 'name',sortable:true,width:186},
-            {id: 'quantity_collected', header: "预定数量", dataIndex: 'quantity_collected',sortable:true,width:150},
-            {id: 'quantity_adjusted', header: "调整数量", dataIndex: 'quantity_adjusted',sortable:true,width:150,editor: new Ext.form.TextField({})},
+            {id: 'region', header: "所属大区", dataIndex: 'region',sortable:true,width:186},
             {id: 'quantity_total', header: "预定总数", dataIndex: 'quantity_total',sortable:true,width:150}
         ]);
 
@@ -59,11 +43,8 @@
             type: 'string',
             dataIndex: 'name'
         }, {
-            type: 'numeric',
-            dataIndex: 'quantity_collected'
-        }, {
-            type: 'numeric',
-            dataIndex: 'quantity_adjusted'
+            type: 'string',
+            dataIndex: 'region'
         }, {
             type: 'numeric',
             dataIndex: 'quantity_total'
@@ -74,9 +55,9 @@
     var summary = new Ext.ux.grid.HybridSummary();
 
     var type = new Ext.Action({
-        text: '显示大区预订明细',
+        text: '显示总预定明细',
         handler: function(){
-            location.href="/productions/<%=@production.id%>?type=detail";
+            location.href="/productions/<%=@production.id%>";
         },
         icon: '/images/icons/zoom.png'
     });
@@ -84,7 +65,7 @@
     var excel = new Ext.Action({
         text: '导出excel',
         handler: function(){
-            location.href="/productions/<%=@production.id%>/generate_excel";
+            location.href="/productions/<%=@production.id%>/generate_excel?type=detail";
         },
         icon: '/images/icons/page_excel.png'
     });
@@ -96,9 +77,6 @@
     <% end %>
 
     var plugins = [filters,summary];
-    <%unless @production.locked%>
-        plugins.push(editor);
-    <%end%>
 
     grid = new Ext.grid.GridPanel({
         loadMask: true,
@@ -113,7 +91,7 @@
             forceFit:true,
             groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
         }),
-        title: '<center>生产单详细（<%=@production.show_status%>）<%if @production.locked%><a href="/productions/<%=@production.id%>/print"><img src="/images/icons/printer.png" /></a><%end%></center>',
+        title: '<center>生产单详细（<%=@production.show_status%>）<%if @production.locked%><a href="/productions/<%=@production.id%>/print?type=detail"><img src="/images/icons/printer.png" /></a><%end%></center>',
         tbar: [tbar]
     });
 
@@ -141,32 +119,6 @@
         treeMenu.showAt(e.getPoint());
     });
 
-    Ext.data.DataProxy.addListener('beforewrite', function(proxy, action) {
-        App.setAlert(App.STATUS_NOTICE, "正在调整中...");
-    });
-
-    Ext.data.DataProxy.addListener('write', function(proxy, action, result, res, rs) {
-        App.setAlert(true, res.message);
-    });
-
-    Ext.data.DataProxy.addListener('exception', function(proxy, type, action, options, res) {
-        // App.setAlert(false, "Something bad happend while executing " + action);
-        Ext.Msg.show({
-            title: '发生错误',
-            msg: res.message,
-            icon: Ext.MessageBox.ERROR
-        });
-    });
-
     }
 </script>
 </div>
-
-<% unless @production.locked %>
-    <br/>
-    <% form_for @production do |f| -%>
-    <div class="tab_btn">
-        <%= f.submit "锁定",:class=>"button_btn",:confirm=>"锁定生产单后将不能修改！您确认要锁定吗？" %>
-    </div>
-    <% end %>
-<% end %>

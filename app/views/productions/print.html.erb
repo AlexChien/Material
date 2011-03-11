@@ -1,32 +1,73 @@
-<div class="tab">
-    <table cellspacing="0" cellpadding="0" border="0" width="980">
-        <tbody>
-            <tr>
-                <td colspan="9" id="tab_tit">生产单（ID:<%=@production.id%>）</td>
-            </tr>
-            <tr>
-                <td class="f_tab">sku</td>
-                <td class="f_tab">物料图片</td>
-                <td class="f_tab">物料名称</td>
-                <td class="f_tab">预定数量</td>
-                <td class="f_tab">调整数量</td>
-                <td class="f_tab">预定总数</td>
-            </tr>
+<%if params[:type]=="detail"%>
+    <%
+        order_ids = []
+        Order.in_catalog(@production.catalog).each do |order|
+          order_ids << order.id
+        end
+        @olias = OrderLineItemAdjusted.in_order(order_ids).all(:include=>[:material])
+    %>
+    <div class="tab">
+        <table cellspacing="0" cellpadding="0" border="0" width="980">
+            <tbody>
+                <tr>
+                    <td colspan="9" id="tab_tit">生产单大区预订明细（ID:<%=@production.id%>）</td>
+                </tr>
+                <tr>
+                    <td class="f_tab">sku</td>
+                    <td class="f_tab">物料图片</td>
+                    <td class="f_tab">物料名称</td>
+                    <td class="f_tab">所属大区</td>
+                    <td class="f_tab">预定数量</td>
+                </tr>
 
-            <%@production.production_line_items.each do |pli|%>
-            <tr>
-                <td><%=pli.material.sku%></td>
-                <td><%=image_tag (pli.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
-                <td><%=pli.material.name%></td>
-                <td><%=pli.quantity_collected%></td>
-                <td><%=pli.quantity_adjusted%></td>
-                <td><%=pli.quantity_total%></td>
-            </tr>
-            <%end%>
+                <%@olias.each do |olia|%>
+                <tr>
+                    <td><%=olia.material.sku%></td>
+                    <td><%=image_tag (olia.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
+                    <td><%=olia.material.name%></td>
+                    <td><%=olia.region.name%></td>
+                    <td><%=olia.quantity_total%></td>
+                </tr>
+                <%end%>
 
-            <tr>
-                <td colspan="9" id="tab_bottom"><font >共有<%=@production.production_line_items.size%>条记录</font></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                <tr>
+                    <td colspan="9" id="tab_bottom"><font >共有<%=@olias.size%>条记录</font></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+<%else%>
+    <div class="tab">
+        <table cellspacing="0" cellpadding="0" border="0" width="980">
+            <tbody>
+                <tr>
+                    <td colspan="9" id="tab_tit">生产单总预订明细（ID:<%=@production.id%>）</td>
+                </tr>
+                <tr>
+                    <td class="f_tab">sku</td>
+                    <td class="f_tab">物料图片</td>
+                    <td class="f_tab">物料名称</td>
+                    <td class="f_tab">预定数量</td>
+                    <td class="f_tab">调整数量</td>
+                    <td class="f_tab">预定总数</td>
+                </tr>
+
+                <%@production.production_line_items.each do |pli|%>
+                <tr>
+                    <td><%=pli.material.sku%></td>
+                    <td><%=image_tag (pli.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
+                    <td><%=pli.material.name%></td>
+                    <td><%=pli.quantity_collected%></td>
+                    <td><%=pli.quantity_adjusted%></td>
+                    <td><%=pli.quantity_total%></td>
+                </tr>
+                <%end%>
+
+                <tr>
+                    <td colspan="9" id="tab_bottom"><font >共有<%=@production.production_line_items.size%>条记录</font></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<%end%>

@@ -45,7 +45,7 @@ ActionController::Routing::Routes.draw do |map|
                                   :generate_excel=>:get},
                         :collection=>{:ext_index=>:post}
 
-  map.resources :productions,:member=>{:print=>:get,:load_data=>:get}
+  map.resources :productions,:member=>{:print=>:get,:load_data=>:get,:generate_excel=>:get}
 
   map.resources :production_line_items, :collection=>{:ext_update=>:put}
 

@@ -153,8 +153,6 @@ class CampaignsController < ApplicationController
       Production.transaction do
         @production = Production.create(:campaign=>@campaign,:catalog=>@catalog)
         olias.each do |olia|
-          puts olia.material
-          puts olia.quantity_total
           ProductionLineItem.create(:production=>@production,
                                     :material=>olia.material,
                                     :quantity_collected=>olia.quantity_total,

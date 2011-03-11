@@ -312,7 +312,7 @@ class OrdersController < ApplicationController
           ]
         sheet.row(index+1).replace(replace)
       end
-      filename = "#{RAILS_ROOT}/tmp/tmp_xls/#{Time.now.to_i}.xls"
+      filename = "#{RAILS_ROOT}/tmp/tmp_xls/order_#{Time.now.to_i}.xls"
       book.write filename
       send_file filename
     else

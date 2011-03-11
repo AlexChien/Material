@@ -20,7 +20,7 @@
         </div>
     <%else%>
         <div id="production_list">
-            <%=render :partial=> "ext_production_list"%>
+            <%=render :partial=> params[:type] == 'detail' ? "ext_production_detail_list" : "ext_production_list"%>
         </div>
     <%end%>
 
