@@ -36,10 +36,21 @@ class OrdersController < ApplicationController
     sort_col = (params[:sort] || 'created_at')
     sort_dir = (params[:dir] || 'DESC')
 
+    order = order.in_region(current_user.region.id) if current_user.has_role?("rm")
+
     @orders = order.all(:order => sort_col+' '+sort_dir,:offset => start, :limit => size)
     return_data = Hash.new()
     return_data[:size] = order.count
-    return_data[:Orders] = @orders.collect{|p| {:id=>p.id,
+    return_data[:Orders] = @orders.collect{|p|  str = "查看订单"
+                                                case p.order_status_id
+                                                when 1
+                                                  str = '审核订单' if current_user.has_role?("rm")
+                                                when 3
+                                                  str = '接受订单' if current_user.has_role?("pm") || current_user.has_role?("admin")
+                                                when 4
+                                                  str = '修改预定' if current_user.has_role?("rm")
+                                                end
+                                                {:id=>p.id,
                                                 :order_status=>p.order_status.name,
                                                 :amount=>p.amount,
                                                 :region=>p.region.name,
@@ -47,7 +58,7 @@ class OrdersController < ApplicationController
                                                 :catalog_startdate=>p.campaign.catalog_startdate,
                                                 :catalog_enddate=>p.campaign.catalog_enddate,
                                                 :show_status=>p.campaign.show_status,
-                                                :link=>"<a href='/orders/#{p.id}'>#{p.order_status_id == 3 ? '接受订单' : '查看订单'}</a>"
+                                                :link=>"<a href='/orders/#{p.id}'>#{str}</a>"
                                                 }}
     render :text=>return_data.to_json, :layout=>false
   end

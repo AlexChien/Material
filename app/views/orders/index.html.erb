@@ -7,8 +7,8 @@
     <%= render :partial => 'shared/s_path'%>
     <%end%>
 
-    <%if current_user.has_role?("pm") || current_user.has_role?("admin")%>
-        <%= render :partial => "orders/ext_index/pm_ext_order_index"%>
+    <%if current_user.has_role?("pm") || current_user.has_role?("admin") || current_user.has_role?("rm")%>
+        <%= render :partial => "orders/ext_index/ext_order_index"%>
     <%else%>
         <div class="tab">
             <table width="786" cellspacing="0" cellpadding="0" border="0">
