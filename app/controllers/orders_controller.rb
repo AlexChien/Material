@@ -80,7 +80,7 @@ class OrdersController < ApplicationController
         if @order.save
           @order.order_line_item_adjusteds.destroy_all
           @olirs.all.each do |olir|
-            olir.update_attribute(:order,@order)
+            olir.update_attributes(:order=>@order,:adjusted_size=>0)
             olia = OrderLineItemAdjusted.in_region(current_user.region.id).in_material(olir.material.id).in_order(@order.id).first
             if olia.nil?
               OrderLineItemAdjusted.create(:order=>@order,

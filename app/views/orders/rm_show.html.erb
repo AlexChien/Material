@@ -27,7 +27,7 @@
             <%if @order.order_status_id == 2%>
                 <font color="red">订单审批失败，等待大区协调员修改</font>
             <%else%>
-                <%=render :partial=>"orders/ext_list/rm_ext_order_list"%>
+                <%=render :partial=> params[:type] == 'detail' ? "orders/ext_list/rm_ext_order_detail_list" : "orders/ext_list/rm_ext_order_list"%>
             <%end%>
         </div>
     <%end%>

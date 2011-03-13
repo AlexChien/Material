@@ -16,7 +16,7 @@ class DashboardController < ApplicationController
   def admin_dashboard
     @regions = Region.in_central(false).all
     @assigned_budget_0 = Region.in_central(false).assigned_budget_0.count
-    @orders = Order.in_region(current_user.region).in_order_status(3).all
+    @orders = Order.in_order_status(3).all
     render :template => "dashboard/pm_index"
   end
 

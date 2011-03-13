@@ -22,12 +22,12 @@
                 groupField:'sku',
                 proxy: new Ext.data.HttpProxy({
                     api: {
-                            read: '/order_line_item_adjusteds/load_data?order_id=<%=@order.id%>',
-                            update: {url: '/order_line_item_adjusteds/ext_update', method: 'put'}
+                            read: '/order_line_item_adjusteds/load_data?order_id=<%=@order.id%>&type=detail',
+                            update: {url: '/order_line_item_adjusteds/ext_update?type=detail', method: 'put'}
                          }
                 }),
                 reader: new Ext.data.JsonReader({
-                        root: 'Olias',
+                        root: 'Olirs',
                         totalProperty: 'size',
                         messageProperty: "message"
                     },
@@ -37,11 +37,10 @@
                         {name: 'sku', mapping: 'sku'},
                         {name: 'name', mapping: 'name'},
                         {name: 'region', mapping: 'region'},
+                        {name: 'salesrep', mapping: 'salesrep'},
                         {name: 'unit_price', mapping: 'unit_price'},
-                        {name: 'min_num', mapping: 'min_num'},
-                        {name: 'max_num', mapping: 'max_num'},
-                        {name: 'quantity_collected', mapping: 'quantity_collected'},
-                        {name: 'quantity_adjust', mapping: 'quantity_adjust'},
+                        {name: 'quantity', mapping: 'quantity'},
+                        {name: 'adjusted_size', mapping: 'adjusted_size'},
                         {name: 'quantity_total', mapping: 'quantity_total'},
                         {name: 'subtotal', mapping: 'subtotal'}
                     ]),
@@ -52,11 +51,10 @@
                 {id: 'sku', header: "sku", dataIndex: 'sku',sortable:true,width:100},
                 {id: 'name', header: "物料名称", dataIndex: 'name',sortable:true,width:186},
                 {id: 'region', header: "所属区", dataIndex: 'region',sortable:true,width:100},
+                {id: 'salesrep', header: "销售名", dataIndex: 'salesrep',sortable:true,width:100},
                 {id: 'unit_price', header: "物料价格", dataIndex: 'unit_price',sortable:true,width:100},
-                {id: 'min_num', header: "最小起订量", dataIndex: 'min_num',sortable:true,width:100},
-                {id: 'max_num', header: "最大订货量", dataIndex: 'max_num',sortable:true,width:100},
-                {id: 'quantity_collected', header: "预定数量", dataIndex: 'quantity_collected',sortable:true,width:100},
-                {id: 'quantity_adjust', header: "调整数量", dataIndex: 'quantity_adjust',sortable:true,width:100,editor: new Ext.form.TextField({})},
+                {id: 'quantity', header: "预定数量", dataIndex: 'quantity',sortable:true,width:100},
+                {id: 'adjusted_size', header: "调整数量", dataIndex: 'adjusted_size',sortable:true,width:100,editor: new Ext.form.TextField({})},
                 {id: 'quantity_total', header: "预定总数", dataIndex: 'quantity_total',sortable:true,width:100},
                 {id: 'subtotal', header: "小计", dataIndex: 'subtotal',sortable:true,width:100,summaryType: 'sum'}
             ]);
@@ -74,20 +72,17 @@
                 type: 'string',
                 dataIndex: 'region'
             }, {
+                type: 'string',
+                dataIndex: 'salesrep'
+            },{
                 type: 'numeric',
                 dataIndex: 'unit_price'
             }, {
                 type: 'numeric',
-                dataIndex: 'min_num'
+                dataIndex: 'quantity'
             }, {
                 type: 'numeric',
-                dataIndex: 'max_num'
-            }, {
-                type: 'numeric',
-                dataIndex: 'quantity_collected'
-            }, {
-                type: 'numeric',
-                dataIndex: 'quantity_adjust'
+                dataIndex: 'adjusted_size'
             }, {
                 type: 'numeric',
                 dataIndex: 'quantity_total'
@@ -107,9 +102,9 @@
         <%end%>
 
         var type = new Ext.Action({
-            text: '显示物料预订明细',
+            text: '显示总预定明细',
             handler: function(){
-                location.href="/orders/<%=@order.id%>?type=detail";
+                location.href="/orders/<%=@order.id%>";
             },
             icon: '/images/icons/zoom.png'
         });
@@ -157,47 +152,3 @@
         }
     </script>
     </div>
-
-    <div style="padding:10px 50px 0px 0px;float:right" id="grand_total">
-        <%order_amount=@order.order_line_item_adjusteds.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f%>
-        <%if @order.order_status_id ==1 || @order.order_status_id ==4%>
-            预定总计：￥<%=order_amount%><br/>
-            可使用预算：￥<%=current_user.region.redeemable_budget%><br/>
-            将剩余预算：￥<%=current_user.region.redeemable_budget - order_amount%><br/>
-        <%else%>
-            总计：￥<%=order_amount%>
-        <%end%>
-    </div>
-    <div class="clear"></div>
-
-    <% form_for @order do |f| -%>
-        <%if @order.order_status_id ==1%>
-        <br/>
-        <div class="tab_btn">
-            <input type="button" onclick="approve_fail(<%=@order.id%>);" class="button_btn" value="拒绝"></input>
-            <%= f.submit "批准",:class=>"button_btn",:confirm=>"提交后将不能修改订单！您确认此次审批吗？" %>
-        </div>
-        <br/>
-        <%end%>
-        <%if @order.order_status_id ==4%>
-        <br/>
-        <div class="tab_btn">
-            <%= f.submit "批准",:class=>"button_btn",:confirm=>"提交后将不能修改订单！您确认此次提交吗？" %>
-        </div>
-        <br/>
-        <%end%>
-    <%end%>
-
-    <div class="tab" id="approve_fail_message">
-
-    </div>
-
-<% javascript_tag do %>
-    function approve_fail(order_id){
-        $("#approve_fail_message").load("/orders/"+order_id+"/approve_fail_message");
-    }
-
-    <%if @error_message%>
-        alert("<%=@error_message%>");
-    <%end%>
-<% end %>
