@@ -30,13 +30,13 @@
                 ])
         });
         var cm = new Ext.grid.ColumnModel([
-            {id: 'sku', header: "sku", dataIndex: 'sku',sortable:true,width:100},
+            {id: 'sku', header: "物料编号", dataIndex: 'sku',sortable:true,width:100},
             {id: 'name', header: "物料名称", dataIndex: 'name',sortable:true,width:186},
             {id: 'region', header: "所属区", dataIndex: 'region',sortable:true,width:100},
             {id: 'salesrep', header: "销售姓名", dataIndex: 'salesrep',sortable:true,width:100},
             {id: 'unit_price', header: "物料价格", dataIndex: 'unit_price',sortable:true,width:100},
             {id: 'quantity', header: "预定数量", dataIndex: 'quantity',sortable:true,width:100},
-            {id: 'subtotal', header: "小计", dataIndex: 'subtotal',sortable:true,width:100,summaryType: 'sum'}
+            {id: 'subtotal', header: "金额小计", dataIndex: 'subtotal',sortable:true,width:100,summaryType: 'sum'}
         ]);
 
     var filters = new Ext.ux.grid.GridFilters({

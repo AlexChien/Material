@@ -21,12 +21,17 @@
             <tbody>
                 <tr>
                     <td id="tab_tit" colspan="9">
-                        <%if current_user.has_role?("rm")%>待审批物料<%end%>
-                        <%if current_user.has_role?("wa")%>等待发货<%end%>
+                        <%if current_user.has_role?("rm")%>
+                            待审批物料
+                        <%elsif current_user.has_role?("wa")%>
+                            等待发货
+                        <%else%>
+                            所有申领
+                        <%end%>
                     </td>
                 </tr>
                 <tr>
-                    <td class="f_tab">sku</td>
+                    <td class="f_tab">物料编号</td>
                     <td class="f_tab">物料图片</td>
                     <td class="f_tab">物料名称</td>
                     <td class="f_tab">所属活动</td>

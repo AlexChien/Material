@@ -46,14 +46,14 @@
                 writer: writer
             });
             var cm = new Ext.grid.ColumnModel([
-                {id: 'sku', header: "sku", dataIndex: 'sku',sortable:true,width:100},
+                {id: 'sku', header: "物料编号", dataIndex: 'sku',sortable:true,width:100},
                 {id: 'name', header: "物料名称", dataIndex: 'name',sortable:true,width:186},
                 {id: 'region', header: "所属区", dataIndex: 'region',sortable:true,width:100},
                 {id: 'unit_price', header: "物料价格", dataIndex: 'unit_price',sortable:true,width:100},
                 {id: 'quantity_collected', header: "预定数量", dataIndex: 'quantity_collected',sortable:true,width:100},
                 {id: 'quantity_adjust', header: "调整数量", dataIndex: 'quantity_adjust',sortable:true,width:100,editor: new Ext.form.TextField({})},
                 {id: 'quantity_total', header: "预定总数", dataIndex: 'quantity_total',sortable:true,width:100},
-                {id: 'subtotal', header: "小计", dataIndex: 'subtotal',sortable:true,width:100,summaryType: 'sum'}
+                {id: 'subtotal', header: "金额小计", dataIndex: 'subtotal',sortable:true,width:100,summaryType: 'sum'}
             ]);
 
         var filters = new Ext.ux.grid.GridFilters({

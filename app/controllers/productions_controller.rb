@@ -31,7 +31,7 @@ class ProductionsController < ApplicationController
       book = Spreadsheet::Workbook.new
       sheet = book.create_worksheet :name => "production_#{@production.id}"
       if params[:type] == "detail"
-        concat = ['sku',
+        concat = ['物料编号',
           '物料名称',
           '所属大区',
           '预定数量']
@@ -50,7 +50,7 @@ class ProductionsController < ApplicationController
           sheet.row(index+1).replace(replace)
         end
       else
-        concat = ['sku',
+        concat = ['物料编号',
           '物料名称',
           '预定数量',
           '调整数量',

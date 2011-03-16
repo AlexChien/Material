@@ -19,17 +19,17 @@
             <td colspan="11" id="tab_tit">订单详细<%=@order.nil? ? "" : "(#{@order.order_status.name})"%></td>
         </tr>
         <tr>
-            <td class="f_tab">sku</td>
+            <td class="f_tab">物料编号</td>
             <td class="f_tab">物料图片</td>
             <td class="f_tab">物料名称</td>
             <td class="f_tab">所属区</td>
             <td class="f_tab">销售姓名</td>
             <td class="f_tab">物料价格</td>
             <td class="f_tab">预定数量</td>
-            <td class="f_tab">小计</td>
+            <td class="f_tab">金额小计</td>
             <td class="f_tab">调整申请数量</td>
             <td class="f_tab">申请总数</td>
-            <td class="f_tab">申请小计</td>
+            <td class="f_tab">申请金额小计</td>
         </tr>
 
         <%@olirs.each do |olir|%>

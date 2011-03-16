@@ -46,7 +46,7 @@
                                     forceSelection: true,
                                     triggerAction: 'all',
                                     allowBlank: false,
-                                    emptyText:'请输入物料名称或sku...',
+                                    emptyText:'请输入物料名称或物料编号...',
                                     selectOnFocus:true,
                                     applyTo: 'transfer_transfer_line_items_attributes_0_material_id'
                                 });
@@ -70,7 +70,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><%= transfer_line_item.label :unit_price, "<em>*</em>内部单价" %></td>
+                    <td><%= transfer_line_item.label :unit_price, "<em>*</em>单价" %></td>
                     <td class="td_left">
                         <%= transfer_line_item.text_field :unit_price %>
                     </td>
@@ -98,7 +98,7 @@
     function check_quantity(){
         var quantity= $("#transfer_transfer_line_items_attributes_0_quantity").val();
         var material_id= $("#transfer_transfer_line_items_attributes_0_material_id").val();
-        if(material_id == "请输入物料名称或sku..."){
+        if(material_id == "请输入物料名称或物料编号..."){
             alert("请选择物料");
             return false;
         }else if(quantity <= 0){

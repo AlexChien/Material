@@ -34,6 +34,12 @@ module ApplicationHelper
         :navleft => [
             { :name => "总仓库", :path => "/inventories?is_central=1", :id => "inventories_1", :logo => "/images/icons/package.png"},
             { :name => "大区仓库", :path => "/inventories?is_central=0", :id => "inventories_0", :logo => "/images/icons/package_go.png"},
+          ]
+        },
+        {
+        :navleft_header_name => "申领管理",
+        :navleft_header_logo => "/images/icons/basket_edit.png",
+        :navleft => [
             { :name => "所有申领", :path => "/order_line_item_applies", :id => "order_line_item_applies", :logo => "/images/icons/basket.png"},
           ]
         },
@@ -88,6 +94,12 @@ module ApplicationHelper
         :navleft => [
             { :name => "总仓库", :path => "/inventories?is_central=1", :id => "inventories_1", :logo => "/images/icons/package.png"},
             { :name => "大区仓库", :path => "/inventories?is_central=0", :id => "inventories_0", :logo => "/images/icons/package_go.png"},
+           ]
+        },
+        {
+        :navleft_header_name => "申领管理",
+        :navleft_header_logo => "/images/icons/basket_edit.png",
+        :navleft => [
             { :name => "所有申领", :path => "/order_line_item_applies", :id => "order_line_item_applies", :logo => "/images/icons/basket.png"},
           ]
         },

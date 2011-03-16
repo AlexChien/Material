@@ -301,14 +301,14 @@ class OrdersController < ApplicationController
       @campaign = @order.campaign
       book = Spreadsheet::Workbook.new
       sheet = book.create_worksheet :name => "order_#{@order.id}"
-      concat = ['sku',
+      concat = ['物料编号',
         '物料名称',
         '所属区',
         '物料价格',
         '预定数量',
         '调整数量',
         '预定总数',
-        '小计']
+        '金额小计']
       sheet.row(0).concat(concat)
       @olias = @order.order_line_item_adjusteds.all(:order=>"created_at DESC")
       @olias.each_with_index do |record,index|
