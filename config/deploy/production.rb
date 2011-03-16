@@ -85,4 +85,4 @@ namespace :deploy do
 
 end
 
-# default_environment["PATH"] = "/usr/bin:/bin:/usr/local/bin"
+default_environment["PATH"] = "/usr/bin:/bin:/usr/local/bin"

@@ -618,7 +618,7 @@ SET AUTOCOMMIT=0;
 INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('1', '中央仓库', '1', '1', NULL, NULL);
 INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('2', '华北仓库', '2', '0', NULL, NULL);
 INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('3', '华东仓库', '3', '0', NULL, NULL);
-INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('4', '广州仓库', '4', '0', NULL, NULL);
+INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('4', '华南仓库', '4', '0', NULL, NULL);
 INSERT INTO warehouses (`id`, `name`, `region_id`, `is_central`, `created_at`, `updated_at`) VALUES ('5', '市场部', '5', '0', NULL, NULL);
 
 COMMIT;
