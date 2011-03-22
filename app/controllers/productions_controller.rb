@@ -37,7 +37,7 @@ class ProductionsController < ApplicationController
           '预定数量']
         sheet.row(0).concat(concat)
         order_ids = []
-        Order.in_catalog(@production.catalog).each do |order|
+        Order.in_catalog(@production.catalog).in_order_status(5).each do |order|
           order_ids << order.id
         end
         @olias = OrderLineItemAdjusted.in_order(order_ids).all(:include=>[:material])
@@ -83,7 +83,7 @@ class ProductionsController < ApplicationController
     # end
     if params[:type] == "detail"
       order_ids = []
-      Order.in_catalog(@production.catalog).each do |order|
+      Order.in_catalog(@production.catalog).in_order_status(5).each do |order|
         order_ids << order.id
       end
       @olias = OrderLineItemAdjusted.in_order(order_ids).all(:include=>[:material])

@@ -149,14 +149,14 @@ class CampaignsController < ApplicationController
       @catalog.orders.in_order_status(5).each do |order|
         order_ids << order.id
       end
-      olias = OrderLineItemAdjusted.in_order(order_ids).all(:select=>"sum(quantity_total) as quantity_total,order_line_item_adjusteds.*",:group=>"material_id")
+      olias = OrderLineItemAdjusted.in_order(order_ids).all(:select=>"sum(quantity_total) as qt,order_line_item_adjusteds.*",:group=>"material_id")
       Production.transaction do
         @production = Production.create(:campaign=>@campaign,:catalog=>@catalog)
         olias.each do |olia|
           ProductionLineItem.create(:production=>@production,
                                     :material=>olia.material,
-                                    :quantity_collected=>olia.quantity_total,
-                                    :quantity_total=>olia.quantity_total)
+                                    :quantity_collected=>olia.qt,
+                                    :quantity_total=>olia.qt)
         end
 
         # when production sheet is created (cron job might be needed)

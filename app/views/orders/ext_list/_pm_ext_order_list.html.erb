@@ -150,8 +150,8 @@
         <%if @order.order_status_id ==3%>
             <%order_amount=@order.order_line_item_adjusteds.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f%>
             预定总计：￥<%=order_amount%><br/>
-            可使用预算：￥<%=current_user.region.redeemable_budget%><br/>
-            将剩余预算：￥<%=current_user.region.redeemable_budget - order_amount%><br/>
+            可使用预算：￥<%=@order.region.redeemable_budget%><br/>
+            将剩余预算：￥<%=@order.region.redeemable_budget - order_amount%><br/>
         <%else%>
             总计：￥<%=@order.amount%>
         <%end%>
