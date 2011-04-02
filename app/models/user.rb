@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   belongs_to :region
 
   validates_presence_of     :login,:name,:email
-  validates_length_of       :login,    :within => 3..20
+  validates_length_of       :login,    :within => 2..20
   validates_uniqueness_of   :login
   validates_format_of       :login,    :with => Authentication.login_regex, :message => "格式输入不正确"
 
@@ -42,11 +42,11 @@ class User < ActiveRecord::Base
       {:include=>:roles,:conditions=>["roles.name != 'admin'"]}
     end
   }
-  
+
   named_scope :in_region, lambda { |region_id|
     {:conditions=>["users.region_id in (?)",region_id]}
   }
-  
+
   named_scope :in_role, lambda { |role_id|
     {:include=>:roles,:conditions=>["roles.id in (?)",role_id]}
   }
@@ -62,11 +62,11 @@ class User < ActiveRecord::Base
     u = find_by_login(login.downcase) # need to get the salt
     u && u.authenticated?(password) ? u : nil
   end
-  
+
   def password_required?
     !self.password.nil?
   end
-  
+
   def old_password_required?
     !self.old_password.nil?
   end
@@ -88,7 +88,7 @@ class User < ActiveRecord::Base
   end
 
 protected
-  
+
   def check_old_password
     errors.add(:old_password, "输入错误") if !User.authenticate(self.login, self.old_password)
   end
