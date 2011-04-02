@@ -4,7 +4,7 @@ class OrderLineItemAdjustedsController < ApplicationController
 
   access_control do
     action :load_data do
-      allow :pm
+      allow :pm, :admin
     end
     allow :rm
   end
