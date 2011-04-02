@@ -13,28 +13,31 @@
 
 <!-- overrides to base library -->
 <%= stylesheet_link_tag "/ext-3.3.1/examples/ux/gridfilters/css/GridFilters.css",
- 						"/ext-3.3.1/examples/ux/gridfilters/css/RangeMenu.css",
-						"/ext-3.3.1/examples/ux/css/RowEditor.css",
-						:cache => "ext_extensions"
+                        "/ext-3.3.1/examples/ux/gridfilters/css/RangeMenu.css",
+                        "/ext-3.3.1/examples/ux/css/RowEditor.css",
+                        :cache => "ext_extensions"
 %>
 <%= stylesheet_link_tag "/ext-3.3.1/resources/css/xtheme-gray.css" %>
 <!-- overrides to base library -->
 
 <!-- extensions -->
-<%= javascript_include_tag 	"/ext-3.3.1/examples/ux/gridfilters/menu/RangeMenu.js",
-							"/ext-3.3.1/examples/ux/gridfilters/menu/ListMenu.js",
-							"/ext-3.3.1/examples/ux/gridfilters/GridFilters.js",
-							"/ext-3.3.1/examples/ux/gridfilters/filter/Filter.js",
-							"/ext-3.3.1/examples/ux/gridfilters/filter/StringFilter.js",
-							"/ext-3.3.1/examples/ux/gridfilters/filter/DateFilter.js",
-							"/ext-3.3.1/examples/ux/gridfilters/filter/ListFilter.js",
-							"/ext-3.3.1/examples/ux/gridfilters/filter/NumericFilter.js",
-							"/ext-3.3.1/examples/ux/gridfilters/filter/BooleanFilter.js",
-							"/ext-3.3.1/examples/ux/RowEditor.js",
-							"/ext-3.3.1/examples/shared/extjs/App.js",
-							"/ext-3.3.1/examples/ux/GroupSummary.js", 
-							:cache => "ext_extensions"
+<%= javascript_include_tag  "/ext-3.3.1/examples/ux/gridfilters/menu/RangeMenu.js",
+                            "/ext-3.3.1/examples/ux/gridfilters/menu/ListMenu.js",
+                            "/ext-3.3.1/examples/ux/gridfilters/GridFilters.js",
+                            "/ext-3.3.1/examples/ux/gridfilters/filter/Filter.js",
+                            "/ext-3.3.1/examples/ux/gridfilters/filter/StringFilter.js",
+                            "/ext-3.3.1/examples/ux/gridfilters/filter/DateFilter.js",
+                            "/ext-3.3.1/examples/ux/gridfilters/filter/ListFilter.js",
+                            "/ext-3.3.1/examples/ux/gridfilters/filter/NumericFilter.js",
+                            "/ext-3.3.1/examples/ux/gridfilters/filter/BooleanFilter.js",
+                            "/ext-3.3.1/examples/ux/RowEditor.js",
+                            "/ext-3.3.1/examples/shared/extjs/App.js",
+                            "/ext-3.3.1/examples/ux/GroupSummary.js",
+                            :cache => "ext_extensions"
 %>
+
+<%= javascript_include_tag "powerposm/fix_group_summary.js"%>
+
 <!-- extensions -->
 
 <title><%= yield_title yield(:title) %></title>

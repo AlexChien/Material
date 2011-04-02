@@ -101,7 +101,7 @@ class CampaignsController < ApplicationController
 
   def book
     @campaign = Campaign.find(params[:id])
-    @cms = CatalogsMaterial.in_catalog(@campaign.campaign_catalog.id).all(:order=>"created_at DESC")
+    @cms = CatalogsMaterial.in_catalog(@campaign.campaign_catalog.id).all
     @olirs = OrderLineItemRaw.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id).all(:order=>"created_at DESC")
     @salesreps = Salesrep.in_state("activated").in_region(current_user.region).all(:order=>"created_at DESC")
     order = Order.in_catalog(@campaign.campaign_catalog.id).in_region(current_user.region.id)

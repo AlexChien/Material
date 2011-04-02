@@ -11,7 +11,7 @@
         <table width="786" cellspacing="0" cellpadding="0" border="0">
             <tbody>
                 <tr>
-                    <td id="tab_tit" colspan="8">所有物料</td>
+                    <td id="tab_tit" colspan="8">所有销售</td>
                 </tr>
                 <tr>
                     <td class="f_tab">销售姓名</td>
@@ -29,8 +29,8 @@
                         <td><%=salesrep.address%></td>
                         <td><%=salesrep.email%></td>
                         <td><%=salesrep.region.nil? ? "无" : salesrep.region.name%></td>
-                        <td><%=salesrep.phone%></td>
                         <td><%=salesrep.mobile%></td>
+                        <td><%=salesrep.phone%></td>
                         <td><%=salesrep.memo%></td>
                         <td>
                         <%= link_to image_tag("/images/icons/database_edit.png", {:alt => "修改", :title => "修改", :border => 0}), edit_salesrep_url(salesrep)%>
