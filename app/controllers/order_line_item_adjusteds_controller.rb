@@ -126,7 +126,7 @@ class OrderLineItemAdjustedsController < ApplicationController
         @olir_total = @olia.order.order_line_item_adjusteds.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f
         return_data[:success] = true
         success_message = {:notice=>"物料#{@olia.material.name}数量调整为#{@olia.quantity_adjust}预定总数为#{@olia.quantity_total}",
-                           :display_text=>"预定总计：￥#{@olir_total}<br/>可使用预算：￥#{current_user.region.redeemable_budget}<br/>将剩余预算：￥#{current_user.region.redeemable_budget - @olir_total}<br/>",
+                           :display_text=>"预定总计：￥#{@olir_total}<br/>可使用预算：￥#{current_user.region.redeemable_budget}<br/>将剩余预算：￥#{(current_user.region.redeemable_budget*1000 - @olir_total*1000)/1000}<br/>",
                            :grand_total=>"defined"}
         return_data[:message] = success_message
         return_data[:Olias] = {:id=>@olia.id,
