@@ -9,6 +9,7 @@ class Region < ActiveRecord::Base
   has_many :transfer_line_items
   has_many :to_transfers, :class_name => 'Transfer', :foreign_key => 'to_region_id'
   has_many :from_transfers, :class_name => 'Transfer', :foreign_key => 'from_region_id'
+  has_many :budgets
 
   validates_numericality_of :assigned_budget,:greater_than_or_equal_to=>0
   validate :assigned_budget_check,:assigned_budget

@@ -3,6 +3,7 @@ class Campaign < ActiveRecord::Base
   has_many :orders
   has_many :productions
   has_many :order_line_item_raws
+  has_many :budgets
 
   accepts_nested_attributes_for :catalogs
 
