@@ -26,13 +26,13 @@
 
                             Ext.material_data = [];
                             <% Material.all.each do |material| %>
-                                Ext.material_data.push([<%=material.id%>,'<%=material.sku%>'])
-                                Ext.material_data.push([<%=material.id%>,'<%=material.name%>'])
+                                Ext.material_data.push([<%=material.id%>,'<%=material.sku%>','<%=material.cost%>'])
+                                Ext.material_data.push([<%=material.id%>,'<%=material.name%>','<%=material.cost%>'])
                             <% end %>
 
                             Ext.onReady(function(){
                                 var store = new Ext.data.ArrayStore({
-                                    fields: ['id', 'material'],
+                                    fields: ['id', 'material','cost'],
                                     data : Ext.material_data
                                 });
 
@@ -48,7 +48,13 @@
                                     allowBlank: false,
                                     emptyText:'请输入物料名称或物料编号...',
                                     selectOnFocus:true,
-                                    applyTo: 'transfer_transfer_line_items_attributes_0_material_id'
+                                    applyTo: 'transfer_transfer_line_items_attributes_0_material_id',
+									listeners: {
+						                select : function(combo, record) {
+						                    var cost = record.get('cost');
+											$("#transfer_transfer_line_items_attributes_0_unit_price").attr("value",cost);
+						                }
+						            }
                                 });
 
                             });

@@ -6,6 +6,6 @@ class TransferLineItem < ActiveRecord::Base
   belongs_to :transfer
   
   validates_numericality_of :quantity
-  validates_numericality_of :unit_price,:greater_than=>0
+  validates_numericality_of :unit_price,:greater_than_or_equal_to=>0
 
 end
