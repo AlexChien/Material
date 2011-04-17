@@ -187,7 +187,7 @@ class OrdersController < ApplicationController
           @order.update_attributes(:amount=>amount,:order_status_id=>5,:memo=>nil)
           
           # @order.region.update_attribute(:used_budget,@order.region.used_budget+amount)
-          b.update_attribute(:used_budget,@order.region.used_budget+amount) unless b.nil?
+          b.update_attribute(:used_budget,b.used_budget+amount) unless b.nil?
 
           # when PM approves the order submitted from RM for review
           Role.find_by_name("rm").users.in_region(@order.region).each do |user|
