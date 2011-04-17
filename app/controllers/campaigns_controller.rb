@@ -47,6 +47,15 @@ class CampaignsController < ApplicationController
           cm.save
         end
       end
+      
+      Region.in_central(false).all.each do |region|
+        budget = params["budget_#{region.id}".to_sym].to_f
+        b = Budget.new
+        b.region =region
+        b.campaign = @campaign
+        b.assigned_budget = (budget >= 0 ? budget : 0)
+        b.save
+      end
 
       # when PM creates campaign， which means a campaign is created and material catalog is registered， fire email to notify RM/RC about this campaign
       Role.find_by_name("rc").users.each do |user|
@@ -69,6 +78,21 @@ class CampaignsController < ApplicationController
   end
 
   def update
+    Region.in_central(false).all.each do |region|
+      b = Budget.in_campaign(@campaign).in_region(region).first
+      b = Budget.new if b.nil?
+      budget = params["budget_#{region.id}".to_sym].to_f
+      if budget < b.used_budget
+        flash[:error] = "分配预算不能小于已使用预算！"
+        render :action => "edit" and return
+      else
+        b.region =region
+        b.campaign = @campaign
+        b.assigned_budget = (budget >= 0 ? budget : 0)
+        b.save
+      end
+    end
+    
     if @campaign.update_attributes(params[:campaign])
       @campaign.catalogs.first.materials.delete_all
       unless params[:material_ids].nil?
@@ -82,6 +106,9 @@ class CampaignsController < ApplicationController
           cm.save
         end
       end
+      
+      
+      
       flash[:notice] = "#{@campaign.name} 修改成功"
       redirect_to "/campaigns"
     else

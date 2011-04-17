@@ -35,6 +35,16 @@
                     </td>
                 </tr>
                 <% end %>
+
+				<%Region.in_central(false).all.each do |region|%>
+				<tr>
+                    <td><%= label_tag "budget_#{region.id}", "#{region.name}预算" %></td>
+                    <td class="td_left">
+						<%=text_field_tag "budget_#{region.id}",params["budget_#{region.id}"] || 0.0 %>
+                    </td>
+                </tr>
+				<%end%>
+
                 <tr>
                     <td><%= label_tag :catalogs_materials, "物料目录" %></td>
                     <td class="td_left">
@@ -74,9 +84,13 @@
         $("input[name='material_ids[]']").each(function() {
             if (this.checked) {
               price = $("#price_"+this.value).val();
-              if( price < 0){alert("物料价格不能为"+price);return_boolean = false;}
+              if(price < 0){alert("物料价格不能为"+price);return_boolean = false;}
             }
         })
+		<%Region.in_central(false).all.each do |region|%>
+			budget = $("#budget_"+<%=region.id%>).val();
+			if(budget < 0){alert("预算不能为"+budget);return_boolean = false;}
+		<%end%>
         if(!return_boolean){return false;}
     }
 

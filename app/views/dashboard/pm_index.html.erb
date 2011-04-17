@@ -7,35 +7,39 @@
         <%= render :partial => 'shared/s_path'%>
     <%end%>
 
-    <%if @assigned_budget_0 != 0%>
-    <div class="info">
-        <div class="info_action">
-            <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
-        </div>
-        <div class="info_content">
-            <p class="single">
-                <strong>当前有<%=@assigned_budget_0%>个大区预算为0，需要分配.</strong>
-                <a href="/regions">去分配预算.</a>
-            </p>
-        </div>
-    </div>
-    <%end%>
+	<% if false %>
+    	<%if @assigned_budget_0 != 0%>
+    	<div class="info">
+    	    <div class="info_action">
+    	        <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
+    	    </div>
+    	    <div class="info_content">
+    	        <p class="single">
+    	            <strong>当前有<%=@assigned_budget_0%>个大区预算为0，需要分配.</strong>
+    	            <a href="/regions">去分配预算.</a>
+    	        </p>
+    	    </div>
+    	</div>
+    	<%end%>
+	<% end %>
 
-    <%@regions.each do |region|%>
-        <%if region.percent >= 75%>
-            <div class="info">
-                <div class="info_action">
-                    <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
-                </div>
-                <div class="info_content">
-                    <p class="single">
-                        <strong><%=region.name%>预算超过90%，注意分配.</strong>
-                        <a href="/regions/<%=region.id%>/edit">去分配预算.</a>
-                    </p>
-                </div>
-            </div>
-        <%end%>
-    <%end%>
+	<% if false %>
+    	<%@regions.each do |region|%>
+    	    <%if region.percent >= 75%>
+    	        <div class="info">
+    	            <div class="info_action">
+    	                <a href="#" onclick="$(this).parent().parent().remove();">隐藏</a>
+    	            </div>
+    	            <div class="info_content">
+    	                <p class="single">
+    	                    <strong><%=region.name%>预算超过90%，注意分配.</strong>
+    	                    <a href="/regions/<%=region.id%>/edit">去分配预算.</a>
+    	                </p>
+    	            </div>
+    	        </div>
+    	    <%end%>
+    	<%end%>
+	<% end %>
 
     <%@orders.each do |order|%>
         <%if order.campaign.campaign_status == 1%>
@@ -53,39 +57,42 @@
         <%end%>
     <%end%>
 
-    <div class="tab">
-        <table width="786" cellspacing="0" cellpadding="0" border="0">
-            <tbody>
-                <tr>
-                    <td id="tab_tit" colspan="10">大区预算</td>
-                </tr>
-                <tr>
-                    <td class="f_tab">大区名称</td>
-                    <td class="f_tab">预算使用情况</td>
-                </tr>
-                <%@regions.each do |region|%>
-                    <tr>
-                        <td><%=region.name%></td>
-                        <td id="progress_bar_<%=region.id%>">
-                        </td>
-                    </tr>
-                <%end%>
-            </tbody>
-        </table>
-    </div>
-</div>
+	<% Campaign.all.each do |campaign|%>
+    	<div class="tab">
+    	    <table width="786" cellspacing="0" cellpadding="0" border="0">
+    	        <tbody>
+    	            <tr>
+    	                <td id="tab_tit" colspan="10">活动<%=campaign.name%>预算</td>
+    	            </tr>
+    	            <tr>
+    	                <td class="f_tab">大区名称</td>
+    	                <td class="f_tab">预算使用情况</td>
+    	            </tr>
+    	            <%@regions.each do |region|%>
+    	                <tr>
+    	                    <td><%=region.name%></td>
+    	                    <td id="campaign_<%=campaign.id%>_progress_bar_<%=region.id%>">
+    	                    </td>
+    	                </tr>
+    	            <%end%>
+    	        </tbody>
+    	    </table>
+    	</div>
 
-<script>
-$(document).ready(function() {
-    <%@regions.each do |region|%>
-    $("#progress_bar_<%=region.id%>").progressBar(
-        <%=region.percent%>,
-        {
-            barImage: '<%=region.percent_image%>',
-            boxImage: '/images/powerposm/progressbar/progressbar.gif',
-            title: "<%=region.used_budget%>/<%=region.assigned_budget%>"
-        }
-    );
-    <%end%>
-});
-</script>
+		<script>
+		$(document).ready(function() {
+		    <%@regions.each do |region|%>
+			<% budget = Budget.in_campaign(campaign).in_region(region).first%>
+		    $("#campaign_<%=campaign.id%>_progress_bar_<%=region.id%>").progressBar(
+		        <%=budget.percent%>,
+		        {
+		            barImage: '<%=budget.percent_image%>',
+		            boxImage: '/images/powerposm/progressbar/progressbar.gif',
+		            title: "<%=budget.used_budget%>/<%=budget.assigned_budget%>"
+		        }
+		    );
+		    <%end%>
+		});
+		</script>
+	<% end %>
+</div>

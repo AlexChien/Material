@@ -148,6 +148,7 @@ class OrdersController < ApplicationController
 
   def update
     @order = Order.find(params[:id])
+    b = Budget.in_region(@order.region).in_campaign(@order.campaign).first
     amount = @order.order_line_item_adjusteds.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f
     @order.order_line_item_adjusteds.each do |olia|
       if olia.material.min_num > olia.quantity_total
@@ -156,7 +157,7 @@ class OrdersController < ApplicationController
         @num_error = "物料超过最大订货量，请调整数量或返回RC重新预定"
       end
     end
-    if amount > @order.region.redeemable_budget
+    if amount > b.redeemable_budget#@order.region.redeemable_budget
       flash[:error] = "您的订单超过预算使用额度，请重新修改订单"
     elsif @num_error
       flash[:error] = @num_error
@@ -184,7 +185,9 @@ class OrdersController < ApplicationController
       elsif current_user.has_role?("pm") || current_user.has_role?("admin")
         if @order.order_status_id == 3
           @order.update_attributes(:amount=>amount,:order_status_id=>5,:memo=>nil)
-          @order.region.update_attribute(:used_budget,@order.region.used_budget+amount)
+          
+          # @order.region.update_attribute(:used_budget,@order.region.used_budget+amount)
+          b.update_attribute(:used_budget,@order.region.used_budget+amount) unless b.nil?
 
           # when PM approves the order submitted from RM for review
           Role.find_by_name("rm").users.in_region(@order.region).each do |user|

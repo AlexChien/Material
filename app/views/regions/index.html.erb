@@ -11,12 +11,12 @@
         <table width="786" cellspacing="0" cellpadding="0" border="0">
             <tbody>
                 <tr>
-                    <td id="tab_tit" colspan="10">所有大区</td>
+                    <td id="tab_tit" colspan="8">所有大区</td>
                 </tr>
                 <tr>
                     <td class="f_tab">大区名称</td>
-                    <td class="f_tab">总预算</td>
-                    <td class="f_tab">预算使用情况</td>
+                    <!-- <td class="f_tab">总预算</td>
+                    <td class="f_tab">预算使用情况</td> -->
                     <td class="f_tab">联系电话</td>
                     <td class="f_tab">所属城市</td>
                     <td class="f_tab">地址</td>
@@ -26,9 +26,9 @@
                 <%@regions.each do |region|%>
                     <tr>
                         <td><%=region.name%></td>
-                        <td><%=region.assigned_budget%></td>
-                        <td id="progress_bar_<%=region.id%>">
-                        </td>
+                        <!-- <td><%#=region.assigned_budget%></td>
+                         <td id="progress_bar_<%=region.id%>">
+                         </td> -->
                         <td><%=region.phone%></td>
                         <td><%=region.city%></td>
                         <td><%=region.address%></td>
@@ -39,7 +39,7 @@
                     </tr>
                 <%end%>
                 <tr>
-                    <td id="tab_bottom" colspan="10"><font >共有<%=@regions.total_entries%>条记录</font></td>
+                    <td id="tab_bottom" colspan="8"><font >共有<%=@regions.total_entries%>条记录</font></td>
                 </tr>
             </tbody>
         </table>
