@@ -204,7 +204,7 @@ module ApplicationHelper
         :navleft_header_name => "我要申领",
         :navleft_header_logo => "/images/icons/basket_edit.png",
         :navleft => [
-            { :name => "物料申领", :path => "/order_line_item_raws", :id => "order_line_item_raws", :logo => "/images/icons/basket_add.png"},
+            { :name => "物料申领", :path => "/inventories/rc_apply", :id => "rc_apply", :logo => "/images/icons/basket_add.png"},
             { :name => "已提交申领", :path => "/order_line_item_applies", :id => "order_line_item_applies", :logo => "/images/icons/basket.png"},
           ]
         },

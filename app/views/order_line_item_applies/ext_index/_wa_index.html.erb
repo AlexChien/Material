@@ -23,7 +23,6 @@
                     {name: 'id', mapping: 'id'},
                     {name: 'sku', mapping: 'sku'},
                     {name: 'material_name', mapping: 'material_name'},
-                    {name: 'campaign', mapping: 'campaign'},
                     {name: 'region', mapping: 'region'},
                     {name: 'salesrep', mapping: 'salesrep'},
                     {name: 'show_status', mapping: 'show_status'},
@@ -45,7 +44,6 @@
         cm_array.push(
             {id: 'sku', header: "物料编号", dataIndex: 'sku',sortable:true,width:80},
             {id: 'material_name', header: "物料名称", dataIndex: 'material_name',sortable:true,width:80},
-            {id: 'campaign', header: "所属活动", dataIndex: 'campaign',sortable:true,width:146},
             {id: 'region', header: "所属区", dataIndex: 'region',sortable:true,width:80},
             {id: 'salesrep', header: "销售姓名", dataIndex: 'salesrep',sortable:true,width:80},
             {id: 'show_status', header: "当前状态", dataIndex: 'show_status',sortable:true,width:80},
@@ -63,9 +61,6 @@
         }, {
             type: 'string',
             dataIndex: 'material_name'
-        }, {
-            type: 'string',
-            dataIndex: 'campaign'
         }, {
             type: 'string',
             dataIndex: 'region'

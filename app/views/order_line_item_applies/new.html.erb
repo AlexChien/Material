@@ -1,0 +1,81 @@
+<% content_for :title, "物料申领" %>
+
+<%= render :partial => 'shared/leftnav',:locals => { :highlight => "rc_apply"} %>
+
+<div id="main">
+    <%if !@current_navleft_header_name.nil? && !@current_navleft_name.nil?%>
+    <%= render :partial => 'shared/s_path'%>
+    <%end%>
+
+    <div class="tab">
+        <% form_for @olia, :url => order_line_item_applies_path do |f| -%>
+        <%=f.error_messages%>
+        <table cellspacing="0" cellpadding="0" border="0" width="786" class="tab01">
+            <tbody>
+                <tr>
+                    <td id="tab_tit" colspan="4">物料申领</td>
+                </tr>
+
+                <tr>
+                    <td><%= f.label :material_id, "<em>*</em>物料名称" %></td>
+                    <td class="td_left">
+						<%=f.hidden_field :material_id,:value=>@material.id%>
+                        <%=@material.name%>
+                    </td>
+                </tr>
+				
+				<tr>
+                    <td><%= f.label :salesrep_id, "<em>*</em>销售名称" %></td>
+                    <td class="td_left">
+						<%=f.select :salesrep_id,Salesrep.in_region(current_user.region).all.collect{|p| [p.name, p.id]}%>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><%= f.label :apply_quantity, "<em>*</em>申请数量" %></td>
+                    <td class="td_left">
+                        <%= f.text_field :apply_quantity %>
+						<b id="calculate_amount"></b>
+                    </td>
+                </tr>
+
+				<tr>
+					<td><%= f.label :address, "<em>*</em>请填写详细送货地址" %></td>
+					<td class="td_left">
+						<%= f.hidden_field :address%>
+						<%= text_field_tag :address, "",:disabled=>"disabled"%>
+					</td>
+				</tr>
+				<tr>
+					<td><%= f.label :memo, "请填写备注" %></td>
+					<td class="td_left">
+						<%= f.text_area :memo %>
+					</td>
+				</tr>
+
+                <tr><td id="tab_bottom" colspan="4"></td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <div class="tab_btn">
+            <%= f.submit "确认申领",:class=>"button_btn" %>
+        </div>
+        <%end%>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+	$(function(){
+		calculate_amount();
+	})
+	
+	$("#order_line_item_apply_salesrep_id").change(function(){
+		calculate_amount();
+	})
+	
+	function calculate_amount(){
+		var material_id = $("#order_line_item_apply_material_id").val();
+        var salesrep_id = $("#order_line_item_apply_salesrep_id").val();	$("#calculate_amount").load("/order_line_item_applies/calculate_materials?material_id="+material_id+"&salesrep_id="+salesrep_id);
+	}
+</script>

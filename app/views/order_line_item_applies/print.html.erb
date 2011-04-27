@@ -30,12 +30,12 @@
             </tr>
 
             <tr>
-                <td><%=@olir.material.sku%></td>
-                <td><%=image_tag (@olir.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
-                <td><%=@olir.material.name%></td>
-                <td><%=@olir.region.name%></td>
-                <td><%=@olir.salesrep.name%></td>
-                <td><%=@olir.unit_price%></td>
+                <td><%=@olia.material.sku%></td>
+                <td><%=image_tag (@olia.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
+                <td><%=@olia.material.name%></td>
+                <td><%=@olia.region.name%></td>
+                <td><%=@olia.salesrep.name%></td>
+                <td><%=@olia.material.cost%></td>
                 <td><%=@olia.apply_quantity%></td>
                 <td><%=@olia.apply_subtotal%></td>
             </tr>

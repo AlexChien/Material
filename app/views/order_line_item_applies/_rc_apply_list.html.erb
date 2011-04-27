@@ -23,25 +23,26 @@
             <td class="f_tab">所属区</td>
             <td class="f_tab">销售姓名</td>
             <td class="f_tab">物料价格</td>
+            <td class="f_tab">库存量</td>
             <td class="f_tab">预定数量</td>
             <td class="f_tab">申请中</td>
-            <td class="f_tab">已审核</td>
             <td class="f_tab">已发货</td>
             <td class="f_tab">本次申请</td>
             <td class="f_tab">申请总计</td>
         </tr>
 
         <tr>
-            <td><%=@olir.material.sku%></td>
-            <td><%=image_tag (@olir.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
-            <td><%=@olir.material.name%></td>
-            <td><%=@olir.region.name%></td>
-            <td><%=@olir.salesrep.name%></td>
-            <td><%=@olir.unit_price%></td>
-            <td><%=@olir.quantity%></td>
-            <td><%=@olir.apply_size%></td>
-            <td><%=@olir.applied_size%></td>
-            <td><%=@olir.sended_size%></td>
+            <td><%=@olia.material.sku%></td>
+            <td><%=image_tag (@olia.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
+            <td><%=@olia.material.name%></td>
+            <td><%=@olia.region.name%></td>
+            <td><%=@olia.salesrep.name%></td>
+            <td><%=@olia.material.cost%></td>
+
+			<td><%=@inventory_quantity%></td>
+            <td><%=@raw_total%></td>
+            <td><%=OrderLineItemApply.in_region(@olia.region.id).in_material(@olia.material.id).not_in_status(5).first(:select=>"sum(apply_quantity) as quantity").quantity.to_i%></td>
+			<td><%=OrderLineItemApply.in_region(@olia.region.id).in_material(@olia.material.id).in_status(5).first(:select=>"sum(apply_quantity) as quantity").quantity.to_i%></td>
             <%if current_user.has_role?("rc") && @olia.status == 1%>
                 <td>
                     <input type="text" value="<%=@olia.apply_quantity%>" size="3" id="olia_quantity">
@@ -70,9 +71,9 @@
                 <%= f.hidden_field :apply_quantity %>
                 <td class="td_left">
                     <%if current_user.has_role?("rc") && @olia.status == 1%>
-                        <%= f.text_field :address,:value=>"#{@olia.address.blank? ? @olir.salesrep.address : @olia.address}"%>
+                        <%= f.text_field :address,:value=>"#{@olia.address.blank? ? @olia.salesrep.address : @olia.address}"%>
                     <%else%>
-                        <%= f.text_field :address,:value=>"#{@olia.address.blank? ? @olir.salesrep.address : @olia.address}",:disabled=>"disabled"%>
+                        <%= f.text_field :address,:value=>"#{@olia.address.blank? ? @olia.salesrep.address : @olia.address}",:disabled=>"disabled"%>
                     <%end%>
                 </td>
             </tr>
@@ -80,9 +81,9 @@
                 <td><%= label_tag :memo, "<em>*</em>请填写备注" %></td>
                 <td class="td_left">
                     <%if current_user.has_role?("rc") && @olia.status == 1%>
-                        <%= f.text_area :memo,:value=>"#{@olia.memo.blank? ? @olir.salesrep.memo : @olia.memo}" %>
+                        <%= f.text_area :memo,:value=>"#{@olia.memo.blank? ? @olia.salesrep.memo : @olia.memo}" %>
                     <%else%>
-                        <%= f.text_area :memo,:value=>"#{@olia.memo.blank? ? @olir.salesrep.memo : @olia.memo}",:disabled=>"disabled" %>
+                        <%= f.text_area :memo,:value=>"#{@olia.memo.blank? ? @olia.salesrep.memo : @olia.memo}",:disabled=>"disabled" %>
                     <%end%>
                 </td>
             </tr>
@@ -117,7 +118,7 @@
     <%if current_user.has_role?("wa")%>
         <%if @olia.status == 3%>
         <div class="tab_btn">
-            <%= f.submit "确认发货",:class=>"button_btn",:confirm=>"本次将发给销售#{@olir.salesrep.name}#{@olia.apply_quantity}个#{@olir.material.name}！您确认此次发货吗？" %>
+            <%= f.submit "确认发货",:class=>"button_btn",:confirm=>"本次将发给销售#{@olia.salesrep.name}#{@olia.apply_quantity}个#{@olia.material.name}！您确认此次发货吗？" %>
         </div>
         <%end%>
     <%end%>
@@ -135,7 +136,7 @@
 
     function update_total(){
         var quantity = $("#olia_quantity").val();
-        var total = <%=@olir.unit_price%> * quantity;
+        var total = <%=@olia.material.cost%> * quantity;
         $("#order_line_item_apply_apply_quantity").attr("value",quantity);
         $("#upload_total_field").html("￥"+total);
     }

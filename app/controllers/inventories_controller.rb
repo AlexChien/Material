@@ -2,7 +2,10 @@ class InventoriesController < ApplicationController
   before_filter :login_required
 
   access_control do
-    allow :wa, :pm, :admin, :rc, :rm
+    allow :rc
+    action :index, :ext_index, :calculate_materials do
+      allow :wa, :pm, :admin, :rm
+    end
   end
 
   def index
@@ -18,6 +21,10 @@ class InventoriesController < ApplicationController
       end
       render :template => "/inventories/ext_index"
     end
+  end
+  
+  def rc_apply
+    @inventories = Inventory.in_region(current_user.region).paginate(:all,:per_page=>20,:page => params[:page], :order => 'inventories.created_at DESC')
   end
 
   def ext_index

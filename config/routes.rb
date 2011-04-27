@@ -34,7 +34,8 @@ ActionController::Routing::Routes.draw do |map|
                                                    :accept_fail_message=>:get,
                                                    :accept_fail=>:put},
                                          :collection=>{:ext_index=>:post,
-                                                       :update_checked=>:put}
+                                                       :update_checked=>:put,
+                                                       :calculate_materials=>:get}
 
   map.resources :orders,:member=>{:approve_fail_message=>:get,
                                   :approve_fail=>:put,
@@ -49,8 +50,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :production_line_items, :collection=>{:ext_update=>:put}
 
-  map.resources :inventories, :collection => {:calculate_materials =>:get,
-                                              :ext_index=>:get}
+  map.resources :inventories, :collection => {:calculate_materials=>:get,
+                                              :ext_index=>:get,
+                                              :rc_apply=>:get}
 
   map.resources :transfers
 

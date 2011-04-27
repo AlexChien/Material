@@ -2,15 +2,12 @@ class OrderLineItemAppliesController < ApplicationController
   before_filter :login_required
 
   access_control do
-    allow :rc, :rm, :wa
-    action :print do
-      allow :wa, :rc
-    end
-    action :ext_index do
+    allow :rc,:rm,:wa
+    action :ext_index,:print do
       allow :wa
     end
     action :index, :show do
-      allow :pm, :admin
+      allow :pm, :admin, :rm
     end
     action :accept_fail_message, :accept_fail do
       allow :rm
@@ -45,40 +42,94 @@ class OrderLineItemAppliesController < ApplicationController
     return_data = Hash.new()
     return_data[:size] = olia.count
     return_data[:Applies] = @olias.collect{|p| {:id=>p.id,
-                                                :sku=>p.order_line_item_raw.material.sku,
-                                                :material_name=>p.order_line_item_raw.material.name,
-                                                :campaign=>p.order_line_item_raw.campaign.name,
-                                                :region=>p.order_line_item_raw.region.name,
-                                                :salesrep=>p.order_line_item_raw.salesrep.name,
+                                                :sku=>p.material.sku,
+                                                :material_name=>p.material.name,
+                                                :region=>p.region.name,
+                                                :salesrep=>p.salesrep.name,
                                                 :show_status=>p.show_status,
                                                 :link=>"<a href='/order_line_item_applies/#{p.id}'>#{p.status == 3 ? '去发货' : '查看详细'}</a>"
                                                 }}
     render :text=>return_data.to_json, :layout=>false
   end
+  
+  def new
+    @olia = OrderLineItemApply.new
+    @material = Material.find(params[:material_id])
+  end
+  
+  def create
+    @olia = OrderLineItemApply.new(params[:order_line_item_apply])
+    @olia.region = @olia.salesrep.region
+    @olia.apply_subtotal = @olia.apply_quantity * @olia.material.cost
+    @olia.status = 2
+    if @olia.save
+      
+      # when RC submits material request to RM
+      Role.find_by_name("rm").users.in_region(current_user.region).each do |user|
+        PosmMailer.deliver_onStockRequestSubmitted_RC2RM(user,@olia,current_user)
+      end
+
+      flash[:notice] = "申请已提交，等待区域经理审批"
+      redirect_to "/order_line_item_applies"
+    else
+      flash[:error]  = "物料申领失败，请重新尝试"
+      redirect_to "/order_line_item_applies/new?material_id=#{@olia.material.id}"
+    end
+  end
+  
+  def calculate_materials
+    @material = Material.find(params[:material_id])
+    @salesrep = Salesrep.find(params[:salesrep_id])
+    @region = @salesrep.region
+    i_m = Inventory.in_region(@region.id).in_material(@material.id).first
+    quantity = i_m.nil? ? 0 : i_m.quantity
+    total_str = ""
+    apply_total_5 = OrderLineItemApply.in_salesrep(@salesrep.id).in_material(@material.id).in_status(5).first(:select=>"sum(apply_quantity) as quantity").quantity.to_i
+    apply_total = OrderLineItemApply.in_salesrep(@salesrep.id).in_material(@material.id).not_in_status(5).first(:select=>"sum(apply_quantity) as quantity").quantity.to_i
+    total_str += "<br/>已提交申领数量：#{apply_total_5+apply_total} （申领中： #{apply_total}  已发货： #{apply_total_5}）"
+    olir = OrderLineItemRaw.in_material(@material.id).in_salesrep(@salesrep.id)
+    total = olir.first(:select=>"sum(quantity) as total").total.to_i
+    total_str += "<br/>共预定数量：#{total}"
+    olir.all.each do |olir|
+      campaign = olir.campaign
+      total_str += "<br/>活动－#{campaign.name}:#{olir.quantity}"
+    end
+    render :text => "<br/>当前库存量：#{quantity}
+                    #{total_str}
+                    <script>
+                      $('#order_line_item_apply_memo').attr('value','#{@salesrep.memo}');
+                      $('#order_line_item_apply_address,#address').attr('value','#{@salesrep.address}');
+                    </script>"
+  end
 
   def show
     @olia = OrderLineItemApply.find(params[:id])
-    @olir = @olia.order_line_item_raw
 
     if current_user.has_role?("rc") || current_user.has_role?("rm")
-      if @olir.region != current_user.region
+      if @olia.region != current_user.region
         flash[:error] = "不能查看他人申请"
         redirect_to "/order_line_item_applies"
         return
       end
     end
+    
+    i_m = Inventory.in_region(@olia.region.id).in_material(@olia.material.id).first
+    @inventory_quantity = i_m.nil? ? 0 : i_m.quantity
+    
+    olir = OrderLineItemRaw.in_material(@olia.material.id).in_salesrep(@olia.salesrep.id)
+    @raw_total = olir.first(:select=>"sum(quantity) as total").total.to_i
   end
 
   def update_status
     @olia = OrderLineItemApply.find(params[:id])
-    @olir = @olia.order_line_item_raw
+    # @olir = @olia.order_line_item_raw
     quantity = @olia.apply_quantity
     if current_user.has_role?("rc")
       if @olia.status == 1
         @olia.status = 2
-        @olia.apply_subtotal = params[:order_line_item_apply][:apply_quantity].to_i * @olir.unit_price
+        @olia.apply_subtotal = params[:order_line_item_apply][:apply_quantity].to_i * @olia.material.cost
         @olia.update_attributes(params[:order_line_item_apply])
-        @olir.update_attributes(:apply_size=>@olir.apply_size+@olia.apply_quantity)
+        # @olir.update_attributes(:apply_size=>@olir.apply_size+@olia.apply_quantity)
 
         # when RC submits material request to RM
         Role.find_by_name("rm").users.in_region(current_user.region).each do |user|
@@ -103,7 +154,7 @@ class OrderLineItemAppliesController < ApplicationController
     if current_user.has_role?("rm")
       if @olia.status == 2
         @olia.update_attribute(:status,3)
-        @olir.update_attributes(:apply_size=>@olir.apply_size-quantity,:applied_size=>@olir.applied_size+quantity)
+        # @olir.update_attributes(:apply_size=>@olir.apply_size-quantity,:applied_size=>@olir.applied_size+quantity)
 
         # when RM approves material request sent by RC
         Role.find_by_name("wa").users.each do |user|
@@ -120,31 +171,31 @@ class OrderLineItemAppliesController < ApplicationController
 
     if current_user.has_role?("wa")
       if @olia.status == 3
-        i = Inventory.in_region(@olir.region).in_material(@olir.material).first
+        i = Inventory.in_region(@olia.region).in_material(@olia.material).first
         if i.nil?
           flash[:error] = "库存不足，不能发放"
         else
           if i.quantity < @olia.apply_quantity
             flash[:error] = "库存不足，不能发放"
           else
-            params = {:from_region_id=>@olir.order.region.id,
+            params = {:from_region_id=>@olia.region.id,
                       :from_warehouse_id=>Warehouse.in_central(true).first.id,
-                      :amount=>"-#{@olir.unit_price*@olia.apply_quantity}",
+                      :amount=>"-#{@olia.material.cost*@olia.apply_quantity}",
                       :transfer_type_id=>4,
-                      :transfer_line_items_attributes=>{"0"=>{"material_id"=>"#{@olir.material.id}",
+                      :transfer_line_items_attributes=>{"0"=>{"material_id"=>"#{@olia.material.id}",
                                                               "quantity"=>"-#{@olia.apply_quantity}",
-                                                              "unit_price"=>"#{@olir.unit_price}",
-                                                              "subtotal"=>"-#{@olir.unit_price*@olia.apply_quantity}",
-                                                              "region_id"=>"#{@olir.order.region.id}",
-                                                              "salesrep_id"=>"#{@olir.salesrep.id}",
+                                                              "unit_price"=>"#{@olia.material.cost}",
+                                                              "subtotal"=>"-#{@olia.material.cost*@olia.apply_quantity}",
+                                                              "region_id"=>"#{@olia.region.id}",
+                                                              "salesrep_id"=>"#{@olia.salesrep.id}",
                                                               "warehouse_id"=>"#{Warehouse.in_central(true).first.id}"}}
                       }
             Transfer.new(params).save
             @olia.update_attribute(:status,4)
-            @olir.update_attributes(:sended_size=>@olir.sended_size+quantity)
+            # @olir.update_attributes(:sended_size=>@olir.sended_size+quantity)
 
             # when WA marks shipping request as SHIPPED
-            Role.find_by_name("rc").users.in_region(@olir.region).each do |user|
+            Role.find_by_name("rc").users.in_region(@olia.region).each do |user|
               PosmMailer.deliver_onStockShipped(user,@olia)
             end
 
@@ -163,31 +214,31 @@ class OrderLineItemAppliesController < ApplicationController
         @olia = OrderLineItemApply.find(apply_id)
         @olir = @olia.order_line_item_raw
         quantity = @olia.apply_quantity
-        i = Inventory.in_region(@olir.region).in_material(@olir.material).first
+        i = Inventory.in_region(@olia.region).in_material(@olia.material).first
         if i.nil?
           error_count += 1
         else
           if i.quantity < @olia.apply_quantity
             error_count += 1
           else
-            params = {:from_region_id=>@olir.order.region.id,
+            params = {:from_region_id=>@olia.region.id,
                       :from_warehouse_id=>Warehouse.in_central(true).first.id,
-                      :amount=>"-#{@olir.unit_price*@olia.apply_quantity}",
+                      :amount=>"-#{@olia.material.cost*@olia.apply_quantity}",
                       :transfer_type_id=>4,
-                      :transfer_line_items_attributes=>{"0"=>{"material_id"=>"#{@olir.material.id}",
+                      :transfer_line_items_attributes=>{"0"=>{"material_id"=>"#{@olia.material.id}",
                                                               "quantity"=>"-#{@olia.apply_quantity}",
-                                                              "unit_price"=>"#{@olir.unit_price}",
-                                                              "subtotal"=>"-#{@olir.unit_price*@olia.apply_quantity}",
-                                                              "region_id"=>"#{@olir.order.region.id}",
-                                                              "salesrep_id"=>"#{@olir.salesrep.id}",
+                                                              "unit_price"=>"#{@olia.material.cost}",
+                                                              "subtotal"=>"-#{@olia.material.cost*@olia.apply_quantity}",
+                                                              "region_id"=>"#{@olia.region.id}",
+                                                              "salesrep_id"=>"#{@olia.salesrep.id}",
                                                               "warehouse_id"=>"#{Warehouse.in_central(true).first.id}"}}
                       }
             Transfer.new(params).save
             @olia.update_attribute(:status,4)
-            @olir.update_attributes(:sended_size=>@olir.sended_size+quantity)
+            # @olir.update_attributes(:sended_size=>@olir.sended_size+quantity)
 
             # when WA marks shipping request as SHIPPED
-            Role.find_by_name("rc").users.in_region(@olir.region).each do |user|
+            Role.find_by_name("rc").users.in_region(@olia.region).each do |user|
               PosmMailer.deliver_onStockShipped(user,@olia)
             end
 
@@ -206,7 +257,6 @@ class OrderLineItemAppliesController < ApplicationController
 
   def print
     @olia = OrderLineItemApply.find(params[:id])
-    @olir = @olia.order_line_item_raw
     if current_user.has_role?("wa")
       if @olia.status == 3 || @olia.status == 4
         render :layout => "print"
@@ -215,7 +265,7 @@ class OrderLineItemAppliesController < ApplicationController
       end
     elsif current_user.has_role?("rc")
       if @olia.status == 5
-        render :text => "您没有权限打印该申领单" and return if @olir.region != current_user.region
+        render :text => "您没有权限打印该申领单" and return if @olia.region != current_user.region
         render :layout => "print"
       else
         render :text => "该送货单不能打印"
@@ -230,10 +280,10 @@ class OrderLineItemAppliesController < ApplicationController
 
   def accept_fail
     @olia = OrderLineItemApply.find(params[:id])
-    @olir = @olia.order_line_item_raw
+    # @olir = @olia.order_line_item_raw
     if @olia.status == 2
       if @olia.update_attributes(:reason=>params[:reason],:status=>1)
-        @olir.update_attribute(:apply_size,@olir.apply_size - @olia.apply_quantity)
+        # @olir.update_attribute(:apply_size,@olir.apply_size - @olia.apply_quantity)
 
         # when RM rejects material request from RC
         Role.find_by_name("rc").users.in_region(current_user.region).each do |user|

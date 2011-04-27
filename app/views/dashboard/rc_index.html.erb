@@ -38,6 +38,7 @@
         </div>
     <%end%>
 
+	<%if false%>
     <%@olirs.each do |olir|%>
         <div class="info">
             <div class="info_action">
@@ -45,12 +46,13 @@
             </div>
             <div class="info_content">
                 <p class="single">
-                    <strong>销售<%=olir.salesrep.name%>在活动<%=olir.campaign.name%>中申请的物料<%=olir.material.name%>已送达仓库.</strong>
+                    <strong>物料<%=olir.material.name%>已送达仓库.</strong>
                     <a href="/order_line_item_raws/<%=olir.id%>">去申请.</a>
                 </p>
             </div>
         </div>
     <%end%>
+	<%end%>
 
     <%@olias.each do |olia|%>
         <div class="info">
@@ -59,7 +61,7 @@
             </div>
             <div class="info_content">
                 <p class="single">
-                   <%olir=olia.order_line_item_raw%> <strong>销售<%=olir.salesrep.name%>在活动<%=olir.campaign.name%>中申请的物料<%=olir.material.name%>已送达目的地.</strong>
+					<strong>销售<%=olia.salesrep.name%>申请的物料<%=olia.material.name%>已送达目的地.</strong>
                     <a href="/order_line_item_applies/<%=olia.id%>">去确认.</a>
                 </p>
             </div>
@@ -73,7 +75,7 @@
             </div>
             <div class="info_content">
                 <p class="single">
-                   <%olir=olia.order_line_item_raw%> <strong>销售<%=olir.salesrep.name%>在活动<%=olir.campaign.name%>中申请的物料<%=olir.material.name%>申请失败，已退回.</strong>
+ 					<strong>销售<%=olia.salesrep.name%>申请的物料<%=olia.material.name%>申请失败，已退回.</strong>
                     <a href="/order_line_item_applies/<%=olia.id%>">去修改.</a>
                 </p>
             </div>

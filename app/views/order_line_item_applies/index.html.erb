@@ -34,21 +34,18 @@
                     <td class="f_tab">物料编号</td>
                     <td class="f_tab">物料图片</td>
                     <td class="f_tab">物料名称</td>
-                    <td class="f_tab">所属活动</td>
                     <td class="f_tab">所属区</td>
                     <td class="f_tab">销售姓名</td>
                     <td class="f_tab">当前状态</td>
                     <td class="f_tab">操作</td>
                 </tr>
                 <%@olias.each do |olia|%>
-                    <%olir=olia.order_line_item_raw%>
                     <tr>
-                        <td><%=olir.material.sku%></td>
-                        <td><%=image_tag (olir.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
-                        <td><%=olir.material.name%></td>
-                        <td><%=olir.campaign.name%></td>
-                        <td><%=olir.region.name%></td>
-                        <td><%=olir.salesrep.name%></td>
+                        <td><%=olia.material.sku%></td>
+                        <td><%=image_tag (olia.material.uploaded_data.url(:thumb)),:onload=>"DrawImage(this,100,75)"%></td>
+                        <td><%=olia.material.name%></td>
+                        <td><%=olia.region.name%></td>
+                        <td><%=olia.salesrep.name%></td>
                         <td><%=olia.show_status%></td>
                         <td>
                             <%if current_user.has_role?("rc")%>
