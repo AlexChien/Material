@@ -24,7 +24,7 @@ config.action_view.cache_template_loading            = true
 config.action_mailer.delivery_method = :smtp
 config.action_mailer.default_url_options = { :host => "powerposm.com" }
 config.action_mailer.smtp_settings = {
-  :address => "mail.koocaa.com",
+  :address => "222.73.26.126",
   :port => 25,
   :domain => "mail.koocaa.com",
   :authentication => :login,
