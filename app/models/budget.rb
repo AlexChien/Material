@@ -10,6 +10,7 @@ class Budget < ActiveRecord::Base
         {:conditions => ["budgets.campaign_id = ?", campaign]}
   }
   
+  before_create :observer_assigned_budget
   before_update :observer_assigned_budget
   
   def observer_assigned_budget
