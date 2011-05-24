@@ -126,8 +126,13 @@ class OrderLineItemAdjustedsController < ApplicationController
         @olir_total = @olia.order.order_line_item_adjusteds.first(:select=>"sum(subtotal) as subtotal").subtotal.to_f
         return_data[:success] = true
         b = Budget.in_region(@olia.region).in_campaign(@olia.order.campaign).first
+        if b.overdraw==0
+          display_text = "预定总计：￥#{@olir_total}<br/>注：无预算，可随意预定<br/>"
+				else
+					display_text = "预定总计：￥#{@olir_total}<br/>可使用预算：￥#{b.redeemable_budget}<br/>将剩余预算：￥#{(b.redeemable_budget*1000 - @olir_total*1000)/1000}<br/>"
+				end
         success_message = {:notice=>"物料#{@olia.material.name}数量调整为#{@olia.quantity_adjust}预定总数为#{@olia.quantity_total}",
-                           :display_text=>"预定总计：￥#{@olir_total}<br/>可使用预算：￥#{b.redeemable_budget}<br/>将剩余预算：￥#{(b.redeemable_budget*1000 - @olir_total*1000)/1000}<br/>",
+                           :display_text=>display_text,
                            # :display_text=>"预定总计：￥#{@olir_total}<br/>可使用预算：￥#{current_user.region.redeemable_budget}<br/>将剩余预算：￥#{(current_user.region.redeemable_budget*1000 - @olir_total*1000)/1000}<br/>",
                            :grand_total=>"defined"}
         return_data[:message] = success_message

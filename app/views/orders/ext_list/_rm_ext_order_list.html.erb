@@ -163,10 +163,16 @@
         <%if @order.order_status_id ==1 || @order.order_status_id ==4%>
             预定总计：￥<%=order_amount%><br/>
 			<%b = Budget.in_region(@order.region).in_campaign(@order.campaign).first%>
-			可使用预算：￥<%=b.redeemable_budget%><br/>
-            将剩余预算：￥<%=(b.redeemable_budget*1000 - order_amount*1000)/1000%><br/>
-            <!-- 可使用预算：￥<%=current_user.region.redeemable_budget%><br/>
-            将剩余预算：￥<%=(current_user.region.redeemable_budget*1000 - order_amount*1000)/1000%><br/> -->
+			<%if b.overdraw==0%>
+				注：无预算，可随意预定
+			<%else%>
+				可使用预算：￥<%=b.redeemable_budget%><br/>
+            	将剩余预算：￥<%=(b.redeemable_budget*1000 - order_amount*1000)/1000%><br/>
+			<%end%>
+			<%if false%>
+            	可使用预算：￥<%=current_user.region.redeemable_budget%><br/>
+            	将剩余预算：￥<%=(current_user.region.redeemable_budget*1000 - order_amount*1000)/1000%><br/>
+			<%end%>
         <%else%>
             总计：￥<%=order_amount%>
         <%end%>

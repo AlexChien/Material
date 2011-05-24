@@ -38,10 +38,16 @@
 
 				<%Region.in_central(false).all.each do |region|%>
 					<% budget = Budget.in_campaign(@campaign).in_region(region).first%>
+					<%if !budget.nil?%>
+						<%if budget.overdraw==1%>
+							<% overdraw = true %>
+						<%end%>
+					<%end%>
 					<tr>
                 	    <td><%= label_tag "budget_#{region.id}", "#{region.name}预算" %></td>
                 	    <td class="td_left">
-							<%=text_field_tag "budget_#{region.id}",budget.nil? ? 0.0 : budget.assigned_budget%> （已使用：<%=budget.nil? ? 0.0 : budget.used_budget%>）
+							<span><input type="checkbox" value="1" name="checkbox_budget_<%=region.id%>" style="width:auto;" onclick="display(this,'<%=region.id%>')" <%if overdraw%>checked="checked"<%end%>> 有预算</span>
+							<span id="text_<%=region.id%>" <%if !overdraw%>style="display:none;"<%end%>><%=text_field_tag "budget_#{region.id}",budget.nil? ? 0.0 : budget.assigned_budget%> （已使用：<%=budget.nil? ? 0.0 : budget.used_budget%>）</span>
                 	    </td>
                 	</tr>
 				<%end%>
@@ -83,8 +89,8 @@
     </div>
 
 </div>
-<%javascript_tag do%>
-    function check_price(){
+<script type="text/javascript" charset="utf-8">
+	function check_price(){
         var return_boolean = true;
         $("input[name='material_ids[]']").each(function() {
             if (this.checked) {
@@ -100,9 +106,9 @@
     }
 
     $(function() {
-            $("#campaign_catalogs_attributes_0_order_startdate").datepicker({showOn: 'button', buttonImage: '/images/icons/calendar.png', showOn:'both' ,dateFormat: 'yy-mm-dd'});
+		$("#campaign_catalogs_attributes_0_order_startdate").datepicker({showOn: 'button', buttonImage: '/images/icons/calendar.png', showOn:'both' ,dateFormat: 'yy-mm-dd'});
 
-            $("#campaign_catalogs_attributes_0_order_enddate").datepicker({showOn: 'button', buttonImage: '/images/icons/calendar.png', showOn:'both' ,dateFormat: 'yy-mm-dd'});
+		$("#campaign_catalogs_attributes_0_order_enddate").datepicker({showOn: 'button', buttonImage: '/images/icons/calendar.png', showOn:'both' ,dateFormat: 'yy-mm-dd'});
     });
 
     function replace_html(box,cost){
@@ -116,4 +122,12 @@
             replace_id.html(html);
         }
     }
-<%end%>
+
+	function display(box,region_id){
+		if(box.checked){
+			$("#text_"+region_id).show();
+        }else{
+			$("#text_"+region_id).hide();
+        }
+	}
+</script>

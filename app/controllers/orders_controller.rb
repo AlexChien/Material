@@ -157,7 +157,8 @@ class OrdersController < ApplicationController
         @num_error = "物料超过最大订货量，请调整数量或返回RC重新预定"
       end
     end
-    if amount > b.redeemable_budget#@order.region.redeemable_budget
+    
+    if b.overdraw == 1 && amount > b.redeemable_budget#@order.region.redeemable_budget
       flash[:error] = "您的订单超过预算使用额度，请重新修改订单"
     elsif @num_error
       flash[:error] = @num_error

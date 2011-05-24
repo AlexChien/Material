@@ -50,21 +50,23 @@ class CampaignsController < ApplicationController
       
       Region.in_central(false).all.each do |region|
         budget = params["budget_#{region.id}".to_sym].to_f
+        overdraw = params["checkbox_budget_#{region.id}".to_sym].nil? ? 0 : params["checkbox_budget_#{region.id}".to_sym]
         b = Budget.new
         b.region =region
         b.campaign = @campaign
         b.assigned_budget = (budget >= 0 ? budget : 0)
+        b.overdraw = overdraw
         b.save
       end
 
       # when PM creates campaign， which means a campaign is created and material catalog is registered， fire email to notify RM/RC about this campaign
-      Role.find_by_name("rc").users.each do |user|
-        PosmMailer.deliver_onCampaignCreated(user,@campaign)
-      end
-
-      Role.find_by_name("rm").users.each do |user|
-        PosmMailer.deliver_onCampaignCreated(user,@campaign)
-      end
+      # Role.find_by_name("rc").users.each do |user|
+      #   PosmMailer.deliver_onCampaignCreated(user,@campaign)
+      # end
+      # 
+      # Role.find_by_name("rm").users.each do |user|
+      #   PosmMailer.deliver_onCampaignCreated(user,@campaign)
+      # end
 
       flash[:notice] = "活动#{@campaign.name}添加成功"
       redirect_to "/campaigns"
@@ -82,6 +84,7 @@ class CampaignsController < ApplicationController
       b = Budget.in_campaign(@campaign).in_region(region).first
       b = Budget.new if b.nil?
       budget = params["budget_#{region.id}".to_sym].to_f
+      overdraw = params["checkbox_budget_#{region.id}".to_sym].nil? ? 0 : params["checkbox_budget_#{region.id}".to_sym]
       if budget < b.used_budget
         flash[:error] = "分配预算不能小于已使用预算！"
         render :action => "edit" and return
@@ -89,6 +92,7 @@ class CampaignsController < ApplicationController
         b.region =region
         b.campaign = @campaign
         b.assigned_budget = (budget >= 0 ? budget : 0)
+        b.overdraw = overdraw
         b.save
       end
     end
