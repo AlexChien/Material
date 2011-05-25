@@ -60,13 +60,13 @@ class CampaignsController < ApplicationController
       end
 
       # when PM creates campaign， which means a campaign is created and material catalog is registered， fire email to notify RM/RC about this campaign
-      # Role.find_by_name("rc").users.each do |user|
-      #   PosmMailer.deliver_onCampaignCreated(user,@campaign)
-      # end
-      # 
-      # Role.find_by_name("rm").users.each do |user|
-      #   PosmMailer.deliver_onCampaignCreated(user,@campaign)
-      # end
+      Role.find_by_name("rc").users.each do |user|
+        PosmMailer.deliver_onCampaignCreated(user,@campaign)
+      end
+      
+      Role.find_by_name("rm").users.each do |user|
+        PosmMailer.deliver_onCampaignCreated(user,@campaign)
+      end
 
       flash[:notice] = "活动#{@campaign.name}添加成功"
       redirect_to "/campaigns"
@@ -110,9 +110,7 @@ class CampaignsController < ApplicationController
           cm.save
         end
       end
-      
-      
-      
+
       flash[:notice] = "#{@campaign.name} 修改成功"
       redirect_to "/campaigns"
     else
